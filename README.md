@@ -1,4 +1,4 @@
-# World Music Experiment
+# Earth to Ear: A World Music Experiment
 
 A global exploration of musical traditions, cultural connections, and creative expression through listening, research, and discovery.
 
@@ -6,13 +6,15 @@ A global exploration of musical traditions, cultural connections, and creative e
 
 The site is served from [`index.html`](./index.html), designed for GitHub Pages static hosting.
 
-**Music-access notice:** The initial twelve recording links are cataloged, but free playback has not been verified for every entry. Links should not be advertised as guaranteed free streams until reviewed.
+**Music-access notice:** The active collection has 26 catalog entries, but free playback has not been verified for every entry. Links should not be advertised as guaranteed free streams until reviewed.
 
 ### Publish via GitHub Pages
 
 Go to **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, select **main** and **/(root)**, then **Save**.
 
-Live website: https://crespen.github.io/world-music-experiment/
+Custom domain: https://earthtoear.com/ (DNS and HTTPS activation pending)
+
+Former GitHub Pages address: https://crespen.github.io/world-music-experiment/
 
 ### Participation
 
