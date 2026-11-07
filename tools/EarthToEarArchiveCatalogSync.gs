@@ -28,7 +28,7 @@ function syncEarthToEarArchiveCatalog() {
     }
     const seen = new Set();
     for (const item of catalog) {
-      if (!item || !/^AFR-\d{4}$/.test(String(item.id || '')) ||
+      if (!item || !/^[A-Z]{2,6}-\d{4,6}$/.test(String(item.id || '')) ||
           !item.title || !item.artist || !item.listen || !item.journal ||
           !/^https:\/\//.test(item.listen) || !/^https:\/\/docs\.google\.com\/forms\//.test(item.journal) ||
           seen.has(item.id)) {
