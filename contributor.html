@@ -1,0 +1,53 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Contributor Journal · Earth to Ear</title>
+<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#091c28;color:#edf6f3;font:15px/1.6 system-ui,Segoe UI,sans-serif}header{border-bottom:1px solid #42646c;padding:20px max(20px,calc((100vw - 860px)/2))}header a{color:#e6f3f1;font-size:20px;font-weight:800;text-decoration:none}main{max-width:860px;margin:0 auto;padding:42px 20px 90px}h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:10px 0}h2{font-size:24px;margin:0 0 10px}.caps{letter-spacing:.15em;text-transform:uppercase;color:#a2dcd0;font-size:11px;font-weight:750}.card{border-radius:16px;background:#173744;border:1px solid #506e72;padding:26px;margin:22px 0}.card.featured{border-color:#a0d8ce;background:#22464c}p{color:#c2d5d2}a{color:#a3ded2}label{display:block;margin:14px 0 5px;font-weight:650}input:not([type=checkbox]),textarea,select{width:100%;padding:12px;border:1px solid #7a9c9c;border-radius:8px;color:#fff;background:#0a2834;font:inherit}textarea{min-height:120px;resize:vertical}textarea.optional{min-height:72px}button{background:#a8ded4;color:#092e34;border:0;border-radius:9px;padding:11px 17px;font:700 14px system-ui;margin:15px 10px 4px 0;cursor:pointer}button.secondary{background:transparent;border:1px solid #82b2ad;color:#fff}button.danger{background:#60363b;color:#fff;border:1px solid #bf9295}.hidden{display:none!important}.notice{padding:14px;border-left:3px solid #a5dcd3;background:#23434b;margin:18px 0;white-space:pre-wrap}.notice.error{border-color:#e4b3b0;background:#4b3238}.tiny{color:#b4c9c7;font-size:12px}.row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}</style></head><body>
+<header><a href="/">Earth to Ear</a></header><main><div class="caps">Listening Journal</div><h1>Your place in the experiment.</h1><p>The music is open to everyone. Journal entries are reserved for invited contributors and kept in the private research archive.</p><div id="notice" role="status" class="notice hidden"></div>
+<section id="signedout" class="card"><h2>Sign in</h2><p>Use the email address associated with your invitation. We'll send you a secure sign-in link.</p><form id="signin"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required><button type="submit">Send sign-in link</button></form><p class="tiny">Registration is by invitation only.</p></section>
+<section id="pending" class="card hidden"><h2>Complete your registration</h2><p>Your email has been verified. To contribute, please acknowledge the research participation terms below.</p><p>Observations are associated with a private participant identifier and retained for the research archive. You may end future participation; earlier journal entries remain in the archive unless addressed through a separate data request. Entries won't be published under your name without additional permission.</p><label><input id="consent" type="checkbox"> I understand and agree to contribute my listening observations under these terms.</label><button id="activate" type="button">Complete registration</button><p class="tiny">Only people with an active invitation can register.</p></section>
+<section id="active" class="hidden"><div class="card featured"><div class="row"><h2>My Listening Journal</h2><span class="tiny" id="participant"></span></div><p>What you hear and what it brings to mind are what matter. There is no need to write about every selection.</p>
+<form id="journal"><label for="recording">Recording</label><select id="recording" required><option value="">Choose a recording</option><option value="AFR-0001">AFR-0001 — Aduna Esore (The World Is Dispersed)</option>
+<option value="AFR-0002">AFR-0002 — Gambian Griot Kora Duets</option>
+<option value="AFR-0003">AFR-0003 — Eci ameya (horns) / Eci ameya (voices)</option>
+<option value="AFR-0004">AFR-0004 — Ambasel</option>
+<option value="AFR-0005">AFR-0005 — Chopi timbila orchestral performance</option>
+<option value="AFR-0006">AFR-0006 — Al-warda as-sghira (The Young Rose)</option>
+<option value="AFR-0007">AFR-0007 — Zaza bitiky manambady</option>
+<option value="AFR-0008">AFR-0008 — Highlife</option>
+<option value="AFR-0009">AFR-0009 — Water No Get Enemy</option>
+<option value="AFR-0010">AFR-0010 — Ambassel</option>
+<option value="AFR-0011">AFR-0011 — Diphiri tsa Amapiano</option>
+<option value="AFR-0012">AFR-0012 — Last Last</option>
+<option value="AFR-0013">AFR-0013 — Mdou Moctar — Live on KEXP</option>
+<option value="AFR-0014">AFR-0014 — Tinariwen — Live on KEXP</option>
+<option value="AFR-0015">AFR-0015 — Sauti Sol — Live on KEXP</option>
+<option value="AFR-0016">AFR-0016 — WITCH — Live on KEXP</option>
+<option value="AFR-0017">AFR-0017 — Jupiter &amp; Okwess — Live on KEXP</option>
+<option value="AFR-0018">AFR-0018 — Ladysmith Black Mambazo — Live on KEXP</option>
+<option value="AFR-0019">AFR-0019 — Noura Mint Seymali — Live on KEXP</option>
+<option value="AFR-0020">AFR-0020 — Blick Bassy — Live on KEXP</option>
+<option value="AFR-0021">AFR-0021 — Angélique Kidjo — Tiny Desk Concert</option>
+<option value="AFR-0022">AFR-0022 — Sampa the Great — Tiny Desk (Home) Concert</option>
+<option value="AFR-0023">AFR-0023 — Bombino — Live on KEXP (2023)</option>
+<option value="AFR-0024">AFR-0024 — La Drivers Union Por Por Group — M.V. Labadi</option>
+<option value="AFR-0025">AFR-0025 — Ulimba: Mama Wo</option>
+<option value="AFR-0026">AFR-0026 — Nkingulila ngende</option></select><label for="impressions">What do you hear?</label><textarea id="impressions" required maxlength="11000"></textarea><label for="surprises">What surprises you?</label><textarea class="optional" id="surprises"></textarea><label for="associations">What memories, associations or questions emerge?</label><textarea class="optional" id="associations"></textarea><button type="submit">Save my entry</button></form><p class="tiny">Entries are stored securely. Synchronization to the original Google Sheets archive is still being configured.</p></div>
+<div class="card"><h2>End participation</h2><p>You can withdraw at any time. This prevents new entries; previously submitted research is retained subject to the project's data process.</p><button class="danger" id="withdraw" type="button">Withdraw from the experiment</button></div></section>
+<section id="withdrawn" class="card hidden"><h2>Participation ended</h2><p>Your contributor access has been closed. You will not be able to submit new journal entries.</p></section>
+<div class="row"><a href="/#/explore">Explore the library →</a><button class="secondary hidden" type="button" id="signout">Sign out</button></div>
+</main><script type="module">
+import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.81.1';
+const sb=createClient('https://jhgyjqafpnzwfpzwtpki.supabase.co','sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r',{auth:{detectSessionInUrl:true,autoRefreshToken:true,persistSession:true}});
+const api='https://jhgyjqafpnzwfpzwtpki.supabase.co/functions/v1/e2e-contributor';
+const byId=id=>document.getElementById(id);
+function show(message,error=false){const el=byId('notice');el.textContent=message;el.className='notice'+(error?' error':'');}
+function view(name){for(const id of ['signedout','pending','active','withdrawn'])byId(id).classList.toggle('hidden',id!==name);byId('signout').classList.toggle('hidden',name==='signedout');}
+async function call(action,body={}){const {data:{session}}=await sb.auth.getSession();if(!session)throw new Error('Please sign in first');const r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,'apikey':'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'},body:JSON.stringify({action,...body})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Unable to complete request');return data;}
+async function refresh(){const {data:{session}}=await sb.auth.getSession();if(!session){view('signedout');return;}try{const data=await call('status');if(data.status==='active'){view('active');}else if(data.status==='withdrawn'){view('withdrawn');}else{view('pending');}}catch(e){view('signedout');show(e.message,true);}}
+byId('signin').addEventListener('submit',async e=>{e.preventDefault();const email=byId('email').value.trim();try{const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:'https://earthtoear.com/contributor.html'}});if(error)throw error;show('If the address is registered, a sign-in email will arrive shortly.');}catch(err){show(err.message,true);}});
+byId('activate').addEventListener('click',async()=>{if(!byId('consent').checked){show('Please review and accept the participation terms.',true);return;}try{const d=await call('activate',{consent:true});show('Registration complete. Welcome.');byId('participant').textContent=d.participant_id;await refresh();}catch(e){show(e.message,true);}});
+byId('journal').addEventListener('submit',async e=>{e.preventDefault();try{const d=await call('journal',{recording_id:byId('recording').value,response:{impressions:byId('impressions').value,surprises:byId('surprises').value,associations:byId('associations').value}});show('Your entry has been saved. Thank you for contributing.');byId('journal').reset();}catch(err){show(err.message,true);}});
+byId('withdraw').addEventListener('click',async()=>{if(!confirm('End participation and disable future journal submissions?'))return;try{await call('withdraw',{confirm:true});show('Your participation has ended.');await refresh();}catch(e){show(e.message,true);}});
+byId('signout').addEventListener('click',async()=>{await sb.auth.signOut();view('signedout');show('Signed out.');});
+sb.auth.onAuthStateChange((event)=>{if(event==='SIGNED_IN'||event==='SIGNED_OUT')setTimeout(refresh,0);});
+const requested=new URL(location.href).searchParams.get('recording');if(requested && /^AFR-\d{4}$/.test(requested))byId('recording').value=requested;
+refresh();
+</script></body></html>
