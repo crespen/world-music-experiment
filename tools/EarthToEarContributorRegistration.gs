@@ -69,7 +69,7 @@ function setupEarthToEarContributorRegistration() {
   }
   let regId=props.getProperty(E2E_REG_PREFIX+'REGISTER_FORM_ID');
   if (!regId) {
-    const form=FormApp.create(E2E_REG_FORM_TITLE)
+    const form=FormApp.create(E2E_REG_FORM_TITLE, true)
       .setDescription('Registration is by personal invitation only. Sign in with the exact Google account invited to Earth to Ear. Completing this form does not make your journal entries public.')
       .setCollectEmail(true)
       .setConfirmationMessage('Your response was received. Registration is complete only when you receive the confirmation email.');
@@ -82,7 +82,7 @@ function setupEarthToEarContributorRegistration() {
   }
   let leaveId=props.getProperty(E2E_REG_PREFIX+'LEAVE_FORM_ID');
   if (!leaveId) {
-    const form=FormApp.create(E2E_WITHDRAW_FORM_TITLE)
+    const form=FormApp.create(E2E_WITHDRAW_FORM_TITLE, true)
       .setDescription('Sign in with the Google account you registered with. This ends your active contributor registration. Earlier research responses are retained under the project’s retention policy; contact the project owner for a separate deletion request.')
       .setCollectEmail(true)
       .setConfirmationMessage('Your request was received. Please check your email for the outcome.');
@@ -236,7 +236,7 @@ function e2eProcessContributorRegistration(e) {
     const leaveUrl=FormApp.openById(e2eRegProps_().getProperty(E2E_REG_PREFIX+'LEAVE_FORM_ID')).getPublishedUrl();
     MailApp.sendEmail({
       to:email,subject:'Earth to Ear — registration confirmed',
-      body:'Hello '+q[0]+',\n\nYour Earth to Ear contributor registration is complete.\n\nYou may now listen and submit journals using this same Google account.\n\nWebsite: https://earthtoear.com/\nYour private participant reference: '+participantId+'\n\nIf you decide to withdraw, submit this form using the same Google account: '+leaveUrl+'\n\nYour previous journal observations are not automatically deleted when you withdraw.\n\nJoin us.\nEarth to Ear'
+      body:'Hello '+q[0]+',\n\nYour Earth to Ear contributor registration is complete.\n\nYou may now listen and submit journals using this same Google account.\n\nWebsite: https://earthtoear.com/\n\nIf you decide to withdraw, submit this form using the same Google account: '+leaveUrl+'\n\nYour previous journal observations are not automatically deleted when you withdraw.\n\nJoin us.\nEarth to Ear'
     });
     MailApp.sendEmail({
       to:admin,subject:'Earth to Ear — new contributor registered',
