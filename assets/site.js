@@ -14,7 +14,7 @@ async function loadHomepageFeatures(){
 async function loadCatalog(){
  const all=[];const batchSize=500;
  for(let offset=0;;offset+=batchSize){
-  const url=CATALOG_ENDPOINT+'?select=id,title,artist,country,tradition,era,expedition,listen,description,c1,c2,continent,region,period,access,sort_order&active=eq.true&order=sort_order.asc&limit='+batchSize+'&offset='+offset;
+  const url=CATALOG_ENDPOINT+'?select=id,title,artist,country,tradition,era,expedition,listen,description,c1,c2,continent,region,period,access,sort_order,source_credit&active=eq.true&order=sort_order.asc&limit='+batchSize+'&offset='+offset;
   const response=await fetch(url,{headers:{'apikey':PUBLISHABLE_KEY}});
   if(!response.ok)throw new Error('Catalog unavailable ('+response.status+')');
   const batch=await response.json();if(!Array.isArray(batch))throw new Error('Unexpected catalog response');
@@ -293,30 +293,28 @@ return `
 }
 function breadcrumbs(parts){return `<div class="bread"><a href="/">Home</a> / ${parts.map(p=>p.href?`<a href="${p.href}">${safe(p.text)}</a>`:safe(p.text)).join(' / ')}</div>`;}
 function playbackLabel(r){
- const link=(r.listen||"").toLowerCase();
- const status=(r.access||"").toLowerCase();
- if(link.includes("youtube.com/watch")){
-  return status.includes("full-performance")||status.includes("complete authorized")
-   ?"Full video · Free on YouTube · Regional access unverified"
-   :"YouTube video · Free to watch · Length not yet verified";
+ const u=(r.listen||'').toLowerCase();
+ if(u.includes('youtube.com/watch'))return 'Video · YouTube';
+ if(u.includes('commons.wikimedia.org/wiki/file:'))return 'Audio · Wikimedia Commons';
+ if(u.includes('loc.gov/item/jukebox'))return 'Historical audio · Library of Congress';
+ if(u.includes('bandcamp.com'))return 'Track · Bandcamp';
+ if(u.includes('folkways.si.edu')){
+  if(u.includes('/video/'))return 'Video · Smithsonian Folkways';
+  if(u.includes('/album/'))return 'Album excerpts · Smithsonian Folkways';
+  return 'Track / preview · Smithsonian Folkways';
  }
- if(link.includes("commons.wikimedia.org/wiki/file:")){
-  const duration=r.id==='AFR-0027'?'5:16':r.id==='AFR-0028'?'1:20':r.id==='AFR-0029'?'0:38':'30+ seconds';
-  return "Free original recording · Wikimedia Commons · "+duration+" · CC BY-SA 4.0 (uploader-stated)";
- }
- if(link.includes("loc.gov/item/jukebox")){
-  return "Original 1909–1920 archival recording · Library of Congress National Jukebox · Free source playback";
- }
- if(link.includes("bandcamp.com"))return "Bandcamp track page · Streaming/purchase terms at source";
- if(link.includes("folkways.si.edu")){
-  if(link.includes("/video/smithsonian")&&status.includes("complete"))return "Full video · Free on Smithsonian Folkways · Regional access unverified";
-  if(status.includes("30-second"))return "30-second preview · Full track for purchase on Smithsonian Folkways";
-  if(link.includes("/album/")||link.includes("/music/album/"))return "Album page · Previews and purchase information on Smithsonian Folkways";
-  return "Track page · Preview length and purchase terms on Smithsonian Folkways (unverified)";
- }
- return "External music source · Playback details not yet verified";
+ return 'Recording · Original source';
 }
-function recordingCard(r){return `<article class="card"><div class="cover" style="--c1:${safe(r.c1)};--c2:${safe(r.c2)}"><span class="id">${safe(r.id)} · ${safe((r.continent||'World').toUpperCase())}</span><div class="covertext">${safe(r.tradition)}</div></div><div class="cardmain"><div class="caps">${safe(r.region)} · ${safe(r.country)}</div><h3>${safe(r.title)}</h3><div class="meta">${safe(r.artist)} · ${safe(r.period)}</div><p>${safe(r.description)}</p><span class="tag">${safe(playbackLabel(r))}</span>${(r.listen.includes("youtube.com/watch")||r.listen.includes("/video/smithsonian"))?'<p class="note">Optional reflection: Did the musicians’ movement, interaction or expression change how you experienced the music?</p>':""}<div class="actions"><a href="${safe(r.listen)}" target="_blank" rel="noopener noreferrer" class="action">▶ Listen</a><a href="/contributor.html?recording=${encodeURIComponent(r.id)}" class="action secondary" title="Sign in to your private listening journal; available to registered contributors by invitation only">✎ My Journal · Contributors only</a></div></div></article>`;}
+function listenLabel(r){
+ const u=(r.listen||'').toLowerCase();
+ if(u.includes('youtube.com/watch')||u.includes('/video/'))return '▶ Watch performance';
+ if(u.includes('commons.wikimedia.org'))return '▶ Listen to audio';
+ if(u.includes('loc.gov/item/jukebox'))return '▶ Listen at Library of Congress';
+ if(u.includes('bandcamp.com'))return '▶ Listen on Bandcamp';
+ if(u.includes('folkways.si.edu'))return '▶ Hear recording or preview';
+ return '▶ Listen at source';
+}
+function recordingCard(r){return `<article class="card"><div class="cover" style="--c1:${safe(r.c1)};--c2:${safe(r.c2)}"><span class="id">${safe(r.id)} · ${safe((r.continent||'World').toUpperCase())}</span><div class="covertext">${safe(r.tradition)}</div></div><div class="cardmain"><div class="caps">${safe(String(r.region||"").toLowerCase().includes(String(r.country||"").toLowerCase())?r.region:[r.region,r.country].filter(Boolean).join(" · "))}</div><h3>${safe(r.title)}</h3><div class="meta">${safe(r.artist)} · ${safe(r.period)}</div><p>${safe(r.description)}</p>${r.source_credit?`<div class="source-credit">Source: ${safe(r.source_credit)}</div>`:""}<span class="tag">${safe(playbackLabel(r))}</span><div class="actions"><a href="${safe(r.listen)}" target="_blank" rel="noopener noreferrer" class="action">${safe(listenLabel(r))}</a><a href="/contributor.html?recording=${encodeURIComponent(r.id)}" class="action secondary" title="Sign in to your private listening journal; available to registered contributors by invitation only">✎ My Journal</a></div></div></article>`;}
 function filterPanel(list, idPrefix, heading){return `<div class="playback-legend"><strong>Playback guide:</strong> “Full” describes a complete recording or session; “preview” is an excerpt. Recordings open at their original source. Availability, cost, and regional restrictions can change. <span>Catalog metadata reviewed November 2026; some recordings still require individual playback verification.</span></div><div class="searchrow"><input class="searchbox" id="${idPrefix}query" type="search" placeholder="Search recordings, traditions, artists..." aria-label="Search music"><select class="select" id="${idPrefix}era" aria-label="Filter by era"><option value="all">All eras</option><option>Living traditions</option><option>20th-century transformations</option><option>Contemporary</option></select></div><div class="meta" id="${idPrefix}count"></div><div class="cardgrid" id="${idPrefix}grid" style="margin-top:18px"></div>`;}
 function bindFilters(idPrefix,list){const search=document.getElementById(idPrefix+'query'),era=document.getElementById(idPrefix+'era'),grid=document.getElementById(idPrefix+'grid'),count=document.getElementById(idPrefix+'count');if(['africa','northamerica','explore'].includes(idPrefix)){const id=new URLSearchParams(location.search).get('recording');if(id&&list.some(r=>r.id===id))search.value=id;}function render(){const q=search.value.toLowerCase().trim(),e=era.value;const found=list.filter(r=>(e==='all'||r.period===e)&&[r.title,r.artist,r.tradition,r.country,r.region,r.id].join(' ').toLowerCase().includes(q));count.textContent=`${found.length} selection${found.length===1?'':'s'} shown`;grid.innerHTML=found.length?found.map(recordingCard).join(''):`<div class="no-results">No recordings match these filters. Try a different tradition, artist or era.</div>`}search.addEventListener('input',render);era.addEventListener('change',render);render()}
 function africa(){const africaList=R.filter(r=>r.continent==='Africa');return `<section class="countryhero"><div class="wrap">${breadcrumbs([{text:'Explore Music',href:'/explore/'},{text:'Africa'}])}<div class="eyebrow">Continent collection</div><h1>Africa: <span style="font-weight:350;color:#bbd7d3">a living musical landscape</span></h1><p class="lead">Explore historical recordings, living traditions, twentieth-century innovation and contemporary sounds. Every tradition has its own musical history, and every recording is a starting point.</p><div class="pills"><span class="pill">${africaList.length} selections</span><span class="pill">Africa collection</span><span class="pill">Traditions · Transformations · Contemporary</span></div></div></section><section class="section"><div class="wrap"><div class="sectionhead"><div><div class="caps">Find a place</div><h2>Countries represented</h2></div></div><div class="tiles">${africaCountries.map(country=>`<a href="/#/country/${encodeURIComponent(country)}" class="region" style="min-height:130px"><div class="caps">AFRICA · ${recordingCount(africaList.filter(r=>countryMatches(r,country)).length)}</div><b style="font-size:21px">${safe(country)}</b><small>Explore the music →</small></a>`).join('')}</div></div></section><section class="section soft"><div class="wrap"><div class="sectionhead"><div><div class="caps">Listening library</div><h2>All Africa recordings</h2><p class="intro"><strong>Listen selectively:</strong> You are not expected to hear every recording. Some selections are full performances, while others are 30-second previews with paid access to the complete track. If a preview feels too brief to comment on, move to another selection.</p><p class="intro">Select a recording to hear it at its source. The prefilled My Journal form is reserved for invited contributors signed in with their registered email address. Playback availability varies by source and region.</p></div></div>${filterPanel(africaList,'africa')}</div></section>`;}
