@@ -95,10 +95,12 @@ async function refresh(){
    if(isFounder&&data.status==='unregistered')byId('pending').classList.add('hidden');
    return;
  }
- view('signedout');
  if(isFounder){
+   view('pending');
+   byId('pending').classList.add('hidden');
    show('Founder access verified. The contributor journal is temporarily unavailable, but your Founder Dashboard is accessible above.');
  }else{
+   view('signedout');
    show('Your account could not be verified on this device. Confirm you opened the sign-in email in this browser, then sign in again.',true);
  }
 }
