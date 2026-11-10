@@ -49,7 +49,7 @@ let africaCountries=[...new Set(R.filter(r=>r.continent==='Africa').map(r=>r.cou
 const recordingCount=n=>n+' recording'+(n===1?'':'s');
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/north-america')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account ↗</a></nav></div></header>`;
+const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/north-america')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account</a></nav></div></header>`;
 // Keep the listening library fully public. Account navigation is an enhancement,
 // and server-side permissions are always authoritative.
 let accountClientPromise;
@@ -103,18 +103,18 @@ async function hydrateAccountPortal(){
   const current=document.getElementById('accountPortalLink');
   if(!current)return;
   if(admin?.administrator===true){
-   current.href='/founder.html?v=editorial-v1';current.textContent='Founder Dashboard ↗';
+   current.href='/founder.html?v=editorial-v1';current.textContent='Founder Dashboard';
    current.setAttribute('aria-label','Open Founder Dashboard');
    return;
   }
   const status=await check('status').catch(()=>null);
   if(status?.status==='active'){
-   current.href='/contributor.html';current.textContent='My Journal ↗';
+   current.href='/contributor.html';current.textContent='My Journal';
    current.setAttribute('aria-label','Open My Listening Journal');
   }else if(status?.status==='withdrawn'){
-   current.textContent='My Account ↗';
+   current.textContent='My Account';
   }else if(status?.status==='unregistered'){
-   current.textContent='My Registration ↗';
+   current.textContent='My Registration';
   }
  }catch(error){
   // No authentication dependency is allowed to block the public library.
@@ -282,14 +282,14 @@ return `
  </div></div>
 </section>
 <section class="ed-news-section" aria-labelledby="news-title"><div class="wrap ed-news-layout">
-<div class="ed-news-intro"><span class="ed-news-eyebrow">CURATED LISTENING · NEW TO OUR LIBRARY</span><h2 id="news-title">What's New in the<br>Listening Community</h2><span class="ed-gold-rule"></span><p>Discover selected recordings from across our open collections. Features stay visible for at least 30 days; one or two new selections may join on the 1st and 15th when ready.</p><a href="/explore/" class="ed-quiet-link">Explore the full library ↗</a></div>
+<div class="ed-news-intro"><span class="ed-news-eyebrow">CURATED LISTENING · NEW TO OUR LIBRARY</span><h2 id="news-title">What's New in the<br>Listening Community</h2><span class="ed-gold-rule"></span><p>Discover selected recordings from across our open collections. Features stay visible for at least 30 days; one or two new selections may join on the 1st and 15th when ready.</p><a href="/explore/" class="ed-quiet-link">Explore the full library</a></div>
 <div class="ed-news-wrap"><div class="ed-news-controls"><button type="button" id="newsPrevious" aria-label="Previous listening selections" aria-controls="newsRail">‹</button><button type="button" id="newsNext" aria-label="Next listening selections" aria-controls="newsRail">›</button></div><div class="ed-news-grid" id="newsRail" role="region" aria-label="Browse featured listening selections" tabindex="0">${newsCards}</div></div>
 </div></section>
 <section class="ed-orientation section"><div class="wrap"><div class="ed-section-head"><span class="ed-kicker">HOW THE EXPERIMENT WORKS</span><h2>Start with curiosity.</h2><p>You don't need musical training, and there is no requirement to listen to every selection. Each recording is an invitation to discover something.</p></div>
 <div class="ed-steps"><div><span class="ed-step-num">01</span><h3>Choose a recording</h3><p>Begin with any open collection. Browse by geography, artist, tradition, or period.</p></div><div><span class="ed-step-num">02</span><h3>Listen at its source</h3><p>Open authorized full performances or previews and follow what interests you.</p></div><div><span class="ed-step-num">03</span><h3>Reflect, if you wish</h3><p>Registered contributors can record private impressions through their listening journal.</p></div></div>
 </div></section>
 <section class="ed-world-section section"><div class="wrap"><div class="ed-section-head"><span class="ed-kicker">DISCOVER THE WORLD</span><h2>Where will you listen next?</h2><p>Our first open collection begins in Africa. This map uses the Equal Earth equal-area projection; the music, of course, crosses every border.</p></div>${map()}${tiles()}</div></section>
-<section class="ed-contribute-section section"><div class="wrap ed-contribute-inner"><div><span class="ed-kicker">REGISTERED CONTRIBUTORS</span><h2>What you hear matters.</h2><p>Share unexpected associations, impressions, and musical discoveries with the private research archive. Our experiment values listening—not musical expertise.</p><a href="/contributor.html" class="ed-btn ed-btn-primary">My Listening Journal ↗</a></div><div class="ed-contribute-side"><span class="ed-sparkle" aria-hidden="true">✦</span><h3>Contribute to the discoveries.</h3><p>By invitation, contributors can suggest music, earn private Listening Milestones, and receive updates through the Listening Bulletin.</p><a href="/participate/">Learn about contributing →</a></div></div></section>`;
+<section class="ed-contribute-section section"><div class="wrap ed-contribute-inner"><div><span class="ed-kicker">REGISTERED CONTRIBUTORS</span><h2>What you hear matters.</h2><p>Share unexpected associations, impressions, and musical discoveries with the private research archive. Our experiment values listening—not musical expertise.</p><a href="/contributor.html" class="ed-btn ed-btn-primary">My Listening Journal</a></div><div class="ed-contribute-side"><span class="ed-sparkle" aria-hidden="true">✦</span><h3>Contribute to the discoveries.</h3><p>By invitation, contributors can suggest music, earn private Listening Milestones, and receive updates through the Listening Bulletin.</p><a href="/participate/">Learn about contributing →</a></div></div></section>`;
 }
 function breadcrumbs(parts){return `<div class="bread"><a href="/">Home</a> / ${parts.map(p=>p.href?`<a href="${p.href}">${safe(p.text)}</a>`:safe(p.text)).join(' / ')}</div>`;}
 function playbackLabel(r){
@@ -376,7 +376,7 @@ function northAmerica(){
 <section class="section soft">
  <div class="wrap two">
   <div><div class="caps">A beginning, not a survey</div><h2>A much larger musical landscape</h2><p class="intro">These selections are only a beginning. Across North America, many living traditions, languages, musical communities and contemporary artists remain to be discovered. We will keep widening the listening range without treating any recording as representative of an entire culture.</p></div>
-  <div class="panel"><div class="caps">Research priority · Indigenous North America</div><h3>Ohkay Owingeh and other Indigenous musical traditions</h3><p>Ohkay Owingeh is a Tewa-speaking Pueblo community in present-day New Mexico. We will research its living musical traditions alongside those of other Indigenous nations with community guidance and appropriate permissions.</p><p>Some songs and ceremonial materials are not intended for general circulation. We will seek community-approved public recordings and respect cultural permissions, attribution and restrictions—not treat every archived recording as open for listening.</p><p><a class="smalllink" href="https://ohkay.org/" target="_blank" rel="noopener noreferrer">Ohkay Owingeh official website ↗</a> · <a class="smalllink" href="https://indianpueblo.org/visiting-a-pueblo/" target="_blank" rel="noopener noreferrer">Pueblo cultural guidelines ↗</a></p><p><a class="smalllink" href="/contributor.html">Suggest a publicly shareable recording through the contributor portal ↗</a></p><p class="note">Research priority only · No restricted ceremonial audio published</p></div>
+  <div class="panel"><div class="caps">Research priority · Indigenous North America</div><h3>Ohkay Owingeh and other Indigenous musical traditions</h3><p>Ohkay Owingeh is a Tewa-speaking Pueblo community in present-day New Mexico. We will research its living musical traditions alongside those of other Indigenous nations with community guidance and appropriate permissions.</p><p>Some songs and ceremonial materials are not intended for general circulation. We will seek community-approved public recordings and respect cultural permissions, attribution and restrictions—not treat every archived recording as open for listening.</p><p><a class="smalllink" href="https://ohkay.org/" target="_blank" rel="noopener noreferrer">Ohkay Owingeh official website ↗</a> · <a class="smalllink" href="https://indianpueblo.org/visiting-a-pueblo/" target="_blank" rel="noopener noreferrer">Pueblo cultural guidelines ↗</a></p><p><a class="smalllink" href="/contributor.html">Suggest a publicly shareable recording through the contributor portal</a></p><p class="note">Research priority only · No restricted ceremonial audio published</p></div>
  </div>
 </section>`;
 }
