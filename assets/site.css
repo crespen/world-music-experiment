@@ -274,3 +274,34 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 .e2e-intro-footnote{margin:11px 0 0;line-height:1.45}
 @media(max-width:800px){.e2e-intro-row{flex-wrap:wrap}.e2e-intro-controls{width:100%;justify-content:flex-end}.e2e-intro-listening{margin-bottom:18px}}
 @media(max-width:600px){.e2e-intro-listening{padding:14px 15px 12px}.e2e-intro-topline{align-items:flex-start;flex-direction:column;gap:3px}.e2e-intro-mark{height:47px;width:47px;flex-basis:47px;font-size:34px}.e2e-intro-row{gap:11px}.e2e-intro-information strong{font-size:18px}.e2e-intro-controls{justify-content:flex-start;flex-wrap:wrap}.e2e-intro-controls button{font-size:11px;padding:8px 14px}.e2e-intro-stage iframe{min-height:200px}}
+
+/* Compact inline listening playlist — independent of the content-card carousel. */
+.e2e-intro-listening{padding:11px 18px 10px;margin-bottom:18px;border-radius:14px}
+.e2e-intro-topline{margin-bottom:5px}
+.e2e-intro-topline .ed-kicker{font-size:10px;letter-spacing:.12em}
+.e2e-intro-row{gap:11px}
+.e2e-intro-mark{height:43px;width:43px;flex-basis:43px;font-size:31px;border-radius:9px}
+.e2e-intro-information{gap:1px}
+.e2e-intro-information strong{font-size:17px;line-height:1.17}
+.e2e-intro-information span{font-size:11px}
+.e2e-intro-information a{font-size:11px}
+.e2e-intro-controls{display:flex;align-items:center;gap:7px}
+.e2e-intro-controls button{min-height:36px;padding:7px 13px;font-size:11px}
+.e2e-intro-controls .e2e-intro-skip{width:37px;height:37px;padding:0;display:inline-flex;justify-content:center;align-items:center;font-family:Georgia,serif;font-size:28px;line-height:1;background:transparent;color:#f2d2a1;border:1px solid #c5aa82;flex-shrink:0}
+.e2e-intro-controls .e2e-intro-skip:hover{background:#254e52}
+.e2e-intro-counter{color:#d4ded6;white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums;min-width:43px;text-align:center}
+.e2e-intro-footnote{margin-top:5px;font-size:10px}
+.e2e-intro-stage{margin-top:12px}
+@media(max-width:800px){.e2e-intro-controls{justify-content:flex-end}}
+@media(max-width:600px){
+.e2e-intro-listening{padding:10px 12px}
+.e2e-intro-topline{margin-bottom:7px}
+.e2e-intro-row{gap:9px}
+.e2e-intro-mark{height:39px;width:39px;flex-basis:39px;font-size:29px}
+.e2e-intro-information strong{font-size:16px}
+.e2e-intro-controls{gap:6px;justify-content:flex-end;width:100%}
+.e2e-intro-controls button{min-height:35px}
+.e2e-intro-controls .e2e-intro-skip{width:35px;height:35px}
+.e2e-intro-controls #introListenPlay{margin-left:5px}
+.e2e-intro-footnote{font-size:10px;line-height:1.4}
+}
