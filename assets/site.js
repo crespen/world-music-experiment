@@ -40,47 +40,75 @@ let africaCountries=[...new Set(R.map(r=>r.country==='Ethiopia / United States'?
 const recordingCount=n=>n+' recording'+(n===1?'':'s');
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">Sign In ↗</a></nav></div></header>`;
-// Public library remains open; this optional enhancement recognizes signed-in accounts.
+const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account ↗</a></nav></div></header>`;
+// Keep the listening library fully public. Account navigation is an enhancement,
+// and server-side permissions are always authoritative.
 let accountClientPromise;
+function cachedAccountToken(){
+ try{
+  const stored=JSON.parse(localStorage.getItem('sb-jhgyjqafpnzwfpzwtpki-auth-token')||'null');
+  return stored&&typeof stored.access_token==='string'&&Number(stored.expires_at)>Date.now()/1000+40?stored.access_token:null;
+ }catch(error){return null;}
+}
+async function accountToken(){
+ const token=cachedAccountToken();
+ if(token)return token;
+ let timer;
+ try{
+  if(!accountClientPromise){
+   accountClientPromise=import('https://esm.sh/@supabase/supabase-js@2.81.1').then(({createClient})=>
+    createClient('https://jhgyjqafpnzwfpzwtpki.supabase.co',PUBLISHABLE_KEY,
+     {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}));
+  }
+  const sb=await Promise.race([
+   accountClientPromise,
+   new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Client import timeout')),6000);})
+  ]);
+  clearTimeout(timer);
+  const session=await Promise.race([
+   sb.auth.getSession(),
+   new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Session check timeout')),6000);})
+  ]);
+  return session.data?.session?.access_token||null;
+ }finally{clearTimeout(timer);}
+}
 async function hydrateAccountPortal(){
  const link=document.getElementById('accountPortalLink');
  if(!link)return;
- try {
-   if(!accountClientPromise){
-     accountClientPromise=import('https://esm.sh/@supabase/supabase-js@2.81.1').then(({createClient})=>
-       createClient('https://jhgyjqafpnzwfpzwtpki.supabase.co',PUBLISHABLE_KEY,
-        {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}}));
-   }
-   const sb=await accountClientPromise;
-   const {data:{session}}=await sb.auth.getSession();
-   if(!session)return;
-   const endpoint='https://jhgyjqafpnzwfpzwtpki.supabase.co/functions/v1/e2e-contributor';
-   const check=async action=>{
-     const response=await fetch(endpoint,{method:'POST',headers:{
-       'Content-Type':'application/json','Authorization':'Bearer '+session.access_token,
-       'apikey':PUBLISHABLE_KEY
-     },body:JSON.stringify({action})});
-     return response.ok?response.json():null;
-   };
-   const [status,admin]=await Promise.allSettled([check('status'),check('admin-status')]);
-   const current=document.getElementById('accountPortalLink');
-   if(!current)return;
-   if(admin.status==='fulfilled'&&admin.value?.administrator===true){
-     current.href='/founder.html';
-     current.textContent='Founder Dashboard ↗';
-     current.setAttribute('aria-label','Open Founder Dashboard');
-   }else if(status.status==='fulfilled'&&status.value?.status==='active'){
-     current.href='/contributor.html';
-     current.textContent='My Journal ↗';
-     current.setAttribute('aria-label','Open My Listening Journal');
-   }else if(status.status==='fulfilled'&&status.value?.status==='withdrawn'){
-     current.textContent='My Account ↗';
-   }else{
-     current.textContent='My Registration ↗';
-   }
+ try{
+  const token=await accountToken();
+  if(!token)return;
+  const endpoint='https://jhgyjqafpnzwfpzwtpki.supabase.co/functions/v1/e2e-contributor';
+  const check=async action=>{
+   const controller=new AbortController();
+   const timeout=setTimeout(()=>controller.abort(),9000);
+   try{
+    const response=await fetch(endpoint,{method:'POST',signal:controller.signal,
+     headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,'apikey':PUBLISHABLE_KEY},
+     body:JSON.stringify({action})});
+    return response.ok?response.json():null;
+   }finally{clearTimeout(timeout);}
+  };
+  // Founders do not have to enroll in the contributor journal to get a dashboard.
+  const admin=await check('admin-status').catch(()=>null);
+  const current=document.getElementById('accountPortalLink');
+  if(!current)return;
+  if(admin?.administrator===true){
+   current.href='/founder.html';current.textContent='Founder Dashboard ↗';
+   current.setAttribute('aria-label','Open Founder Dashboard');
+   return;
+  }
+  const status=await check('status').catch(()=>null);
+  if(status?.status==='active'){
+   current.href='/contributor.html';current.textContent='My Journal ↗';
+   current.setAttribute('aria-label','Open My Listening Journal');
+  }else if(status?.status==='withdrawn'){
+   current.textContent='My Account ↗';
+  }else if(status?.status==='unregistered'){
+   current.textContent='My Registration ↗';
+  }
  }catch(error){
-   // Failure to load account state must never block the open listening library.
+  // No authentication dependency is allowed to block the public library.
  }
 }
 const footer=()=>`<footer class="footer"><div class="wrap footerinner"><div><strong>EARTH TO EAR</strong><div>A World Music Experiment</div><div>Listen first. Discover without ranking.</div></div><div>Library → Journal → Archive → Laboratory<br><span class="status">Public listening library · Research participation by invitation only</span></div></div></footer>`;
