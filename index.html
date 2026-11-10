@@ -211,6 +211,21 @@ body{font-family:"DM Sans",Segoe UI,Arial,sans-serif}
   .mobilemenu{padding:7px 8px}
   .ed-hero h1{font-size:33px}
 }
+
+/* Show the *same approved* masthead image on phones and tablets as on desktop. */
+@media(max-width:850px){
+ html.ed-exact-art-ready .navinner.wrap{flex-wrap:nowrap;align-items:center;gap:10px}
+ html.ed-exact-art-ready .brand{display:block;flex:1 1 auto;min-width:0;max-width:595px;width:auto;height:auto;align-self:center;white-space:normal}
+ html.ed-exact-art-ready .brand-emblem,html.ed-exact-art-ready .brand-copy{display:none}
+ html.ed-exact-art-ready .ed-reference-masthead{
+  display:block;
+  width:100%;
+  aspect-ratio:595/115;
+  height:auto;
+  background:url('/assets/earth-to-ear-masthead.png') center / 100% 100% no-repeat;
+ }
+ html.ed-exact-art-ready .mobilemenu{flex:0 0 auto;align-self:center}
+}
 </style><meta name="theme-color" content="#091c28"></head><body><div id="app"></div><script>
 const CATALOG_ENDPOINT='https://jhgyjqafpnzwfpzwtpki.supabase.co/rest/v1/music_catalog';
 const PUBLISHABLE_KEY='sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r';
