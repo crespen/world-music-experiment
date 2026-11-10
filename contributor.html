@@ -16,7 +16,7 @@ const byId=id=>document.getElementById(id);
 const requested=new URL(location.href).searchParams.get('recording');
 let selectedId=null;
 async function prepareRecording(){
- const valid=Boolean(requested&&/^[A-Z]{3}-\\d{4,6}$/.test(requested));
+ const valid=Boolean(requested&&/^[A-Z]{3}-\d{4,6}$/.test(requested));
  byId('journalSaved').classList.add('hidden');
  byId('journal').classList.add('hidden');
  byId('selectedRecording').classList.add('hidden');
