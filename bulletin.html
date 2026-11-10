@@ -28,7 +28,35 @@ const sb=createClient('https://jhgyjqafpnzwfpzwtpki.supabase.co','sb_publishable
 const api='https://jhgyjqafpnzwfpzwtpki.supabase.co/functions/v1/e2e-contributor';
 const by=id=>document.getElementById(id);
 const node=(tag,cls,value)=>{const element=document.createElement(tag);if(cls)element.className=cls;if(value!==undefined)element.textContent=String(value);return element;};
-async function bulletin(){const {data:{session}}=await sb.auth.getSession();if(!session)throw Error('Please sign in on the contributor page to view your bulletin.');const r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'},body:JSON.stringify({action:'bulletin'})});const data=await r.json();if(!r.ok)throw Error(data.error||'Unable to load bulletin');return data.bulletin;}
+async function bulletin(){
+ let token=null;
+ try{
+  const saved=JSON.parse(localStorage.getItem('sb-jhgyjqafpnzwfpzwtpki-auth-token')||'null');
+  if(saved&&typeof saved.access_token==='string'&&Number(saved.expires_at)>Date.now()/1000+40)token=saved.access_token;
+ }catch(error){}
+ if(!token){
+  let timer;
+  try{
+   const res=await Promise.race([
+    sb.auth.getSession(),
+    new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Session check timed out in this browser')),6000);})
+   ]);
+   token=res.data?.session?.access_token||null;
+  }finally{clearTimeout(timer);}
+ }
+ if(!token)throw Error('Please sign in on the contributor page to view your bulletin.');
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),15000);
+ try{
+  const r=await fetch(api,{method:'POST',signal:controller.signal,
+   headers:{'Content-Type':'application/json',Authorization:'Bearer '+token,
+    apikey:'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'},
+   body:JSON.stringify({action:'bulletin'})});
+  const data=await r.json();
+  if(!r.ok)throw Error(data.error||'Unable to load bulletin');
+  return data.bulletin;
+ }finally{clearTimeout(timeout);}
+}
 function render(data){const p=data.progress||{};by('progress').textContent=(p.distinct_recordings||0)+' different recordings · '+(p.distinct_countries||0)+' countries';
  const milestones=by('milestones');milestones.replaceChildren();const icons={'first_reflection':'✦','five_recordings':'◉','three_countries':'◎','discovery_contributor':'✧'};for(const m of data.milestones||[]){const el=node('div','milestone'+(m.awarded_at?' earned':''));el.append(node('span','icon',icons[m.code]||'✧'),node('strong','',m.title),node('p','',m.description),node('span','state',m.awarded_at?'Earned · '+new Date(m.awarded_at).toLocaleDateString():'Not yet earned'));milestones.append(el);}
  const notices=by('notifications');notices.replaceChildren();if(!(data.notifications||[]).length)notices.append(node('p','muted','Your personal updates will appear here.'));for(const n of data.notifications||[]){const item=node('div','item');item.append(node('strong','',n.title),node('p','',n.body),node('small','',new Date(n.created_at).toLocaleDateString()));notices.append(item);}
