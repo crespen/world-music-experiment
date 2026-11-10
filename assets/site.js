@@ -60,41 +60,58 @@ function bindIntroListeningStrip(){
  const options=introCandidates();
  const panel=document.getElementById('introListeningPanel');
  if(!panel)return;
- if(!options.length){panel.querySelector('.intro-listening-detail').textContent='The sample player is temporarily unavailable. Browse the listening library instead.';return;}
  const title=document.getElementById('introListeningTitle');
  const metadata=document.getElementById('introListeningMetadata');
  const source=document.getElementById('introListeningSource');
  const stage=document.getElementById('introListeningStage');
  const play=document.getElementById('introListenPlay');
+ const previous=document.getElementById('introListenPrevious');
  const next=document.getElementById('introListenNext');
+ const counter=document.getElementById('introListenCounter');
+ if(!options.length){
+  metadata.textContent='No embedded listening selections are currently available. Browse the library instead.';
+  play.disabled=true;previous.disabled=true;next.disabled=true;counter.textContent='0 of 0';
+  return;
+ }
  let index=0;
- const render=()=>{
-  const r=options[index];
-  title.textContent=r.title;
-  metadata.textContent=[r.artist,r.country,r.tradition].filter(Boolean).join(' · ');
-  source.href=r.listen;
-  stage.replaceChildren();
-  stage.hidden=true;
-  play.disabled=false;
-  play.textContent='Hear 30 seconds';
- };
- play.addEventListener('click',()=>{
+ let playing=false;
+ const embed=()=>{
   const r=options[index];
   const u=new URL(r.listen);
   const id=u.searchParams.get('v');
   if(!id||!/^[A-Za-z0-9_-]{11}$/.test(id))return;
   const iframe=document.createElement('iframe');
   iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&start=0&end=30&controls=1&playsinline=1&rel=0';
-  iframe.title='30-second excerpt: '+r.title+' — video player from YouTube';
+  iframe.title='30-second excerpt: '+r.title+' — YouTube player';
   iframe.allow='autoplay; encrypted-media; picture-in-picture';
   iframe.referrerPolicy='strict-origin-when-cross-origin';
   iframe.setAttribute('allowfullscreen','');
   stage.replaceChildren(iframe);
   stage.hidden=false;
-  play.disabled=true;
-  play.textContent='Use player controls';
- });
- next.addEventListener('click',()=>{index=(index+1)%options.length;render();});
+  playing=true;
+  play.textContent='Replay 30 seconds';
+ };
+ const render=()=>{
+  const r=options[index];
+  title.textContent=r.title;
+  metadata.textContent=[r.artist,r.country,r.tradition].filter(Boolean).join(' · ');
+  source.href=r.listen;
+  counter.textContent=(index+1)+' of '+options.length;
+  stage.replaceChildren();
+  stage.hidden=true;
+  playing=false;
+  play.textContent='Hear 30 seconds';
+ };
+ const skip=direction=>{
+  const wasPlaying=playing;
+  index=(index+direction+options.length)%options.length;
+  render();
+  // A user-initiated skip continues playback only if the player was open.
+  if(wasPlaying)embed();
+ };
+ play.addEventListener('click',embed);
+ previous.addEventListener('click',()=>skip(-1));
+ next.addEventListener('click',()=>skip(1));
  render();
 }
 function home(){
@@ -113,14 +130,14 @@ return `
   <div class="ed-hero-art"><img src="/assets/earth-to-ear-hero.svg" alt="Decorative golden sonic waves crossing a teal and gold globe"></div>
    </div>
  <aside id="introListeningPanel" class="e2e-intro-listening wrap" aria-label="Optional listening introduction">
- <div class="e2e-intro-topline"><span class="ed-kicker">♪ THE SOUND OF EARTH TO EAR</span><span class="e2e-intro-detail">Optional · Never autoplayed</span></div>
+ <div class="e2e-intro-topline"><span class="ed-kicker">♪ THE SOUND OF EARTH TO EAR</span><span class="e2e-intro-detail">Optional listening · 30-second excerpts</span></div>
  <div class="e2e-intro-row">
   <div class="e2e-intro-mark" aria-hidden="true">≋</div>
   <div class="e2e-intro-information"><strong id="introListeningTitle">Choose a recording</strong><span id="introListeningMetadata" class="intro-listening-detail">A short selection drawn from the listening library</span><a id="introListeningSource" href="/africa/" target="_blank" rel="noopener noreferrer">Open the original recording ↗</a></div>
-  <div class="e2e-intro-controls"><button id="introListenPlay" type="button">Hear 30 seconds</button><button id="introListenNext" type="button" class="e2e-intro-next">Another recording</button></div>
+  <div class="e2e-intro-controls"><button id="introListenPrevious" type="button" class="e2e-intro-skip" aria-label="Previous recording" title="Previous recording">‹</button><span id="introListenCounter" class="e2e-intro-counter" aria-live="polite">1 of 10</span><button id="introListenNext" type="button" class="e2e-intro-skip" aria-label="Next recording" title="Next recording">›</button><button id="introListenPlay" type="button">Hear 30 seconds</button></div>
  </div>
  <div id="introListeningStage" class="e2e-intro-stage" hidden></div>
- <p class="e2e-intro-footnote">Playback uses the source's official YouTube player with its own pause, volume and mute controls. If a provider blocks embedding, open the original recording instead. This music player is independent of the discovery cards below.</p>
+ <p class="e2e-intro-footnote">Use the arrows to move through the playlist. The expanded YouTube player provides pause, mute, and volume controls. Source playback may be restricted by its provider.</p>
 </aside>
 <div class="ed-pathway-strip"><div class="wrap"><div class="ed-pathway-grid">
  <a href="/explore/" class="ed-pathway"><span class="ed-pathway-icon" aria-hidden="true">◎</span><span><strong>Discover Music</strong><small>Explore recordings from diverse traditions</small></span></a>
