@@ -284,6 +284,10 @@ function playbackLabel(r){
    ?"Full video · Free on YouTube · Regional access unverified"
    :"YouTube video · Free to watch · Length not yet verified";
  }
+ if(link.includes("commons.wikimedia.org/wiki/file:")){
+  const duration=r.id==='AFR-0027'?'5:16':r.id==='AFR-0028'?'1:20':r.id==='AFR-0029'?'0:38':'30+ seconds';
+  return "Free original recording · Wikimedia Commons · "+duration+" · CC BY-SA 4.0 (uploader-stated)";
+ }
  if(link.includes("bandcamp.com"))return "Bandcamp track page · Streaming/purchase terms at source";
  if(link.includes("folkways.si.edu")){
   if(link.includes("/video/smithsonian")&&status.includes("complete"))return "Full video · Free on Smithsonian Folkways · Regional access unverified";
