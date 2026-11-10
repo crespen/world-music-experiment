@@ -376,3 +376,12 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 .e2e-commons-player audio{display:block;width:100%;height:46px;max-width:100%}
 .e2e-commons-attribution{font-size:11px;color:#bbd5d0;line-height:1.6;margin-top:8px}
 .e2e-commons-attribution a{color:#f2cc8c;text-decoration:underline;text-underline-offset:2px}
+
+/* Concise listener-facing catalog and continent grouping */
+.catalog-group-label{grid-column:1/-1;display:flex;align-items:baseline;gap:12px;margin:22px 0 0;padding:15px 0 6px;border-top:1px solid #5b837d;color:#f5dfbd;font-size:24px;font-family:"Fraunces",Georgia,serif;font-weight:500}
+.catalog-group-label:first-child{margin-top:0;border-top:0;padding-top:0}
+.catalog-group-label small{font-family:"DM Sans",Arial,sans-serif;font-size:12px;font-weight:500;color:#adc9c1}
+.source-credit{color:#c1d8cf;font-size:11px;line-height:1.45;margin:0 0 8px;overflow-wrap:anywhere}
+.cardmain .actions{margin-top:auto;padding-top:12px;flex-wrap:wrap}
+.cardmain .actions .action{min-width:115px;flex:1 1 calc(50% - 6px);overflow-wrap:anywhere;line-height:1.25}
+@media(max-width:700px){.catalog-group-label{font-size:22px;flex-wrap:wrap}.cardmain .actions .action{font-size:12px}}
