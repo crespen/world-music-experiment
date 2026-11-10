@@ -24,9 +24,9 @@ button:not(.danger):not(.secondary):hover,.library-link:hover{background:#f9dcab
 #founder{border-color:#e4bc83;background:linear-gradient(120deg,#284c4f,#193640);scroll-margin-top:110px}
 #founder .library-link{margin-top:4px}
 @media(max-width:650px){.e2e-brandbar{align-items:flex-start;flex-wrap:wrap;padding:10px 15px}.e2e-masthead-link{flex:1 1 175px;max-width:250px}.e2e-portal-actions{flex:1 1 100%;justify-content:space-between;gap:9px}.e2e-founder-shortcut{font-size:12px;min-height:38px}.e2e-header-link{font-size:12px}.e2e-brandbar .e2e-masthead-link img{max-width:250px}}
-</style></head><body>
+.auth-code{border-top:1px solid #4c7071;margin-top:23px;padding-top:16px}.auth-code h3{font-family:"Fraunces",Georgia,serif;font-size:21px;font-weight:500;margin:0 0 9px;color:#f9e7ce}.auth-code .tiny{margin:8px 0}#otpCode{font-size:20px;letter-spacing:.18em;max-width:215px;text-align:center}</style></head><body>
 <header class="e2e-brandbar"><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><nav class="e2e-portal-actions" aria-label="Account destinations"><a id="founderShortcut" href="/founder.html" class="e2e-founder-shortcut hidden">Founder Dashboard</a><a href="/explore/" class="e2e-header-link">Explore Music</a></nav></header><main><div class="caps">Listening Journal</div><h1>Your place in the experiment.</h1><p>The music is open to everyone. Journal entries are reserved for invited contributors and kept in the private research archive.</p><div id="notice" role="status" class="notice hidden"></div>
-<section id="signedout" class="card"><h2>Sign in</h2><p>Use the email address associated with your invitation or founder account. We'll send you a secure sign-in link.</p><p class="tiny">Access on your laptop does not automatically sign you in on your phone. Open the email link in the same mobile browser you use for Earth to Ear.</p><form id="signin"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required><button type="submit">Send sign-in link</button></form><p class="tiny">Registration is by invitation only.</p></section>
+<section id="signedout" class="card"><h2>Sign in</h2><p>Use the email address associated with your invitation or founder account. Each device can sign in separately and remain signed in.</p><form id="signin"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required><button id="sendSignin" type="submit">Send sign-in email</button></form><div class="auth-code"><h3>Enter your email verification code</h3><p class="tiny">If your email includes a six-digit code, enter it here. This avoids one-time links being opened by an email preview or security scanner.</p><form id="verifyCode"><label for="otpCode">Six-digit code</label><input id="otpCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="123456" required><button id="verifySignin" type="submit">Verify code &amp; sign in</button></form><p class="tiny">If the email still contains a sign-in link rather than a code, open that link only once in the same browser. Never share your code.</p></div><p class="tiny">Registration is by invitation only. Founder accounts do not need contributor registration to open the dashboard.</p></section>
 <section id="pending" class="card hidden"><h2>Complete your registration</h2><p>Your email has been verified. To contribute, please acknowledge the research participation terms below.</p><p>Observations are associated with a private participant identifier and retained for the research archive. You may end future participation; earlier journal entries remain in the archive unless addressed through a separate data request. Entries won't be published under your name without additional permission.</p><label><input id="consent" type="checkbox"> I understand and agree to contribute my listening observations under these terms.</label><button id="activate" type="button">Complete registration</button><p class="tiny">An invitation is required for contributors. Authorized founders may also register as contributors using their existing account.</p></section>
 <section id="founder" class="card hidden"><div class="caps">Founder administration</div><h2>Invite a contributor</h2><p>Invitations are issued only by Earth to Ear. Enter the name and email of the person you want to invite.</p><p><a class="library-link" href="/founder.html">Open Founder Research Dashboard →</a></p><form id="inviteForm"><label for="inviteName">Name</label><input id="inviteName" autocomplete="name" required maxlength="200"><label for="inviteEmail">Email address</label><input id="inviteEmail" type="email" autocomplete="off" required><button type="submit">Send invitation</button></form><p class="tiny">Invitations are limited to authorized founder accounts. Each recipient must verify their email before contributing.</p></section>
 <section id="active" class="hidden"><div class="card" style="background:linear-gradient(115deg,#244c50,#183844);border-color:#b2a17e"><div class="row"><div><div class="caps">Your listening community</div><h2>Listening Bulletin &amp; Milestones</h2><p>See newly added music, updates from Earth to Ear, and recognition for your thoughtful contributions.</p></div><a class="library-link" href="/bulletin.html">Open Bulletin →</a></div></div><div class="card featured"><div class="row"><h2>My Listening Journal</h2><span class="tiny" id="participant"></span></div><p>What you hear and what it brings to mind are what matter. There is no need to write about every selection.</p>
@@ -104,7 +104,34 @@ async function refresh(){
    show('Your account could not be verified on this device. Confirm you opened the sign-in email in this browser, then sign in again.',true);
  }
 }
-byId('signin').addEventListener('submit',async e=>{e.preventDefault();const email=byId('email').value.trim();try{const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:'https://earthtoear.com/contributor.html'}});if(error)throw error;show('If the address is registered, a sign-in email will arrive shortly.');}catch(err){show(err.message,true);}});
+byId('signin').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const email=byId('email').value.trim();
+ const button=byId('sendSignin');button.disabled=true;
+ try{
+   const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:'https://earthtoear.com/contributor.html'}});
+   if(error)throw error;
+   show('If this address is registered, an email will arrive shortly. Enter its six-digit code below, or follow the link if the email still includes one.');
+ }catch(err){show(err.message,true);}
+ finally{button.disabled=false;}
+});
+byId('verifyCode').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const email=byId('email').value.trim();
+ const token=byId('otpCode').value.trim();
+ if(!email){show('Enter your account email above before verifying the code.',true);byId('email').focus();return;}
+ const button=byId('verifySignin');button.disabled=true;
+ try{
+   const {error}=await sb.auth.verifyOtp({email,token,type:'email'});
+   if(error)throw error;
+   byId('otpCode').value='';
+   show('Email verified. Checking your account access…');
+   await refresh();
+   if(!byId('founderShortcut').classList.contains('hidden'))location.assign('/founder.html');
+ }catch(err){
+   show('The code could not be verified. Check that you entered the newest six-digit code for this email. '+(err.message||''),true);
+ }finally{button.disabled=false;}
+});
 byId('inviteForm').addEventListener('submit',async e=>{e.preventDefault();try{const d=await call('invite',{name:byId('inviteName').value.trim(),email:byId('inviteEmail').value.trim()});show('Invitation sent successfully.');byId('inviteForm').reset();}catch(err){show(err.message,true);}});
 byId('activate').addEventListener('click',async()=>{if(!byId('consent').checked){show('Please review and accept the participation terms.',true);return;}try{const d=await call('activate',{consent:true});show('Registration complete. Welcome.');byId('participant').textContent=d.participant_id;await refresh();}catch(e){show(e.message,true);}});
 byId('journal').addEventListener('submit',async e=>{e.preventDefault();if(!selectedId){show('Choose a recording from the music library first.',true);return;}const button=byId('saveEntry');button.disabled=true;try{await call('journal',{recording_id:selectedId,response:{impressions:byId('impressions').value,surprises:byId('surprises').value,associations:byId('associations').value,note:byId('note').value}});byId('journal').reset();byId('journal').classList.add('hidden');byId('journalSaved').classList.remove('hidden');byId('journalSaved').scrollIntoView({behavior:'smooth',block:'center'});}catch(err){show(err.message,true);}finally{button.disabled=false;}});
