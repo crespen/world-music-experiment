@@ -41,7 +41,7 @@ try{
   const [status,admin]=await Promise.allSettled([probe('status'),probe('admin-status')]);
   const link=document.getElementById('aboutAccountLink');
   if(admin.status==='fulfilled'&&admin.value?.administrator===true){
-   link.href='/founder.html?v=mobile-session-v3';link.textContent='Founder Dashboard';
+   link.href='/founder.html?v=editorial-v1';link.textContent='Founder Dashboard';
   }else if(status.status==='fulfilled'&&status.value?.status==='active'){
    link.textContent='My Journal';
   }else if(status.status==='fulfilled'){
