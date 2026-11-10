@@ -33,12 +33,43 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 .catalog-entry summary{overflow-wrap:anywhere}
 @media(max-width:700px){header{flex-wrap:wrap;align-items:flex-start;gap:6px;padding:10px 15px}.e2e-masthead-link{flex:1 1 240px;max-width:290px}header>div{flex:1 1 100%;justify-content:flex-start;text-align:left;gap:8px 14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{width:calc(100% - 28px);padding-top:24px}.panel{padding:17px 14px}.row{align-items:flex-start}.row button{max-width:100%;white-space:normal}}
 @media(max-width:390px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:10px}.metric strong{font-size:26px}}
+
+/* Founder homepage editorial curation */
+.fe-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.fe-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:15px 0}
+.fe-controls label{display:block;flex:1 1 220px;min-width:0;font-size:12px;color:#b9d4cc}
+.fe-controls label.fe-priority{flex:0 0 120px}
+.fe-controls select{display:block;width:100%;padding:11px;margin-top:5px;background:#0b2833;color:#fff;border:1px solid #719996;border-radius:8px}
+.fe-entry{padding:12px 0;border-top:1px solid #547078;overflow-wrap:anywhere}
+.fe-entry strong{display:block;line-height:1.4}
+.fe-entry small{display:block;color:#bdcfcc;margin:5px 0}
+.fe-entry button{font-size:12px;padding:7px 10px}
+@media(max-width:720px){.fe-columns{grid-template-columns:1fr}.fe-controls label.fe-priority{flex:1 1 90px}}
 </style></head>
 <body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a><a href="/contributor.html">My Journal / Invitations</a><a href="/explore/">Music Library</a></div></header>
 <main><div class="caps">Private founder workspace</div><h1>Research Dashboard</h1><p class="muted">Aggregated listening patterns and individual contributions. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
 <div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
 <section class="panel" style="border-color:#b99a72;background:linear-gradient(125deg,#204950,#1b3841)"><div class="caps">Founder communications</div><h2>Publish to the Listening Bulletin</h2><p class="muted">Share new recordings, research updates and discoveries with registered contributors. Publishing posts to their private bulletin; it does not send email.</p><form id="publishForm"><label style="display:block;margin:10px 0">Announcement title<br><input id="bulletinTitle" required maxlength="150" style="width:100%;max-width:650px"></label><label style="display:block;margin:10px 0">Topic<br><select id="bulletinTopic" style="padding:10px;background:#0b2833;color:#fff;border-radius:8px;border:1px solid #7ba6a3"><option value="update">Project update</option><option value="music">New music</option><option value="community">Community news</option></select></label><label style="display:block;margin:10px 0">Message<br><textarea id="bulletinBody" required maxlength="4000" rows="5" style="width:100%;padding:12px;border:1px solid #7ba6a3;border-radius:9px;background:#0b2833;color:#fff;font:inherit;resize:vertical"></textarea></label><button type="submit" id="publishButton">Publish announcement</button></form><p id="publishStatus" class="muted" role="status"></p></section>
+
+<section class="panel" id="featurePanel" style="border-color:#b49a74">
+ <div class="caps">Founder-only · Homepage curation</div>
+ <h2>What's New — Editorial Rotation</h2>
+ <p class="muted">Keep up to eight featured recordings. The rotation checks the queue on the <strong>1st and 15th</strong> at 16:00 UTC, adding at most two when eligible. Each selection stays for at least <strong>30 days</strong> unless you explicitly override it. The catalog itself updates immediately.</p>
+ <div class="fe-controls">
+  <label for="feRecording">Library recording<select id="feRecording"><option value="">Loading catalog…</option></select></label>
+  <label class="fe-priority" for="fePriority">Queue priority<select id="fePriority"><option value="3">Normal</option><option value="5">High</option><option value="1">Low</option></select></label>
+  <button type="button" id="feQueueBtn">Add to queue</button>
+  <button type="button" class="secondary" id="fePublishBtn">Feature now</button>
+  <button type="button" class="secondary" id="feRefreshBtn">Refresh</button>
+ </div>
+ <p id="feStatus" role="status" class="muted">Loading editorial lineup…</p>
+ <div class="fe-columns">
+  <div><h3>Current homepage lineup</h3><div id="feLive"></div></div>
+  <div><h3>Upcoming rotation queue</h3><div id="feQueue"></div></div>
+ </div>
+ <details><summary>Earlier featured selections</summary><div id="feHistory"></div></details>
+</section>
 <section class="panel" id="catalogPanel" style="border-color:#cba874;background:linear-gradient(125deg,#244650,#153640)">
 <div class="caps">Founder catalog operations</div><h2>Catalog Health</h2>
 <p class="muted">Automated checks confirm whether a provider page responds. They do <strong>not</strong> prove audio playback or permission to reuse a recording. A separate manual review records each of those findings.</p>
@@ -156,6 +187,79 @@ function renderInsights(d){
  const observations=by('observations');observations.replaceChildren();const notes=d.observations||[];
  if(!notes.length)listEmpty(observations,'No listening reflections yet.');else for(const x of notes){const item=el('div','item');item.append(el('h3','',x.title));if(x.impression)item.append(el('div','entry',x.impression));if(x.surprises)item.append(el('p','muted','Surprises: '+x.surprises));observations.append(item);}
 }
+
+function feCreate(tag,value,cls=''){
+ const n=document.createElement(tag);
+ if(value!==undefined)n.textContent=String(value);
+ if(cls)n.className=cls;
+ return n;
+}
+const feDate=v=>v?new Date(v).toLocaleDateString(undefined,{year:'numeric',month:'short',day:'numeric'}):'—';
+function feButton(box,label,operation,id,warning){
+ const b=feCreate('button',label,'secondary');b.type='button';
+ b.addEventListener('click',()=>feAction(operation,id,warning));
+ box.append(b);
+}
+function renderFeatures(e){
+ const features=Array.isArray(e.features)?e.features:[];
+ const queue=Array.isArray(e.queue)?e.queue:[];
+ const catalog=Array.isArray(e.catalog)?e.catalog:[];
+ const history=Array.isArray(e.history)?e.history:[];
+ const select=by('feRecording'),previous=select.value;
+ select.replaceChildren(new Option('Choose a recording…',''));
+ const used=new Set(features.map(x=>x.recording_id));
+ for(const c of catalog){
+  const option=new Option(c.title+' · '+c.country+' ('+c.id+')',c.id);
+  option.disabled=used.has(c.id);
+  select.add(option);
+ }
+ if([...select.options].some(o=>o.value===previous&&!o.disabled))select.value=previous;
+ const live=by('feLive');live.replaceChildren();
+ if(!features.length)live.append(feCreate('p','No featured recordings yet.','muted'));
+ for(const f of features){
+  const item=feCreate('div',undefined,'fe-entry');
+  item.append(feCreate('strong',f.title));
+  item.append(feCreate('small',f.continent+' · '+f.recording_id+' · Added '+feDate(f.featured_at)));
+  const protectedNow=new Date(f.hold_until).getTime()>Date.now();
+  item.append(feCreate('small',protectedNow?'Protected through '+feDate(f.hold_until):'Eligible for rotation'));
+  feButton(item,protectedNow?'Remove early (override)':'Remove',''+(protectedNow?'force-retire':'retire'),f.recording_id,
+   protectedNow?'This overrides the 30-day minimum. Remove the recording early?':'Remove this recording from the homepage?');
+  live.append(item);
+ }
+ const next=by('feQueue');next.replaceChildren();
+ if(!queue.length)next.append(feCreate('p','Nothing queued yet.','muted'));
+ for(const q of queue){
+  const item=feCreate('div',undefined,'fe-entry');
+  item.append(feCreate('strong',q.title));
+  item.append(feCreate('small',q.continent+' · '+q.recording_id+' · Priority '+q.priority+' · Queued '+feDate(q.queued_at)));
+  feButton(item,'Publish now','publish',q.recording_id);
+  feButton(item,'Replace early (override)','force-publish',q.recording_id,'This may replace a protected feature before 30 days. Proceed?');
+  feButton(item,'Remove from queue','dequeue',q.recording_id,'Remove this from the editorial queue?');
+  next.append(item);
+ }
+ const old=by('feHistory');old.replaceChildren();
+ if(!history.length)old.append(feCreate('p','No completed rotations yet.','muted'));
+ for(const h of history)old.append(feCreate('p',h.title+' · '+feDate(h.featured_at)+' to '+feDate(h.retired_at),'muted'));
+ by('feStatus').textContent=features.length+' of 8 featured · '+queue.length+' queued. Scheduled rotations never remove a recording before its 30-day minimum.';
+}
+async function loadFeatures(){
+ const {editorial}=await call('home-editorial',{operation:'list'});
+ renderFeatures(editorial);
+}
+async function feAction(operation,recordingId,warning){
+ if(warning&&!confirm(warning))return;
+ const id=recordingId||by('feRecording').value;
+ if(!id){by('feStatus').textContent='Please select a recording.';return;}
+ by('feStatus').textContent='Saving editorial update…';
+ try{
+  const {editorial}=await call('home-editorial',{operation,recording_id:id,priority:Number(by('fePriority').value)||3});
+  renderFeatures(editorial);
+  by('feStatus').textContent='Editorial change saved · '+editorial.features.length+' currently featured · '+editorial.queue.length+' queued.';
+ }catch(err){by('feStatus').textContent='Unable to save: '+(err.message||err);}
+}
+by('feQueueBtn').addEventListener('click',()=>feAction('queue'));
+by('fePublishBtn').addEventListener('click',()=>feAction('publish'));
+by('feRefreshBtn').addEventListener('click',()=>loadFeatures().catch(e=>by('feStatus').textContent=e.message));
 async function load(){
  notice('Checking founder access and loading research summary…');
  try{
@@ -164,6 +268,7 @@ async function load(){
   // A slow optional catalog or insights call must never conceal the core dashboard.
   by('dashboard').classList.remove('hidden');
   by('notice').classList.add('hidden');
+  try{await loadFeatures();}catch(e){by('feStatus').textContent='Editorial controls unavailable: '+e.message;}
   try{await loadCatalogHealth();}
   catch(e){by('healthSummary').textContent='Catalog Health could not load: '+e.message;}
   try{const {insights}=await call('admin-insights');renderInsights(insights);}
