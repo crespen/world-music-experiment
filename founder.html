@@ -16,12 +16,28 @@ h1,h2{color:#f9e7ce}.caps{color:#e6bd87}
 .panel,.metric{background:linear-gradient(135deg,#21444c,#17333f);box-shadow:0 10px 28px #0618232a,inset 0 1px #f1ca9816}
 button:not(.secondary){background:linear-gradient(115deg,#f1d394,#d7a35c);color:#1b2f31}
 @media(max-width:720px){header{flex-direction:row;align-items:center;gap:8px;padding:9px 17px}.e2e-masthead-link{flex-basis:300px}header>div{display:flex;flex-direction:column;gap:3px;text-align:right}header div a{font-size:10px}}
+.catalog-entry{border:1px solid #4d7777;border-radius:11px;margin:9px 0;padding:12px 14px;background:#102f3a}
+.catalog-entry>summary{cursor:pointer;color:#f1d5ab;font-weight:700;line-height:1.4}
+.catalog-entry p{margin:9px 0}.catalog-entry>a{display:inline-block;margin:8px 0;color:#a6e1d2;text-decoration:underline}
+.catalog-review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border-top:1px solid #526968;margin-top:10px;padding-top:12px}
+.review-field{font-size:12px;color:#c4dcd7;display:block}
+.review-field input,.review-field select,.review-field textarea{display:block;width:100%;margin-top:5px;font:14px "DM Sans",sans-serif;background:#082936;color:#e5f0ef;padding:10px;border:1px solid #719996;border-radius:8px}
+.catalog-review .row{grid-column:1/-1;justify-content:flex-start}
+@media(max-width:700px){.catalog-review{grid-template-columns:1fr}.catalog-review .row{grid-column:1}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style></head>
 <body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a> · <a href="/contributor.html">My Journal / Invitations</a> · <a href="/#/explore">Music Library</a></div></header>
 <main><div class="caps">Private founder workspace</div><h1>Research Dashboard</h1><p class="muted">Aggregated listening patterns and individual contributions. Accessible only to authorized founder accounts.</p><div id="notice" class="notice">Checking your founder access…</div>
 <section id="dashboard" class="hidden">
 <div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
 <section class="panel" style="border-color:#b99a72;background:linear-gradient(125deg,#204950,#1b3841)"><div class="caps">Founder communications</div><h2>Publish to the Listening Bulletin</h2><p class="muted">Share new recordings, research updates and discoveries with registered contributors. Publishing posts to their private bulletin; it does not send email.</p><form id="publishForm"><label style="display:block;margin:10px 0">Announcement title<br><input id="bulletinTitle" required maxlength="150" style="width:100%;max-width:650px"></label><label style="display:block;margin:10px 0">Topic<br><select id="bulletinTopic" style="padding:10px;background:#0b2833;color:#fff;border-radius:8px;border:1px solid #7ba6a3"><option value="update">Project update</option><option value="music">New music</option><option value="community">Community news</option></select></label><label style="display:block;margin:10px 0">Message<br><textarea id="bulletinBody" required maxlength="4000" rows="5" style="width:100%;padding:12px;border:1px solid #7ba6a3;border-radius:9px;background:#0b2833;color:#fff;font:inherit;resize:vertical"></textarea></label><button type="submit" id="publishButton">Publish announcement</button></form><p id="publishStatus" class="muted" role="status"></p></section>
+<section class="panel" id="catalogPanel" style="border-color:#cba874;background:linear-gradient(125deg,#244650,#153640)">
+<div class="caps">Founder catalog operations</div><h2>Catalog Health</h2>
+<p class="muted">Automated checks confirm whether a provider page responds. They do <strong>not</strong> prove audio playback or permission to reuse a recording. A separate manual review records each of those findings.</p>
+<div class="grid" style="margin:18px 0"><div class="metric"><strong id="healthActive">—</strong><span>Catalog recordings</span></div><div class="metric"><strong id="healthChecked">—</strong><span>Source pages checked</span></div><div class="metric"><strong id="healthReachable">—</strong><span>Pages responding</span></div><div class="metric"><strong id="healthAttention">—</strong><span>Source issues / review</span></div></div>
+<p class="muted" id="healthSummary">Loading catalog checks…</p><div class="row" style="margin:18px 0"><label for="healthQuery" class="muted">Find a recording <input id="healthQuery" type="search" placeholder="Artist, title, ID, country" style="display:block"></label><label for="healthFilter" class="muted">Show <select id="healthFilter" style="display:block;padding:11px;border:1px solid #7ba6a3;border-radius:8px;background:#0b2833;color:#fff"><option value="all">All recordings</option><option value="pending">Not checked yet</option><option value="attention">Needs attention</option><option value="reachable">Page reachable</option><option value="needs_manual">Playback or rights unreviewed</option></select></label></div>
+<div id="catalogItems"></div><div id="catalogCount" class="muted"></div><p style="margin-top:22px" class="muted">Scheduled automated checks run daily in batches. Newly discovered issues may be transient or restricted by the source provider. Human review is required before classifying playback and reuse rights.</p>
+<details style="margin-top:22px"><summary style="cursor:pointer;color:#f0cf9c;font-weight:650">Future welcome-audio candidates · rights review</summary><p class="muted">These are leads, not approved audio. No music clips are enabled or hosted until the composition, sound recording and any adaptation/commercial permissions have been confirmed.</p><div id="audioCandidates"></div></details>
+</section>
 <section class="panel"><div class="caps">Research intelligence · Level 1</div><h2>Listening activity by recording</h2><p class="muted">Submission counts show where contributors have documented observations, not how much a recording was played.</p><div id="recordings"></div></section>
 <section class="panel"><div class="caps">Qualitative research · Level 1</div><h2>Listening observations</h2><p class="muted">Recent anonymous excerpts from journal impressions. These are participant observations, not automated findings or ranked judgments.</p><div id="observations"></div></section>
 <section class="panel"><div class="caps">Geographic activity · Level 1</div><h2>Journal submissions by country</h2><p class="muted">Counts are based on catalog geography, not contributors' locations.</p><div id="countries"></div></section>
@@ -38,6 +54,46 @@ function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className
 function notice(message){by('notice').textContent=message;}
 async function call(action,args={}){const {data:{session}}=await sb.auth.getSession();if(!session)throw Error('Please sign in through the contributor portal first.');const res=await fetch(api,{method:'POST',headers:{Authorization:'Bearer '+session.access_token,'Content-Type':'application/json',apikey:'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'},body:JSON.stringify({action,...args})});const body=await res.json();if(!res.ok)throw Error(body.error||'Unable to load report');return body;}
 function listEmpty(target,message){target.replaceChildren(el('p','muted',message));}
+let catalogHealth=null;
+function selectField(label,values,value){const wrap=el('label','review-field',label);const select=el('select');for(const [v,t] of values){const opt=el('option','',t);opt.value=v;select.append(opt);}select.value=value;wrap.append(select);return {wrap,select};}
+function renderCatalogHealth(data){
+ catalogHealth=data;
+ const t=data.totals||{};for(const [id,value] of Object.entries({healthActive:t.active,healthChecked:t.checked,healthReachable:t.reachable_pages,healthAttention:t.needs_attention}))by(id).textContent=value??0;
+ by('healthSummary').textContent=(t.playback_verified||0)+' records have a human playback classification; '+(t.rights_cleared||0)+' have rights marked cleared with evidence. These counts are separate from page reachability.';
+ const root=by('catalogItems');root.replaceChildren();
+ const search=by('healthQuery').value.trim().toLowerCase();const filter=by('healthFilter').value;const rows=(data.items||[]).filter(x=>{
+ const q=[x.recording_id,x.title,x.artist,x.country].join(' ').toLowerCase().includes(search);
+ const match=filter==='all'||(filter==='pending'&&!x.last_checked_at)||(filter==='attention'&&!['unverified','reachable_page'].includes(x.url_status))||(filter==='reachable'&&x.url_status==='reachable_page')||(filter==='needs_manual'&&(x.playback_status==='unverified'||x.rights_status==='unreviewed'));
+ return q&&match;
+ });
+ for(const x of rows.slice(0,70)){
+  const article=el('details','catalog-entry item');
+  const summary=el('summary','',x.recording_id+' · '+x.title+' · '+x.url_status.replaceAll('_',' '));article.append(summary);
+  const meta=el('p','muted','Source: '+x.source_host+' · Last automated check: '+(x.last_checked_at?new Date(x.last_checked_at).toLocaleString():'Not checked')+' · HTTP: '+(x.http_status??'—'));
+  article.append(meta);
+  if(x.last_detail)article.append(el('p','muted',x.last_detail));
+  const external=el('a','','Open original recording');external.href=x.source_url;external.target='_blank';external.rel='noopener noreferrer';article.append(external);
+  const box=el('div','catalog-review');
+  const playback=selectField('Playback observed',[['unverified','Not manually checked'],['full','Full recording'],['preview','Short preview'],['limited','Limited playback'],['unavailable','Cannot play']],x.playback_status);
+  const rights=selectField('Reuse rights',[['unreviewed','Unreviewed'],['third_party_only','Link only / third party'],['public_domain','Public domain — evidence required'],['licensed','Licensed — evidence required'],['restricted','Restricted']],x.rights_status);
+  box.append(playback.wrap,rights.wrap);
+  const evidence=el('input');evidence.type='url';evidence.value=x.rights_evidence_url||'';evidence.placeholder='Rights evidence URL (required if cleared)';evidence.maxLength=1500;
+  const notes=el('textarea');notes.value=x.notes||'';notes.placeholder='Manual playback, region, provider or license review notes';notes.rows=2;notes.maxLength=2000;notes.style.width='100%';notes.style.background='#0b2833';notes.style.color='#fff';notes.style.padding='10px';
+  const rightsLabel=el('label','review-field','Rights evidence URL');rightsLabel.append(evidence);
+  const notesLabel=el('label','review-field','Reviewer notes');notesLabel.append(notes);
+  box.append(rightsLabel,notesLabel);
+  const actions=el('div','row');
+  const save=el('button','', 'Save manual review');save.type='button';
+  const queue=el('button','secondary','Queue link recheck');queue.type='button';
+  const status=el('span','muted','');
+  save.addEventListener('click',async()=>{save.disabled=true;status.textContent='Saving…';try{await call('catalog-review',{recording_id:x.recording_id,playback_status:playback.select.value,rights_status:rights.select.value,rights_evidence_url:evidence.value,notes:notes.value});status.textContent='Saved';await loadCatalogHealth();}catch(e){status.textContent=e.message;}finally{save.disabled=false;}});
+  queue.addEventListener('click',async()=>{queue.disabled=true;status.textContent='Queueing…';try{await call('catalog-recheck',{recording_id:x.recording_id});status.textContent='Queued for next scheduled check';}catch(e){status.textContent=e.message;}finally{queue.disabled=false;}});
+  actions.append(save,queue,status);box.append(actions);article.append(box);root.append(article);
+ }
+ by('catalogCount').textContent='Showing '+Math.min(rows.length,70)+' of '+rows.length+' matching recordings';
+ const candidates=by('audioCandidates');candidates.replaceChildren();for(const a of data.audio_candidates||[]){const line=el('div','item');line.append(el('strong','',a.title+' — '+a.performer),el('p','muted',a.tradition+' · Rights status: '+a.status));const link=el('a','','Review source');link.href=a.source_page;link.target='_blank';link.rel='noopener noreferrer';line.append(link);if(a.notes)line.append(el('p','muted',a.notes));candidates.append(line);}
+}
+async function loadCatalogHealth(){const {catalog}=await call('catalog-health');renderCatalogHealth(catalog);}
 function renderReport(d){
  const totals=d.totals||{};for(const [key,value] of Object.entries({countContributors:totals.contributors,countJournals:totals.journals,countSuggestions:totals.suggestions,countRecordings:totals.recordings}))by(key).textContent=value??0;
  const rec=by('recordings');rec.replaceChildren();const tracks=d.by_recording||[];if(!tracks.length)listEmpty(rec,'No listening entries yet.');else{const max=Math.max(...tracks.map(x=>Number(x.entries)||0),1);for(const x of tracks){const item=el('div','item');const name=el('div','stats-name');name.append(el('span','',x.title+' ('+x.recording_id+')'),el('strong','',x.entries));const bar=el('div','bar');const fill=el('span');fill.style.width=(100*Number(x.entries)/max)+'%';bar.append(fill);item.append(name,bar);rec.append(item);}}
@@ -51,7 +107,9 @@ function renderInsights(d){
  const observations=by('observations');observations.replaceChildren();const notes=d.observations||[];
  if(!notes.length)listEmpty(observations,'No listening reflections yet.');else for(const x of notes){const item=el('div','item');item.append(el('h3','',x.title));if(x.impression)item.append(el('div','entry',x.impression));if(x.surprises)item.append(el('p','muted','Surprises: '+x.surprises));observations.append(item);}
 }
-async function load(){try{notice('Loading private research…');const {report}=await call('admin-report',{limit:size,offset,query:by('search').value.trim()});renderReport(report);try{const {insights}=await call('admin-insights');renderInsights(insights);}catch(e){console.warn('Qualitative insights unavailable',e);by('observations').textContent='Qualitative insights are temporarily unavailable.';}by('dashboard').classList.remove('hidden');by('notice').classList.add('hidden');}catch(e){notice(e.message+' Return to the contributor portal to sign in with your founder email.');}}
+async function load(){try{notice('Loading private research…');const {report}=await call('admin-report',{limit:size,offset,query:by('search').value.trim()});renderReport(report);try{await loadCatalogHealth();}catch(e){by('healthSummary').textContent='Catalog Health could not load: '+e.message;}try{const {insights}=await call('admin-insights');renderInsights(insights);}catch(e){console.warn('Qualitative insights unavailable',e);by('observations').textContent='Qualitative insights are temporarily unavailable.';}by('dashboard').classList.remove('hidden');by('notice').classList.add('hidden');}catch(e){notice(e.message+' Return to the contributor portal to sign in with your founder email.');}}
+by('healthQuery').addEventListener('input',()=>{if(catalogHealth)renderCatalogHealth(catalogHealth);});
+by('healthFilter').addEventListener('change',()=>{if(catalogHealth)renderCatalogHealth(catalogHealth);});
 by('publishForm').addEventListener('submit',async e=>{e.preventDefault();const button=by('publishButton');const status=by('publishStatus');button.disabled=true;status.textContent='Publishing…';try{await call('publish-bulletin',{title:by('bulletinTitle').value,body:by('bulletinBody').value,topic:by('bulletinTopic').value});status.textContent='Published to the private Listening Bulletin.';by('publishForm').reset();}catch(error){status.textContent=error.message;}finally{button.disabled=false;}});
 by('searchForm').addEventListener('submit',e=>{e.preventDefault();offset=0;load();});by('previous').addEventListener('click',()=>{offset=Math.max(0,offset-size);load();});by('next').addEventListener('click',()=>{offset+=size;load();});load();
 </script></body></html>
