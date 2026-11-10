@@ -121,10 +121,29 @@ function bindNewsCarousel(){
  const move=direction=>{const first=rail.querySelector('.ed-news-card');const width=first?first.getBoundingClientRect().width:300;const gap=17;rail.scrollBy({left:direction*(width+gap),behavior:window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});};
  previous.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));rail.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update);update();
 }
+// Original-audio listening sources verified from Wikimedia Commons.
+// Music files remain hosted by Wikimedia; do not download, republish, or relabel.
+// Source pages and licence attribution stay visible in the embedded player.
+const commonsIntroAudio={
+ 'AFR-0027':{
+  audio:'https://upload.wikimedia.org/wikipedia/commons/b/b0/Drumming_and_Singing_in_Northern_Ghana.ogg',
+  credit:'Ibn Shiraz',license:'https://creativecommons.org/licenses/by-sa/4.0/'
+ },
+ 'AFR-0028':{
+  audio:'https://upload.wikimedia.org/wikipedia/commons/0/0a/Okonko_drum_beat.ogg',
+  credit:'Dappasolomon001',license:'https://creativecommons.org/licenses/by-sa/4.0/'
+ },
+ 'AFR-0029':{
+  audio:'https://upload.wikimedia.org/wikipedia/commons/2/24/The_sound_of_the_talking_drum_when_its_been_played.ogg',
+  credit:'Bamidele S. Ajayi',license:'https://creativecommons.org/licenses/by-sa/4.0/'
+ }
+};
 function introCandidates(){
- return R.filter(r=>{
+ const youtube=R.filter(r=>{
   try{const u=new URL(r.listen);return (u.hostname==='www.youtube.com'||u.hostname==='youtube.com')&&u.pathname==='/watch'&&/^[A-Za-z0-9_-]{11}$/.test(u.searchParams.get('v')||'');}catch{return false;}
  }).slice(0,10);
+ const commons=R.filter(r=>Object.prototype.hasOwnProperty.call(commonsIntroAudio,r.id));
+ return [...youtube,...commons];
 }
 function bindIntroListeningStrip(){
  const options=introCandidates();
@@ -147,17 +166,48 @@ function bindIntroListeningStrip(){
  let playing=false;
  const embed=()=>{
   const r=options[index];
-  const u=new URL(r.listen);
-  const id=u.searchParams.get('v');
-  if(!id||!/^[A-Za-z0-9_-]{11}$/.test(id))return;
-  const iframe=document.createElement('iframe');
-  iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&start=0&end=30&controls=1&playsinline=1&rel=0';
-  iframe.title='30-second excerpt: '+r.title+' — YouTube player';
-  iframe.allow='autoplay; encrypted-media; picture-in-picture';
-  iframe.referrerPolicy='strict-origin-when-cross-origin';
-  iframe.setAttribute('allowfullscreen','');
-  stage.replaceChildren(iframe);
-  stage.hidden=false;
+  const commons=commonsIntroAudio[r.id];
+  stage.replaceChildren();
+  if(commons){
+   const box=document.createElement('div');
+   box.className='e2e-commons-player';
+   const audio=document.createElement('audio');
+   audio.controls=true;
+   audio.preload='none';
+   audio.src=commons.audio;
+   audio.setAttribute('playsinline','');
+   audio.setAttribute('aria-label','Audio excerpt: '+r.title);
+   audio.addEventListener('timeupdate',()=>{
+    if(audio.currentTime>=30){audio.pause();audio.currentTime=30;}
+   });
+   const credit=document.createElement('div');
+   credit.className='e2e-commons-attribution';
+   credit.append(document.createTextNode('Original audio: '+commons.credit+' · '));
+   const license=document.createElement('a');
+   license.href=commons.license;
+   license.target='_blank';license.rel='noopener noreferrer';
+   license.textContent='CC BY-SA 4.0';
+   credit.append(license,document.createTextNode(' · 30-second playback, no file modification'));
+   box.append(audio,credit);
+   stage.append(box);
+   stage.hidden=false;
+   audio.play().catch(()=>{
+    // Browser autoplay policy: native audio controls remain available.
+    play.textContent='Use player controls';
+   });
+  }else{
+   const u=new URL(r.listen);
+   const id=u.searchParams.get('v');
+   if(!id||!/^[A-Za-z0-9_-]{11}$/.test(id))return;
+   const iframe=document.createElement('iframe');
+   iframe.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&start=0&end=30&controls=1&playsinline=1&rel=0';
+   iframe.title='30-second excerpt: '+r.title+' — YouTube player';
+   iframe.allow='autoplay; encrypted-media; picture-in-picture';
+   iframe.referrerPolicy='strict-origin-when-cross-origin';
+   iframe.setAttribute('allowfullscreen','');
+   stage.append(iframe);
+   stage.hidden=false;
+  }
   playing=true;
   play.textContent='Replay 30 seconds';
  };
@@ -176,7 +226,6 @@ function bindIntroListeningStrip(){
   const wasPlaying=playing;
   index=(index+direction+options.length)%options.length;
   render();
-  // A user-initiated skip continues playback only if the player was open.
   if(wasPlaying)embed();
  };
  play.addEventListener('click',embed);
@@ -200,14 +249,14 @@ return `
   <div class="ed-hero-art"><img src="/assets/earth-to-ear-hero.svg" alt="Decorative golden sonic waves crossing a teal and gold globe"></div>
    </div>
  <aside id="introListeningPanel" class="e2e-intro-listening wrap" aria-label="Optional listening introduction">
- <div class="e2e-intro-topline"><span class="ed-kicker">♪ THE SOUND OF EARTH TO EAR</span><span class="e2e-intro-detail">Optional listening · 30-second excerpts</span></div>
+ <div class="e2e-intro-topline"><span class="ed-kicker">♪ THE SOUND OF EARTH TO EAR</span><span class="e2e-intro-detail">Optional listening · 30-second selections</span></div>
  <div class="e2e-intro-row">
   <div class="e2e-intro-mark" aria-hidden="true">≋</div>
   <div class="e2e-intro-information"><strong id="introListeningTitle">Choose a recording</strong><span id="introListeningMetadata" class="intro-listening-detail">A short selection drawn from the listening library</span><a id="introListeningSource" href="/africa/" target="_blank" rel="noopener noreferrer">Open the original recording ↗</a></div>
-  <div class="e2e-intro-controls"><button id="introListenPrevious" type="button" class="e2e-intro-skip" aria-label="Previous recording" title="Previous recording">‹</button><span id="introListenCounter" class="e2e-intro-counter" aria-live="polite">1 of 10</span><button id="introListenNext" type="button" class="e2e-intro-skip" aria-label="Next recording" title="Next recording">›</button><button id="introListenPlay" type="button">Hear 30 seconds</button></div>
+  <div class="e2e-intro-controls"><button id="introListenPrevious" type="button" class="e2e-intro-skip" aria-label="Previous recording" title="Previous recording">‹</button><span id="introListenCounter" class="e2e-intro-counter" aria-live="polite">1 of 13</span><button id="introListenNext" type="button" class="e2e-intro-skip" aria-label="Next recording" title="Next recording">›</button><button id="introListenPlay" type="button">Hear 30 seconds</button></div>
  </div>
  <div id="introListeningStage" class="e2e-intro-stage" hidden></div>
- <p class="e2e-intro-footnote">Use the arrows to move through the playlist. The expanded YouTube player provides pause, mute, and volume controls. Source playback may be restricted by its provider.</p>
+ <p class="e2e-intro-footnote">Use the arrows to move through the playlist. YouTube videos and Wikimedia Commons audio use their original hosted players. Playback provides pause and volume controls; source availability may vary by region or provider.</p>
 </aside>
 <div class="ed-pathway-strip"><div class="wrap"><div class="ed-pathway-grid">
  <a href="/explore/" class="ed-pathway"><span class="ed-pathway-icon" aria-hidden="true">◎</span><span><strong>Discover Music</strong><small>Explore recordings from diverse traditions</small></span></a>
