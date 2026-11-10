@@ -313,3 +313,56 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 .brand:focus-visible{outline:3px solid #f5cd8a;outline-offset:3px;border-radius:5px}
 @media(max-width:850px){.brand[aria-current="page"]::after{bottom:-4px;left:0;width:34px}}
 @media(prefers-reduced-motion:reduce){.brand:hover{transition:none}}
+
+
+/* 2026-11-10: Desktop header must fit the full authenticated navigation.
+   The exact-art layout previously fixed the masthead at 590px and grew
+   navigation gaps/fonts with viewport size, forcing horizontal overflow
+   when "Founder Dashboard" replaced "Sign In". Keep the approved masthead
+   image, but let it scale inside available desktop width. */
+@media (min-width:1380px){
+ html.ed-exact-art-ready .navinner.wrap{
+  box-sizing:border-box;
+  width:calc(100% - 58px);
+  max-width:1490px;
+  gap:clamp(12px,1vw,18px);
+  flex-wrap:nowrap;
+ }
+ html.ed-exact-art-ready .brand{
+  flex:0 1 clamp(375px,31vw,475px);
+  min-width:0;
+  width:auto;
+  max-width:475px;
+  height:auto;
+  align-self:center;
+ }
+ html.ed-exact-art-ready .ed-reference-masthead{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:595/115;
+  background:url('/assets/earth-to-ear-masthead.png') center / 100% 100% no-repeat;
+ }
+ html.ed-exact-art-ready .links{
+  min-width:0;
+  flex:1 1 auto;
+  margin-left:auto;
+  justify-content:flex-end;
+  gap:clamp(10px,1vw,17px);
+ }
+ html.ed-exact-art-ready .links a{
+  font-size:clamp(12px,.94vw,14px);
+  letter-spacing:0;
+ }
+ html.ed-exact-art-ready .links .invite{
+  padding:10px 15px;
+  font-size:clamp(12px,.94vw,14px);
+ }
+}
+@media (min-width:851px) and (max-width:1379px){
+ .navinner.wrap{gap:clamp(12px,1.2vw,20px)}
+ .navinner.wrap>.brand{min-width:0;flex-shrink:1}
+ .navinner.wrap>.links{min-width:0;gap:clamp(9px,1vw,14px)}
+ .navinner.wrap>.links a{white-space:nowrap;font-size:clamp(11px,.95vw,13px)}
+ .navinner.wrap>.links .invite{padding:10px 13px}
+}
