@@ -61,7 +61,47 @@ const api='https://jhgyjqafpnzwfpzwtpki.supabase.co/functions/v1/e2e-contributor
 const by=id=>document.getElementById(id);let offset=0;const size=20;
 function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=String(text);return e;}
 function notice(message){by('notice').textContent=message;}
-async function call(action,args={}){const {data:{session}}=await sb.auth.getSession();if(!session)throw Error('Please sign in through the contributor portal first.');const res=await fetch(api,{method:'POST',headers:{Authorization:'Bearer '+session.access_token,'Content-Type':'application/json',apikey:'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'},body:JSON.stringify({action,...args})});const body=await res.json();if(!res.ok)throw Error(body.error||'Unable to load report');return body;}
+// Read a fresh persisted token first, avoiding a mobile Web Locks hang in getSession.
+// The server independently verifies each token; localStorage never grants privileges.
+const sessionKey='sb-jhgyjqafpnzwfpzwtpki-auth-token';
+function storedToken(){
+ try{
+  const saved=JSON.parse(localStorage.getItem(sessionKey)||'null');
+  if(saved&&typeof saved.access_token==='string'&&Number(saved.expires_at)>Date.now()/1000+40)return saved.access_token;
+ }catch(e){}
+ return null;
+}
+async function accessToken(){
+ const cached=storedToken();
+ if(cached)return cached;
+ let timer;
+ try{
+  const authResult=await Promise.race([
+    sb.auth.getSession(),
+    new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error('Session restoration timed out in this browser.')),6000);})
+  ]);
+  if(authResult.error)throw authResult.error;
+  if(!authResult.data?.session?.access_token)throw Error('This browser is not signed in. Open My Journal / Invitations to sign in here.');
+  return authResult.data.session.access_token;
+ }finally{clearTimeout(timer);}
+}
+async function call(action,args={}){
+ const token=await accessToken();
+ const controller=new AbortController();
+ const timeout=setTimeout(()=>controller.abort(),15000);
+ try{
+  const res=await fetch(api,{method:'POST',signal:controller.signal,headers:{
+    Authorization:'Bearer '+token,'Content-Type':'application/json',
+    apikey:'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'
+  },body:JSON.stringify({action,...args})});
+  const body=await res.json();
+  if(!res.ok)throw Error(body.error||'Unable to load report');
+  return body;
+ }catch(error){
+  if(error.name==='AbortError')throw Error('The research request timed out. Please reload this page.');
+  throw error;
+ }finally{clearTimeout(timeout);}
+}
 function listEmpty(target,message){target.replaceChildren(el('p','muted',message));}
 let catalogHealth=null;
 function selectField(label,values,value){const wrap=el('label','review-field',label);const select=el('select');for(const [v,t] of values){const opt=el('option','',t);opt.value=v;select.append(opt);}select.value=value;wrap.append(select);return {wrap,select};}
@@ -116,7 +156,23 @@ function renderInsights(d){
  const observations=by('observations');observations.replaceChildren();const notes=d.observations||[];
  if(!notes.length)listEmpty(observations,'No listening reflections yet.');else for(const x of notes){const item=el('div','item');item.append(el('h3','',x.title));if(x.impression)item.append(el('div','entry',x.impression));if(x.surprises)item.append(el('p','muted','Surprises: '+x.surprises));observations.append(item);}
 }
-async function load(){try{notice('Loading private research…');const {report}=await call('admin-report',{limit:size,offset,query:by('search').value.trim()});renderReport(report);try{await loadCatalogHealth();}catch(e){by('healthSummary').textContent='Catalog Health could not load: '+e.message;}try{const {insights}=await call('admin-insights');renderInsights(insights);}catch(e){console.warn('Qualitative insights unavailable',e);by('observations').textContent='Qualitative insights are temporarily unavailable.';}by('dashboard').classList.remove('hidden');by('notice').classList.add('hidden');}catch(e){notice(e.message+' Founder access is specific to this browser. Sign in through My Portal on this phone, then return here.');}}
+async function load(){
+ notice('Checking founder access and loading research summary…');
+ try{
+  const {report}=await call('admin-report',{limit:size,offset,query:by('search').value.trim()});
+  renderReport(report);
+  // A slow optional catalog or insights call must never conceal the core dashboard.
+  by('dashboard').classList.remove('hidden');
+  by('notice').classList.add('hidden');
+  try{await loadCatalogHealth();}
+  catch(e){by('healthSummary').textContent='Catalog Health could not load: '+e.message;}
+  try{const {insights}=await call('admin-insights');renderInsights(insights);}
+  catch(e){console.warn('Qualitative insights unavailable',e);by('observations').textContent='Qualitative insights are temporarily unavailable.';}
+ }catch(e){
+  by('dashboard').classList.add('hidden');
+  notice('Unable to open research dashboard: '+e.message+' If you signed in on a different browser, open Earth to Ear in Chrome and authenticate there.');
+ }
+}
 by('healthQuery').addEventListener('input',()=>{if(catalogHealth)renderCatalogHealth(catalogHealth);});
 by('healthFilter').addEventListener('change',()=>{if(catalogHealth)renderCatalogHealth(catalogHealth);});
 by('publishForm').addEventListener('submit',async e=>{e.preventDefault();const button=by('publishButton');const status=by('publishStatus');button.disabled=true;status.textContent='Publishing…';try{await call('publish-bulletin',{title:by('bulletinTitle').value,body:by('bulletinBody').value,topic:by('bulletinTopic').value});status.textContent='Published to the private Listening Bulletin.';by('publishForm').reset();}catch(error){status.textContent=error.message;}finally{button.disabled=false;}});
