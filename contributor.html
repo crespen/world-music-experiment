@@ -24,12 +24,13 @@ button:not(.danger):not(.secondary):hover,.library-link:hover{background:#f9dcab
 #founder{border-color:#e4bc83;background:linear-gradient(120deg,#284c4f,#193640);scroll-margin-top:110px}
 #founder .library-link{margin-top:4px}
 @media(max-width:650px){.e2e-brandbar{align-items:flex-start;flex-wrap:wrap;padding:10px 15px}.e2e-masthead-link{flex:1 1 175px;max-width:250px}.e2e-portal-actions{flex:1 1 100%;justify-content:space-between;gap:9px}.e2e-founder-shortcut{font-size:12px;min-height:38px}.e2e-header-link{font-size:12px}.e2e-brandbar .e2e-masthead-link img{max-width:250px}}
-.auth-code{border-top:1px solid #4c7071;margin-top:23px;padding-top:16px}.auth-code h3{font-family:"Fraunces",Georgia,serif;font-size:21px;font-weight:500;margin:0 0 9px;color:#f9e7ce}.auth-code .tiny{margin:8px 0}#otpCode{font-size:20px;letter-spacing:.18em;max-width:215px;text-align:center}</style></head><body>
+.auth-code{border-top:1px solid #4c7071;margin-top:23px;padding-top:16px}.auth-code h3{font-family:"Fraunces",Georgia,serif;font-size:21px;font-weight:500;margin:0 0 9px;color:#f9e7ce}.auth-code .tiny{margin:8px 0}#otpCode{font-size:20px;letter-spacing:.18em;max-width:215px;text-align:center}.history-list{display:grid;gap:10px;margin-top:13px}.history-entry{border:1px solid #557b7d;border-radius:10px;padding:12px 14px;background:#102e3b}.history-entry summary{cursor:pointer;font-weight:700;color:#f2d49f;line-height:1.45;overflow-wrap:anywhere}.history-entry p{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0 13px}.history-entry h3{font-size:13px;color:#d8e9e4;margin:14px 0 5px}.history-entry a{display:inline-block;margin:8px 0}.history-list:empty{display:none}</style></head><body>
 <header class="e2e-brandbar"><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><nav class="e2e-portal-actions" aria-label="Account destinations"><a id="founderShortcut" href="/founder.html" class="e2e-founder-shortcut hidden">Founder Dashboard</a><a href="/explore/" class="e2e-header-link">Explore Music</a></nav></header><main><div class="caps">Listening Journal</div><h1>Your place in the experiment.</h1><p>The music is open to everyone. Journal entries are reserved for invited contributors and kept in the private research archive.</p><div id="notice" role="status" class="notice hidden"></div>
 <section id="signedout" class="card"><h2>Sign in</h2><p>Use the email address associated with your invitation or founder account. Each device can sign in separately and remain signed in.</p><form id="signin"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required><button id="sendSignin" type="submit">Send sign-in email</button></form><div class="auth-code"><h3>Enter your email verification code</h3><p class="tiny">If your email includes a six-digit code, enter it here. This avoids one-time links being opened by an email preview or security scanner.</p><form id="verifyCode"><label for="otpCode">Six-digit code</label><input id="otpCode" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="123456" required><button id="verifySignin" type="submit">Verify code &amp; sign in</button></form><p class="tiny">If the email still contains a sign-in link rather than a code, open that link only once in the same browser. Never share your code.</p></div><p class="tiny">Registration is by invitation only. Founder accounts do not need contributor registration to open the dashboard.</p></section>
 <section id="pending" class="card hidden"><h2>Complete your registration</h2><p>Your email has been verified. To contribute, please acknowledge the research participation terms below.</p><p>Observations are associated with a private participant identifier and retained for the research archive. You may end future participation; earlier journal entries remain in the archive unless addressed through a separate data request. Entries won't be published under your name without additional permission.</p><label><input id="consent" type="checkbox"> I understand and agree to contribute my listening observations under these terms.</label><button id="activate" type="button">Complete registration</button><p class="tiny">An invitation is required for contributors. Authorized founders may also register as contributors using their existing account.</p></section>
 <section id="founder" class="card hidden"><div class="caps">Founder administration</div><h2>Invite a contributor</h2><p>Invitations are issued only by Earth to Ear. Enter the name and email of the person you want to invite.</p><p><a class="library-link" href="/founder.html">Open Founder Research Dashboard →</a></p><form id="inviteForm"><label for="inviteName">Name</label><input id="inviteName" autocomplete="name" required maxlength="200"><label for="inviteEmail">Email address</label><input id="inviteEmail" type="email" autocomplete="off" required><button type="submit">Send invitation</button></form><p class="tiny">Invitations are limited to authorized founder accounts. Each recipient must verify their email before contributing.</p></section>
-<section id="active" class="hidden"><div class="card" style="background:linear-gradient(115deg,#244c50,#183844);border-color:#b2a17e"><div class="row"><div><div class="caps">Your listening community</div><h2>Listening Bulletin &amp; Milestones</h2><p>See newly added music, updates from Earth to Ear, and recognition for your thoughtful contributions.</p></div><a class="library-link" href="/bulletin.html">Open Bulletin →</a></div></div><div class="card featured"><div class="row"><h2>My Listening Journal</h2><span class="tiny" id="participant"></span></div><p>What you hear and what it brings to mind are what matter. There is no need to write about every selection.</p>
+<section id="active" class="hidden"><div class="card" style="background:linear-gradient(115deg,#244c50,#183844);border-color:#b2a17e"><div class="row"><div><div class="caps">Your listening community</div><h2>Listening Bulletin &amp; Milestones</h2><p>See newly added music, updates from Earth to Ear, and recognition for your thoughtful contributions.</p></div><a class="library-link" href="/bulletin.html">Open Bulletin →</a></div></div><section id="historyCard" class="card"><div class="row"><div><div class="caps">Your private research archive</div><h2>My Previous Reflections</h2></div><button type="button" id="reloadHistory" class="secondary">Refresh history</button></div><p>Reflections you have submitted are saved to your account and can be reviewed on any signed-in device.</p><div id="historyStatus" class="tiny" role="status">Loading your reflections…</div><div id="historyEntries" class="history-list"></div><p class="tiny">Showing up to your 30 most recent entries. Your observations remain private to the research archive and authorized reviewers.</p></section>
+<div class="card featured"><div class="row"><h2>My Listening Journal</h2><span class="tiny" id="participant"></span></div><p>What you hear and what it brings to mind are what matter. There is no need to write about every selection.</p>
 <div id="chooseRecording" class="journal-heading hidden"><strong>Choose a recording to begin</strong><p>Open a recording in the listening library and select My Journal. The recording will be attached automatically.</p><a class="library-link" href="/explore/">Explore music →</a></div><div id="selectedRecording" class="journal-heading hidden"><span class="caps">Your selected recording</span><strong id="recordingTitle"></strong><span class="tiny" id="recordingCode"></span><div><a class="smalllink" href="/#/explore">Choose another recording →</a></div></div><form id="journal" class="hidden"><input id="recording" type="hidden"><label for="impressions">What do you hear?</label><textarea id="impressions" required maxlength="11000"></textarea><label for="surprises">What surprises you?</label><textarea class="optional" id="surprises"></textarea><label for="associations">What memories, associations or questions emerge?</label><textarea class="optional" id="associations" maxlength="3500"></textarea><label for="note">Anything else you would like to share?</label><textarea class="long-note" id="note" maxlength="5000" placeholder="Add an observation, question, context, or anything not captured above (optional)."></textarea><button type="submit" id="saveEntry">Save my entry</button><a href="/#/explore" class="smalllink">Return to music library</a></form><div id="journalSaved" class="actions-after-save hidden" role="status"><strong>Your entry has been saved.</strong><p>Thank you for listening and sharing your observations. Continue exploring whenever you're ready.</p><a class="library-link" href="/#/explore">Explore more music →</a><button type="button" id="anotherEntry" class="secondary">Write another entry for this recording</button></div><p class="tiny">Entries are stored privately in the Earth to Ear Supabase research archive.</p></div>
 <div class="card" id="suggestionCard"><div class="caps">Contribute to the listening library</div><h2>Suggest a recording</h2><p>Know music that should be part of this experiment? Suggest an artist, performance, or tradition. Submissions are reviewed before being added to the catalog.</p>
 <form id="suggestionForm"><label for="suggestTitle">Recording or performance title *</label><input id="suggestTitle" required maxlength="250" placeholder="Title or name of the performance"><label for="suggestArtist">Artist or performer</label><input id="suggestArtist" maxlength="250"><label for="suggestTradition">Musical tradition or style</label><input id="suggestTradition" maxlength="250"><label for="suggestCountry">Country or community</label><input id="suggestCountry" maxlength="150"><label for="suggestUrl">Listening link (optional)</label><input id="suggestUrl" type="url" maxlength="1500" placeholder="https://…"><label for="suggestNote">Why would you recommend it?</label><textarea id="suggestNote" class="long-note" maxlength="5000" placeholder="What makes it interesting, unusual, meaningful, or worth exploring?"></textarea><button type="submit" id="sendSuggestion">Submit music suggestion</button></form><div id="suggestionStatus" class="notice hidden" role="status"></div></div>
@@ -87,7 +88,7 @@ async function refresh(){
  shortcut.classList.toggle('hidden',!isFounder);
  if(statusResult.status==='fulfilled'){
    const data=statusResult.value;
-   if(data.status==='active'){view('active');byId('accountSettings').classList.remove('hidden');}
+   if(data.status==='active'){view('active');byId('accountSettings').classList.remove('hidden');void loadHistory();}
    else if(data.status==='withdrawn'){view('withdrawn');}
    else{view('pending');}
    // Founder accounts can use the administration workspace without
@@ -104,6 +105,47 @@ async function refresh(){
    show('Your account could not be verified on this device. Confirm you opened the sign-in email in this browser, then sign in again.',true);
  }
 }
+let historyLoaded=false;
+function historyNode(tag, className, textValue){
+  const node=document.createElement(tag);
+  if(className)node.className=className;
+  if(textValue!==undefined)node.textContent=String(textValue);
+  return node;
+}
+async function loadHistory(force=false){
+  if(historyLoaded&&!force)return;
+  const container=byId('historyEntries'),status=byId('historyStatus');
+  status.textContent='Loading your reflections…';
+  container.replaceChildren();
+  try{
+    const result=await call('my-journal');
+    const entries=Array.isArray(result.entries)?result.entries:[];
+    historyLoaded=true;
+    status.textContent=entries.length?(entries.length+' recent reflection'+(entries.length===1?'':'s')+' available on every signed-in device.'):'You have not submitted a reflection yet.';
+    for(const item of entries){
+      const details=historyNode('details','history-entry');
+      const heading=historyNode('summary','',(item.title||item.recording_id||'Recording')+' · '+(item.submitted_at?new Date(item.submitted_at).toLocaleDateString():'Saved entry'));
+      details.append(heading);
+      const fields=[['impressions','What do you hear?'],['surprises','What surprises you?'],['associations','Memories, associations, or questions'],['note','Additional observations']];
+      const response=item.response||{};
+      for(const [field,label] of fields){
+        if(typeof response[field]==='string'&&response[field].trim()){
+          details.append(historyNode('h3','',label),historyNode('p','',response[field]));
+        }
+      }
+      if(typeof item.recording_id==='string'&&/^[A-Z]{3}-\d{4,6}$/.test(item.recording_id)){
+        const link=historyNode('a','','Write another reflection for this recording →');
+        link.href='/contributor.html?recording='+encodeURIComponent(item.recording_id);
+        details.append(link);
+      }
+      container.append(details);
+    }
+  }catch(error){
+    status.textContent='Your saved history could not be loaded. Please try Refresh history.';
+    historyLoaded=false;
+  }
+}
+byId('reloadHistory').addEventListener('click',()=>loadHistory(true));
 byId('signin').addEventListener('submit',async e=>{
  e.preventDefault();
  const email=byId('email').value.trim();
@@ -134,12 +176,12 @@ byId('verifyCode').addEventListener('submit',async e=>{
 });
 byId('inviteForm').addEventListener('submit',async e=>{e.preventDefault();try{const d=await call('invite',{name:byId('inviteName').value.trim(),email:byId('inviteEmail').value.trim()});show('Invitation sent successfully.');byId('inviteForm').reset();}catch(err){show(err.message,true);}});
 byId('activate').addEventListener('click',async()=>{if(!byId('consent').checked){show('Please review and accept the participation terms.',true);return;}try{const d=await call('activate',{consent:true});show('Registration complete. Welcome.');byId('participant').textContent=d.participant_id;await refresh();}catch(e){show(e.message,true);}});
-byId('journal').addEventListener('submit',async e=>{e.preventDefault();if(!selectedId){show('Choose a recording from the music library first.',true);return;}const button=byId('saveEntry');button.disabled=true;try{await call('journal',{recording_id:selectedId,response:{impressions:byId('impressions').value,surprises:byId('surprises').value,associations:byId('associations').value,note:byId('note').value}});byId('journal').reset();byId('journal').classList.add('hidden');byId('journalSaved').classList.remove('hidden');byId('journalSaved').scrollIntoView({behavior:'smooth',block:'center'});}catch(err){show(err.message,true);}finally{button.disabled=false;}});
+byId('journal').addEventListener('submit',async e=>{e.preventDefault();if(!selectedId){show('Choose a recording from the music library first.',true);return;}const button=byId('saveEntry');button.disabled=true;try{await call('journal',{recording_id:selectedId,response:{impressions:byId('impressions').value,surprises:byId('surprises').value,associations:byId('associations').value,note:byId('note').value}});byId('journal').reset();byId('journal').classList.add('hidden');byId('journalSaved').classList.remove('hidden');byId('journalSaved').scrollIntoView({behavior:'smooth',block:'center'});void loadHistory(true);}catch(err){show(err.message,true);}finally{button.disabled=false;}});
 byId('anotherEntry').addEventListener('click',()=>{prepareRecording();byId('impressions').focus();});
 byId('suggestionForm').addEventListener('submit',async e=>{e.preventDefault();const btn=byId('sendSuggestion');btn.disabled=true;const status=byId('suggestionStatus');try{await call('suggest',{title:byId('suggestTitle').value,artist:byId('suggestArtist').value,tradition:byId('suggestTradition').value,country:byId('suggestCountry').value,source_url:byId('suggestUrl').value,note:byId('suggestNote').value});status.textContent='Your suggestion has been submitted for review. Thank you.';status.className='notice';byId('suggestionForm').reset();}catch(err){status.textContent=err.message;status.className='notice error';}finally{btn.disabled=false;}});
 
 byId('withdraw').addEventListener('click',async()=>{if(!confirm('End participation and disable future journal submissions?'))return;try{await call('withdraw',{confirm:true});show('Your participation has ended.');await refresh();}catch(e){show(e.message,true);}});
-byId('signout').addEventListener('click',async()=>{await sb.auth.signOut();view('signedout');show('Signed out.');});
+byId('signout').addEventListener('click',async()=>{await sb.auth.signOut();historyLoaded=false;byId('historyEntries').replaceChildren();view('signedout');show('Signed out.');});
 sb.auth.onAuthStateChange((event)=>{if(event==='SIGNED_IN'||event==='SIGNED_OUT')setTimeout(refresh,0);});
 refresh();
 </script></body></html>
