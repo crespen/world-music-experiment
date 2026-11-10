@@ -103,7 +103,7 @@ async function hydrateAccountPortal(){
   const current=document.getElementById('accountPortalLink');
   if(!current)return;
   if(admin?.administrator===true){
-   current.href='/founder.html?v=mobile-session-v3';current.textContent='Founder Dashboard ↗';
+   current.href='/founder.html?v=editorial-v1';current.textContent='Founder Dashboard ↗';
    current.setAttribute('aria-label','Open Founder Dashboard');
    return;
   }
