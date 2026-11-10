@@ -7,8 +7,17 @@ body{font-family:"DM Sans",Segoe UI,Arial,sans-serif}
 h1,h2,.journal-heading strong{font-family:"Fraunces",Georgia,serif;font-weight:500;letter-spacing:-.018em}
 header a{font-family:"Fraunces",Georgia,serif;font-weight:600;letter-spacing:-.015em}
 h1{line-height:1.13}h2{line-height:1.23}
+
+header{background:linear-gradient(110deg,#082f34,#15393e);border-bottom:1px solid #c59b65;align-items:center;padding-top:12px;padding-bottom:12px}
+.e2e-masthead-link{display:block;line-height:0;flex:0 1 350px;min-width:0}
+.e2e-masthead-link img{display:block;width:100%;height:auto}
+header div a{font:600 12px "DM Sans",sans-serif;color:#f2d5a8}
+h1,h2{color:#f9e7ce}.caps{color:#e6bd87}
+.panel,.metric{background:linear-gradient(135deg,#21444c,#17333f);box-shadow:0 10px 28px #0618232a,inset 0 1px #f1ca9816}
+button:not(.secondary){background:linear-gradient(115deg,#f1d394,#d7a35c);color:#1b2f31}
+@media(max-width:720px){header{flex-direction:row;align-items:center;gap:8px;padding:9px 17px}.e2e-masthead-link{flex-basis:300px}header>div{display:flex;flex-direction:column;gap:3px;text-align:right}header div a{font-size:10px}}
 </style></head>
-<body><header><a href="/" style="font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:11px"><img src="/assets/earth-to-ear-mark.svg" width="38" height="38" alt="">Earth to Ear</a><div><a href="/bulletin.html">Listening Bulletin</a> · <a href="/contributor.html">My Journal / Invitations</a> · <a href="/#/explore">Music Library</a></div></header>
+<body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a> · <a href="/contributor.html">My Journal / Invitations</a> · <a href="/#/explore">Music Library</a></div></header>
 <main><div class="caps">Private founder workspace</div><h1>Research Dashboard</h1><p class="muted">Aggregated listening patterns and individual contributions. Accessible only to authorized founder accounts.</p><div id="notice" class="notice">Checking your founder access…</div>
 <section id="dashboard" class="hidden">
 <div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
