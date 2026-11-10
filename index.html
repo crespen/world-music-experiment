@@ -162,6 +162,55 @@ body{font-family:"DM Sans",Segoe UI,Arial,sans-serif}
  html.ed-exact-art-ready .ed-news-art-2{background-position:-335px -805px}
  html.ed-exact-art-ready .ed-news-art .ed-sound-symbol{display:none}
 }
+
+/* Mobile-specific refinement — one-row masthead and readable hero. Desktop artwork untouched. */
+@media(max-width:850px){
+  .navinner.wrap{position:relative;flex-wrap:nowrap;align-items:center;min-height:78px;padding:9px 0;gap:10px}
+  .brand{min-width:0;flex:1 1 auto;white-space:nowrap;gap:10px}
+  .brand-copy{min-width:0}
+  .brand-title{font-size:clamp(21px,3.15vw,27px);line-height:1.13}
+  .brand-subtitle{font-size:9px;line-height:1.35;letter-spacing:.055em;white-space:nowrap}
+  .brand-emblem{height:48px;width:48px;flex:0 0 48px}
+  .brand-emblem img{width:43px;height:43px}
+  .mobilemenu{display:block;flex:0 0 auto;margin:0;white-space:nowrap;padding:9px 12px}
+  .links{position:absolute;z-index:40;top:calc(100% + 2px);left:0;right:0;width:auto;margin:0;padding:14px;box-shadow:0 17px 40px rgba(0,0,0,.34);background:#102d35;border-radius:0 0 14px 14px;border:1px solid #5a8580}
+  .links.open{display:flex}
+  .links a{font-size:14px;padding:10px}
+}
+@media(max-width:650px){
+  .navinner.wrap{min-height:73px;padding:8px 0}
+  .brand{gap:8px}
+  .brand-title{font-size:clamp(21px,6.1vw,25px)}
+  .brand-subtitle{font-size:8px;letter-spacing:.03em}
+  .brand-emblem{height:43px;width:43px;flex-basis:43px}
+  .brand-emblem img{width:39px;height:39px}
+  .mobilemenu{font-size:12px;padding:8px 10px}
+  .ed-hero-inner.wrap{display:flex;flex-direction:column;min-height:0;padding-top:30px;padding-bottom:28px}
+  .ed-hero-copy{width:100%;padding:4px 0 0}
+  .ed-hero h1{font-size:clamp(34px,9.1vw,43px);line-height:1.09;letter-spacing:-.037em;max-width:100%;margin:15px 0 17px}
+  .ed-hero-copy p{font-size:15.5px;line-height:1.62;max-width:100%;margin-bottom:22px}
+  .ed-hero-ctas{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .ed-hero-ctas .ed-btn{white-space:normal;font-size:12px;line-height:1.24;min-height:49px;padding:10px 11px;text-align:center}
+  .ed-hero-art{position:relative;left:auto;right:auto;top:auto;width:100%;height:212px;margin:6px 0 -4px;opacity:1;pointer-events:none}
+  .ed-hero-art img{display:block;object-fit:contain;filter:none}
+  html.ed-exact-art-ready .ed-hero-art{background:url('/assets/approved-homepage-reference.webp') -467px -70px/900px 600px no-repeat}
+  html.ed-exact-art-ready .ed-hero-art img{display:none}
+  .ed-sound-panel{margin-top:16px;gap:12px;padding:14px;border-radius:15px}
+  .ed-sound-text strong{font-size:16px;line-height:1.24}
+  .ed-sound-text span{font-size:12px;line-height:1.45}
+  .ed-sound-action{width:100%;justify-content:center}
+  .ed-pathway-grid{grid-template-columns:1fr 1fr;column-gap:8px;row-gap:8px}
+  .ed-pathway{padding:9px 5px;border-right:0}
+  .ed-news-card:hover{transform:none}
+}
+@media(max-width:365px){
+  .brand-emblem{height:39px;width:39px;flex-basis:39px}
+  .brand-emblem img{width:36px;height:36px}
+  .brand-title{font-size:21px}
+  .brand-subtitle{font-size:7.5px}
+  .mobilemenu{padding:7px 8px}
+  .ed-hero h1{font-size:33px}
+}
 </style><meta name="theme-color" content="#091c28"></head><body><div id="app"></div><script>
 const CATALOG_ENDPOINT='https://jhgyjqafpnzwfpzwtpki.supabase.co/rest/v1/music_catalog';
 const PUBLISHABLE_KEY='sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r';
@@ -204,7 +253,7 @@ let africaCountries=[...new Set(R.map(r=>r.country==='Ethiopia / United States'?
 const recordingCount=n=>n+' recording'+(n===1?'':'s');
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="#/" class="brand" aria-label="Earth to Ear — home"><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment <span class="brand-subtitle-dot">·</span> Listen beyond borders</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/country')?'active':''}" href="#/explore">Explore Music</a><a href="#/about" class="${route==='/about'?'active':''}">The Experiment</a><a href="#/participate" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Updates</a><a class="invite" href="/contributor.html">My Portal ↗</a></nav></div></header>`;
+const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="#/" class="brand" aria-label="Earth to Ear — home"><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/country')?'active':''}" href="#/explore">Explore Music</a><a href="#/about" class="${route==='/about'?'active':''}">The Experiment</a><a href="#/participate" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Updates</a><a class="invite" href="/contributor.html">My Portal ↗</a></nav></div></header>`;
 const footer=()=>`<footer class="footer"><div class="wrap footerinner"><div><strong>EARTH TO EAR</strong><div>A World Music Experiment</div><div>Listen first. Discover without ranking.</div></div><div>Library → Journal → Archive → Laboratory<br><span class="status">Public listening library · Research participation by invitation only</span></div></div></footer>`;
 function map(){return `<div class="map-frame"><img src="${mapSrc}" alt="Equal Earth equal-area world map with country boundaries, preserving comparative land areas"></div><div class="map-foot"><span>Equal Earth projection · Countries shown at proportional area</span><span>Browse by continent using the cards below ↓</span></div>`;}
 const tiles=()=>`<div class="tiles">${continentList.map((c,i)=>i===0?`<a class="region active" href="#/africa" aria-label="Explore Africa"><span class="caps">OPEN COLLECTION</span><b>${c}</b><small>${R.length} recordings to explore →</small></a>`:`<div class="region locked" aria-label="${safe(c)} — collection not yet open"><span class="caps">COMING LATER</span><b>${safe(c)}</b><small>Collection not yet available</small></div>`).join('')}</div>`;
