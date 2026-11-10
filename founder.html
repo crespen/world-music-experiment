@@ -27,14 +27,14 @@ button:not(.secondary){background:linear-gradient(115deg,#f1d394,#d7a35c);color:
 
 /* Keep founder navigation and research controls usable in narrow mobile browsers. */
 header{min-width:0}
-header>div{display:flex;flex-wrap:wrap;justify-content:flex-end;column-gap:10px;row-gap:5px;min-width:0}
+header>div{display:flex;flex-wrap:wrap;justify-content:flex-end;column-gap:16px;row-gap:9px;min-width:0}
 header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",sans-serif;line-height:1.3}
 .panel,.metric,main{min-width:0;overflow-wrap:anywhere}
 .catalog-entry summary{overflow-wrap:anywhere}
 @media(max-width:700px){header{flex-wrap:wrap;align-items:flex-start;gap:6px;padding:10px 15px}.e2e-masthead-link{flex:1 1 240px;max-width:290px}header>div{flex:1 1 100%;justify-content:flex-start;text-align:left;gap:8px 14px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}main{width:calc(100% - 28px);padding-top:24px}.panel{padding:17px 14px}.row{align-items:flex-start}.row button{max-width:100%;white-space:normal}}
 @media(max-width:390px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.metric{padding:10px}.metric strong{font-size:26px}}
 </style></head>
-<body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a> · <a href="/contributor.html">My Journal / Invitations</a> · <a href="/explore/">Music Library</a></div></header>
+<body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a><a href="/contributor.html">My Journal / Invitations</a><a href="/explore/">Music Library</a></div></header>
 <main><div class="caps">Private founder workspace</div><h1>Research Dashboard</h1><p class="muted">Aggregated listening patterns and individual contributions. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
 <div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
