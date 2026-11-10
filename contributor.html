@@ -252,7 +252,62 @@ byId('anotherEntry').addEventListener('click',()=>{prepareRecording();byId('impr
 byId('suggestionForm').addEventListener('submit',async e=>{e.preventDefault();const btn=byId('sendSuggestion');btn.disabled=true;const status=byId('suggestionStatus');try{await call('suggest',{title:byId('suggestTitle').value,artist:byId('suggestArtist').value,tradition:byId('suggestTradition').value,country:byId('suggestCountry').value,source_url:byId('suggestUrl').value,note:byId('suggestNote').value});status.textContent='Your suggestion has been submitted for review. Thank you.';status.className='notice';byId('suggestionForm').reset();}catch(err){status.textContent=err.message;status.className='notice error';}finally{btn.disabled=false;}});
 
 byId('withdraw').addEventListener('click',async()=>{if(!confirm('End participation and disable future journal submissions?'))return;try{await call('withdraw',{confirm:true});show('Your participation has ended.');await refresh();}catch(e){show(e.message,true);}});
-byId('signout').addEventListener('click',async()=>{await sb.auth.signOut();historyLoaded=false;byId('historyEntries').replaceChildren();view('signedout');show('Signed out.');});
+// Use Supabase's explicitly local logout scope. The SDK's signOut() can
+// wait on an existing mobile-browser auth lock, and its default scope is global.
+// A direct local-scope revoke avoids signing out the user's other devices.
+let signoutInProgress=false;
+async function signOutThisBrowser(){
+ if(signoutInProgress)return;
+ signoutInProgress=true;
+ const button=byId('signout');
+ button.disabled=true;
+ button.textContent='Signing out…';
+ let access=null;
+ try{
+  const stored=JSON.parse(localStorage.getItem(sessionStorageKey)||'null');
+  if(stored&&typeof stored.access_token==='string')access=stored.access_token;
+ }catch(error){}
+ let revoked=false;
+ if(access){
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),8000);
+  try{
+   const response=await fetch('https://jhgyjqafpnzwfpzwtpki.supabase.co/auth/v1/logout?scope=local',{
+    method:'POST',signal:controller.signal,
+    headers:{
+     'apikey':'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r',
+     'Authorization':'Bearer '+access
+    }
+   });
+   revoked=response.ok;
+  }catch(error){
+   // Even with no network, we can clear this browser's credentials.
+  }finally{clearTimeout(timeout);}
+ }
+ try{
+  // Stop auto-refresh before clearing credentials and reloading the page.
+  try{void sb.auth.stopAutoRefresh();}catch(error){}
+  localStorage.removeItem(sessionStorageKey);
+ }catch(error){
+  button.disabled=false;
+  button.textContent='Sign out';
+  signoutInProgress=false;
+  show('Could not clear sign-in data in this browser. Check browser storage settings and try again.',true);
+  return;
+ }
+ historyLoaded=false;
+ byId('historyEntries').replaceChildren();
+ // Force a new page load so no stale in-memory session remains usable.
+ location.replace('/contributor.html?signed_out='+(revoked?'local':'offline'));
+}
+byId('signout').addEventListener('click',signOutThisBrowser);
+
 sb.auth.onAuthStateChange((event)=>{if(event==='SIGNED_IN'||event==='SIGNED_OUT')setTimeout(refresh,0);});
 refresh();
+const signoutResult=new URL(location.href).searchParams.get('signed_out');
+if(signoutResult==='local'){
+ show('Signed out of this browser. Other devices remain signed in.');
+}else if(signoutResult==='offline'){
+ show('This browser\'s sign-in data was cleared. Supabase could not confirm session revocation; the session token may remain valid until it expires. Other devices were not signed out.',true);
+}
 </script></body></html>
