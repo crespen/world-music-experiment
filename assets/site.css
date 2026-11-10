@@ -366,3 +366,13 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
  .navinner.wrap>.links a{white-space:nowrap;font-size:clamp(11px,.95vw,13px)}
  .navinner.wrap>.links .invite{padding:10px 13px}
 }
+
+/* Play original Wikimedia Commons audio in the homepage listening strip.
+   Keep attribution and licence visible alongside accessible native controls. */
+.e2e-commons-player{
+ max-width:560px;padding:14px;border:1px solid #5c8987;
+ border-radius:12px;background:rgba(7,34,44,.93);
+}
+.e2e-commons-player audio{display:block;width:100%;height:46px;max-width:100%}
+.e2e-commons-attribution{font-size:11px;color:#bbd5d0;line-height:1.6;margin-top:8px}
+.e2e-commons-attribution a{color:#f2cc8c;text-decoration:underline;text-underline-offset:2px}
