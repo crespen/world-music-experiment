@@ -305,3 +305,11 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 .e2e-intro-controls #introListenPlay{margin-left:5px}
 .e2e-intro-footnote{font-size:10px;line-height:1.4}
 }
+
+/* Masthead logo is the Home link; highlight it only on the active homepage. */
+.brand{position:relative}
+.brand[aria-current="page"]::after{content:"";position:absolute;bottom:4px;left:4px;width:42px;height:2px;border-radius:4px;background:#eac58f;box-shadow:0 0 7px #d6ab6f77;pointer-events:none}
+.brand:hover{filter:brightness(1.07)}
+.brand:focus-visible{outline:3px solid #f5cd8a;outline-offset:3px;border-radius:5px}
+@media(max-width:850px){.brand[aria-current="page"]::after{bottom:-4px;left:0;width:34px}}
+@media(prefers-reduced-motion:reduce){.brand:hover{transition:none}}
