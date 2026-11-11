@@ -49,7 +49,7 @@ let africaCountries=[...new Set(R.filter(r=>r.continent==='Africa').map(r=>r.cou
 const recordingCount=n=>n+' recording'+(n===1?'':'s');
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/north-america')||route.startsWith('/asia')||route.startsWith('/europe')||route.startsWith('/south-america')||route.startsWith('/oceania')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/how-to/" class="${route==='/how-to'?'active':''}">How to Listen</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account</a></nav></div></header>`;
+const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/north-america')||route.startsWith('/asia')||route.startsWith('/europe')||route.startsWith('/south-america')||route.startsWith('/oceania')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/journeys/">Musical Journeys</a><a href="/how-to/" class="${route==='/how-to'?'active':''}">How to Listen</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account</a></nav></div></header>`;
 // Keep the listening library fully public. Account navigation is an enhancement,
 // and server-side permissions are always authoritative.
 let accountClientPromise;
@@ -120,7 +120,7 @@ async function hydrateAccountPortal(){
   // No authentication dependency is allowed to block the public library.
  }
 }
-const footer=()=>`<footer class="footer"><div class="wrap footerinner"><div><strong>EARTH TO EAR</strong><div>A World Music Experiment</div><div>Listen first. Discover without ranking.</div></div><div><a href="/how-to/" class="footer-guidelink">How to Listen</a> · Library → Journal → Archive → Laboratory<br><span class="status">Public listening library · Private reflections by invitation only</span></div></div></footer>`;
+const footer=()=>`<footer class="footer"><div class="wrap footerinner"><div><strong>EARTH TO EAR</strong><div>A World Music Experiment</div><div>Listen first. Discover without ranking.</div></div><div><a href="/how-to/" class="footer-guidelink">How to Listen</a> · <a href="/journeys/" class="footer-guidelink">Musical Journeys</a> · Library → Journal → Archive → Laboratory<br><span class="status">Public listening library · Private reflections by invitation only</span></div></div></footer>`;
 function map(){return `<div class="map-frame"><img src="${mapSrc}" alt="Equal Earth equal-area world map with country boundaries, preserving comparative land areas"></div><div class="map-foot"><span>Equal Earth projection · Countries shown at proportional area</span><span>Browse by continent using the cards below ↓</span></div>`;}
 const continentHref=c=>'/'+slug(c)+'/';
 const tiles=()=>`<div class="tiles">${continentList.map(c=>
@@ -261,7 +261,7 @@ return `
    <div class="ed-kicker"><span class="ed-kicker-dot"></span> A WORLD MUSIC EXPERIMENT</div>
    <h1 id="welcome-title">A Global Listening<br><em>Experiment</em></h1>
    <p>Explore music from around the world, reflect on what you hear, and discover musical traditions that connect, surprise, and resonate across cultures. Invited contributors may also share private listening reflections.</p>
-   <div class="ed-hero-ctas"><a href="/explore/" class="ed-btn ed-btn-primary"><span aria-hidden="true">▶</span> Start Listening</a><a href="/how-to/" class="ed-btn ed-btn-outline">New here? How to Listen</a></div>
+   <div class="ed-hero-ctas"><a href="/explore/" class="ed-btn ed-btn-primary"><span aria-hidden="true">▶</span> Start Listening</a><a href="/how-to/" class="ed-btn ed-btn-outline">New here? How to Listen</a><a href="/journeys/" class="ed-btn ed-btn-outline">Follow a Musical Journey</a></div>
   </div>
   <div class="ed-hero-art"><img src="/assets/earth-to-ear-hero.svg" alt="Decorative golden sonic waves crossing a teal and gold globe"></div>
    </div>
@@ -537,7 +537,7 @@ function howTo(){
    ${guideRecording('NAM-0003','1920 · Hear a different, instrumental American tradition.')}
    ${guideRecording('NAM-0011','Contemporary · Hear a musician engaging American roots traditions today.')}
   </div>
-  <p class="ht-caveat">These are three distinct American musical threads—not a claimed straight line of influence or a finished genre history. Focused style-by-style journeys, including jazz, highlife and reggae, are being researched.</p>
+  <p class="ht-caveat">These are three distinct American musical threads—not a claimed straight line of influence. Ready for a deeper experience? <a href="/journeys/">Hear the jazz-vocal, Jamaican reggae and Ghanaian highlife journeys →</a></p>
   <p class="ht-freeform">A thought to carry with you: <em>What changed? What still sounds recognizable?</em></p>
  </div></section>
  <section class="section soft ht-closing"><div class="wrap">
