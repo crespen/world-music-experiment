@@ -1,6 +1,6 @@
 # Earth to Ear — Listener-first catalog guidelines
 
-Updated 10 November 2026.
+Updated 11 November 2026. See also `docs/open-continents-catalog-policy.md`, the standing open-continents decision.
 
 ## Purpose
 
@@ -33,11 +33,11 @@ Keep **performer credit separate from uploader, host or field-recordist credit**
 
 Seek variation across **communities, language, region, instrumentation, historical and contemporary practice, vocal traditions, rhythms, and the relationships between music and everyday life**. Do not use a one-per-country quota or rank cultures by musical value. A single performance doesn't represent a whole country, ethnicity, language or tradition.
 
-Keep Africa, North America and future continent collections distinct for browsing, while allowing comparisons across geographic boundaries. Include Indigenous music that artists and communities have *chosen to share publicly*, without placing private or restricted ceremonial material in the library.
+Keep all six open continent collections distinct for browsing, while allowing comparisons across geographic boundaries. No continent needs a minimum number of recordings to open; never restore locked tiles. Include Indigenous music that artists and communities have *chosen to share publicly*, without placing private or restricted ceremonial material in the library.
 
-### Initial breadth expansion · November 2026
+### Early breadth expansion · November 2026
 
-Added ten source-linked, journal-enabled performances: Pamyua, Jeremy Dutcher, The Halluci Nation, Lila Downs, Cimafunk, Lakou Mizik, iLe, Rhiannon Giddens, Alsarah & The Nubatones, and Emel. The active library contains 42 recordings, with 31 from Africa and 11 from North America.
+Added ten source-linked, journal-enabled performances: Pamyua, Jeremy Dutcher, The Halluci Nation, Lila Downs, Cimafunk, Lakou Mizik, iLe, Rhiannon Giddens, Alsarah & The Nubatones, and Emel. After opening all six continents, the active library contains 52 recordings across Africa, Asia, Europe, North America, South America and Oceania. All collections keep growing through discovery.
 
 Indigenous Ohkay Owingeh music remains an interest for future community-led sourcing; **no private ceremonial recording has been published**.
 
@@ -49,4 +49,4 @@ The November 2026 queue gives priority to Pamyua (Yup’ik drumsongs, Alaska) an
 
 ## Keep improving
 
-Add new recordings regularly, invite suggestions and corrections, and repair nonworking listening links as they arise. Use thoughtful musical curiosity—not an endless certification process—to guide growth.
+Add new recordings regularly across all six open continents. One worthwhile source-linked recording may be added immediately with the founder's authorization; no minimum batch, elaborate verification or geographic quota. Invite suggestions and corrections, and repair nonworking listening links as they arise. Use thoughtful musical curiosity—not an endless certification process—to guide growth.
