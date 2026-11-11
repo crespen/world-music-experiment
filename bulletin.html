@@ -14,9 +14,13 @@ h1,h2,h3{color:#f7e8d0}
 .milestone.earned{background:linear-gradient(140deg,#495b48,#26464a);border-color:#edc08d}
 .notice{background:#26484b}
 @media(max-width:600px){header{padding:10px 16px}.top{gap:10px}.e2e-masthead-link{flex-basis:290px}.top>a:not(.brand){font-size:11px}main{padding-top:28px}.panel{padding:20px}}
+</style><link rel="stylesheet" href="/assets/site-shell.css?v=stage1-v2"><script src="/assets/site-shell.js?v=stage1-v2" defer></script><style>
+.e2e-context-nav{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:13px 0 10px;margin-bottom:15px;border-bottom:1px solid #50757a}
+.e2e-context-nav a{font:600 12px/1.5 "DM Sans",system-ui,sans-serif;color:#f0d3a8;text-decoration:underline;text-underline-offset:4px}
+.e2e-context-nav a:focus-visible{outline:3px solid #9de3d5;outline-offset:3px}
 </style></head>
-<body><header><div class="top"><a class="brand e2e-masthead-link" href="/" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><a href="/contributor.html">My Journal &amp; Account</a></div></header>
-<main><span class="eyebrow">Your private listening community</span><h1>The Listening Bulletin</h1><p class="muted">New discoveries, your milestones, and project news—without rankings, streaks, or competition. Only you can see your personal milestones and notices.</p><div id="status" class="notice">The Listening Bulletin is private to registered contributors. <a href="/contributor.html">Sign in to view your milestones and project updates.</a></div>
+<body><div id="e2e-site-header"></div>
+<main><nav class="e2e-context-nav" aria-label="Contributor tools"><a href="/contributor.html">My Journal / Account</a><a href="/explore/">Explore Music</a></nav><span class="eyebrow">Your private listening community</span><h1>The Listening Bulletin</h1><p class="muted">New discoveries, your milestones, and project news—without rankings, streaks, or competition. Only you can see your personal milestones and notices.</p><div id="status" class="notice">The Listening Bulletin is private to registered contributors. <a href="/contributor.html">Sign in to view your milestones and project updates.</a></div>
 <div id="content" class="hidden">
 <div class="split"><section class="panel"><div class="eyebrow">Your listening journey</div><h2>Milestones</h2><div id="progress" class="muted"></div><div id="milestones" class="milestones"></div></section>
 <section class="panel"><div class="eyebrow">Personal notifications</div><h2>For you</h2><div id="notifications"></div></section></div>
@@ -63,4 +67,4 @@ function render(data){const p=data.progress||{};by('progress').textContent=(p.di
  const ann=by('announcements');ann.replaceChildren();if(!(data.announcements||[]).length)ann.append(node('p','muted','No announcements yet. New collections and project updates will appear here.'));for(const x of data.announcements||[]){const item=node('div','item');item.append(node('span','chip',x.topic),node('strong','',x.title),node('p','',x.body),node('small','',new Date(x.published_at).toLocaleDateString()));ann.append(item);}
 }
 try{const data=await bulletin();render(data);by('status').classList.add('hidden');by('content').classList.remove('hidden');}catch(e){by('status').replaceChildren(node('span','',e.message+' '));const a=node('a','', 'Go to contributor sign-in');a.href='/contributor.html';by('status').append(a);}
-</script></body></html>
+</script><div id="e2e-site-footer"></div></body></html>
