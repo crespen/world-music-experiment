@@ -79,9 +79,13 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 @media(max-width:770px){.cc-charts{grid-template-columns:1fr}.cc-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.cc-subpanel{padding:14px}}
 @media(max-width:390px){.cc-metric{padding:10px}.cc-metric strong{font-size:23px}.cc-toolbar label{min-width:100%;}}
 
+</style><link rel="stylesheet" href="/assets/site-shell.css?v=stage1-v2"><script src="/assets/site-shell.js?v=stage1-v2" defer></script><style>
+.e2e-context-nav{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:13px 0 10px;margin-bottom:15px;border-bottom:1px solid #50757a}
+.e2e-context-nav a{font:600 12px/1.5 "DM Sans",system-ui,sans-serif;color:#f0d3a8;text-decoration:underline;text-underline-offset:4px}
+.e2e-context-nav a:focus-visible{outline:3px solid #9de3d5;outline-offset:3px}
 </style></head>
-<body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a><a href="/contributor.html">My Journal / Invitations</a><a href="/explore/">Music Library</a></div></header>
-<main><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
+<body><div id="e2e-site-header"></div>
+<main><nav class="e2e-context-nav" aria-label="Founder tools"><a href="/contributor.html">My Journal / Invitations</a><a href="/bulletin.html">Listening Bulletin</a><a href="/explore/">Music Library</a></nav><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
 <div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
 
@@ -336,4 +340,4 @@ by('healthQuery').addEventListener('input',()=>{if(catalogHealth)renderCatalogHe
 by('healthFilter').addEventListener('change',()=>{if(catalogHealth)renderCatalogHealth(catalogHealth);});
 by('publishForm').addEventListener('submit',async e=>{e.preventDefault();const button=by('publishButton');const status=by('publishStatus');button.disabled=true;status.textContent='Publishing…';try{await call('publish-bulletin',{title:by('bulletinTitle').value,body:by('bulletinBody').value,topic:by('bulletinTopic').value});status.textContent='Published to the private Listening Bulletin.';by('publishForm').reset();}catch(error){status.textContent=error.message;}finally{button.disabled=false;}});
 by('searchForm').addEventListener('submit',e=>{e.preventDefault();offset=0;load();});by('previous').addEventListener('click',()=>{offset=Math.max(0,offset-size);load();});by('next').addEventListener('click',()=>{offset+=size;load();});load();
-</script></body></html>
+</script><div id="e2e-site-footer"></div></body></html>
