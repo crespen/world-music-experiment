@@ -59,11 +59,14 @@ Keep articles, audio episodes and catalog recordings linked, but independently e
 | MJ-006 | Gong kebyar ensemble innovation | Bali, Indonesia; early 20th century to present | How do orchestral textures and compositions change within a living practice? | Smithsonian National Museum of Asian Art performance | Needs sourcing |
 | MJ-007 | Māori-language song and contemporary reinterpretation | Aotearoa New Zealand | What do publicly released older and new recordings show—and what can be said only by Māori practitioners? | Public Māori recordings; seek Māori-led sources | Needs cultural-source review |
 | MJ-008 | Fado performance and reinvention | Portugal; select vocal and instrumental approaches | How do different generations of singers reshape interpretations without reducing the form to nostalgia? | Artist and Portuguese cultural sources to verify | Needs sourcing |
+| MJ-009 | Roots reggae: rhythm, voice and message in Jamaica | Jamaica; late 1960s roots, 1970s recordings, later renewal and contemporary roots-informed work | What changed and persisted in the bass/drum feel, group vocal approach, and social or spiritual storytelling? Use ska and rocksteady as brief antecedents; trace meaningful intervening generations, not Bob Marley alone; distinguish roots from dub, dancehall and lovers rock. | Smithsonian Folklife; Jamaica Information Service; practitioner archives | Research |
 
 **Links to initiating sources**:
 - https://www.cambridge.org/core/journals/popular-music/article/ghanaian-highlife-sound-recordings-of-the-1970s-the-legacy-of-francis-kwakye-and-the-ghana-film-studio/CC4AE025388AA3CA6ED5CCEC9C99AB4D
 - https://www.loc.gov/item/2021689506/
 - https://folkways-media.si.edu/docs/folkways/artwork/SFW40550.pdf
 - https://miamioh.edu/profiles/cca/tammy-l-kernodle.html
+- https://folklife.si.edu/magazine/black-history-in-roots-reggae-music
+- https://jis.gov.jm/jamaica/reggae/
 
 **Status terms:** Idea · Research · Evidence-ready · Draft · Founder review · Published. No hard quotas or artificial calendar deadlines.
