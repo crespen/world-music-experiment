@@ -42,6 +42,7 @@ Inspired by the **division of roles** on Neil deGrasse Tyson's *StarTalk*, which
 | P-010 | The rhythm you thought you understood | **One** rhythmic practice at a time (e.g. South Indian konnakol or an identified West African ensemble practice); compare *specific* audible examples without claiming universal rhythm | Percussion practitioner, knowledgeable local scholar | Musical demonstration | Needs sourcing |
 | P-011 | A singer, a language, a future | How one Indigenous artist draws on heritage recordings and current composition; avoid generalized “Indigenous music” framing | Appropriate artist or community scholar | Artist interview | Research |
 | P-012 | Why do some instruments outlive the music around them? | A documented case study on instrument continuity, adaptation and the meaning listeners hear in the instrument | Instrument-maker, performer, archivist | Artifact-led conversation | Idea |
+| P-013 | What makes a roots reggae rhythm recognizable? | Jamaican **roots reggae** and its evolving one-drop, rockers and steppers practices, alongside changes in lyrical voice and social message; use ska/rocksteady only as necessary context rather than claiming to cover the whole reggae family | Jamaican reggae drummer or bass player, producer, cultural historian | Focused musical journey + conversation | Research |
 
 ## Named potential guests — research roster
 
@@ -93,5 +94,6 @@ Every published episode should link to a companion **Listening Journey** or set 
 - Smithsonian Folkways team: https://folkways.si.edu/staff
 - Duke Louise Meintjes: https://scholars.duke.edu/person/meintjes
 - Jeremy Dutcher biography: https://nac-cna.ca/en/bio/jeremy-dutcher
+- Jamaican roots reggae: https://folklife.si.edu/magazine/black-history-in-roots-reggae-music
 
 *This is a private project planning document, not a public webpage or an assertion of future guest participation.*
