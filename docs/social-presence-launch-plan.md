@@ -20,13 +20,19 @@ Avoid a social-media treadmill. Do not chase daily posting, popularity contests,
 - Use an appropriate project-controlled contact email after confirming the mailbox exists. Do not invent `hello@earthtoear.com` or add fake mail links.
 - Consider trademark and handle conflicts before any paid promotion; an availability check at signup is definitive.
 
+## Video is a launch format, not a future podcast by-product
+
+**Amended November 11, 2026:** The first plan lacked a genuine video pathway despite prioritizing Instagram. The platform strategy is now **video-first**: create original, short-form listening invitations for **Instagram Reels and YouTube Shorts together**, *before* any podcast or long-form guest interview is ready. The same clean master can serve both platforms only when all music, images and footage are licensed for both. Bluesky remains a companion conversation channel, not a substitute for video. See [Short-Form Video Pilot](short-form-video-pilot.md).
+
+The creative center is a sound-led, curiosity-driven short video rather than static quote graphics: a clear musical moment or approved original demonstration, a human observation, and an invitation to hear the full recording at its source. First test videos should not depend on a podcast, an expensive studio, or a permanent on-camera host. No post is meaningful if it discusses musical audio without providing a way to hear it.
+
 ## Channel roles and startup priority
 
 | Channel | Primary job | Early content | Priority | Account state |
 | --- | --- | --- | --- | --- |
-| Instagram | First encounter: visual, reflective discovery | Editorial carousels, questions, original artwork, a source-linked "recording of the week" | Launch | Not created/verified |
-| Bluesky | Conversation with listeners, artists, archives and scholars | Short observations, source citations, focused journeys, meaningful replies | Launch | Not created/verified |
-| YouTube | Durable home for original founder introductions, interviews and eventual podcast | One short welcome video, then original recorded conversations when ready; curated playlists only when platform policies allow | Reserve/create channel early; publish deliberately | Not created/verified |
+| Instagram Reels | **Video-first** new-listener discovery | 20–75s original listening invitations, narrow then/between/now journeys, on-camera or narrated reactions and musician demos with approved audio | Joint first-wave channel | Not created/verified |
+| Bluesky | Conversation with listeners, artists, archives and scholars | Thoughtful commentary around released videos, source citations, questions and meaningful replies | Supporting channel | Not created/verified |
+| YouTube Shorts | **Video-first** discovery, plus a durable home for future original long-form content | The same rights-cleared original short-video pilots as Reels; longer interviews and podcast episodes only when ready | Joint first-wave channel | Not created/verified |
 | X (formerly Twitter) | Optional outreach, commentary and amplification | Reuse selected insights only if the conversation is productive | Reserve if desired; no posting obligation | Not created/verified |
 
 **Bluesky:** its official support allows a domain-based handle such as `@earthtoear.com`, set by verifying DNS ownership after creating an account. Do not attempt DNS changes until the account exists and the owner confirms the actual provider instructions: https://bsky.social/about/blog/4-28-2023-domain-handle-tutorial
@@ -39,7 +45,7 @@ Avoid a social-media treadmill. Do not chase daily posting, popularity contests,
 
 ## Content pillars: generate once, adapt intelligently
 
-1. **One Recording, One Invitation** — a specific sound and one plain question, with a direct source link on the site. No claim to have heard audio if not heard.
+1. **One Recording, One Invitation — video-first** — an actually hearable music excerpt or demonstration **cleared for the intended use**, a specific sound and one plain question, with a source link on the site. A talking-head explanation alone does not replace the musical encounter; no claim to have heard audio if not heard.
 2. **Across Generations** — a focused journey of *one musical style in one place*, with its overlooked middle generations, not a superficial "old vs new."
 3. **What Did That Bring to Mind?** — voluntary memory and cultural connections; never assign music based on genetics, nationality or ethnicity.
 4. **Meet the Maker / Keeper** — original, respectful artist/interview/archivist introductions.
@@ -56,11 +62,11 @@ Example starter posts (concepts, not published):
 
 **Foundations:** Confirm brand handles in the signup interfaces; establish owner access, recovery methods, two-factor authentication, profile art, biographies, website link, and basic branded cover assets. Use unique credentials. Keep owner/recovery control independent of an outside volunteer or eventual co-host.
 
-**Seed accounts, then share:** Have 3–5 original, thoughtful posts prepared for launch so the profile is not empty. Cross-post the underlying *idea*, but rewrite for each channel rather than identical spam. Begin with two well-developed posts each week on active platforms; adjust based on responses and capacity, not a quota.
+**Create pilot videos before opening:** Develop 1–3 inexpensive original 9:16 pilots following `docs/short-form-video-pilot.md`. Find at least one actual musical excerpt or performer demonstration with verified rights for video use so the format is genuinely sound-led. Publish a small set of deliberate Reels and Shorts; prepare optional supporting text/caption posts. Adjust cadence based on quality and capacity, not a quota. Cross-post only the clean master that is cleared on both platforms; use separate platform-specific edits where music rights differ.
 
 **Site connection:** Add social links to earthtoear.com **only after accounts are created and verified**. Return visitors to the canonical listening catalog, a relevant musical journey, or the About experience. Do not ask anonymous visitors to sign in just to hear public music.
 
-**Later:** Launch original recorded podcast/video content once host, co-host, guest rights, music use and editorial format are ready. Optional short-form clips should come from **your own** recorded conversation, not unauthorized excerpts of third-party performances.
+**Later:** Launch original long-form recorded podcast/video conversations once host, co-host, guest rights, music use and editorial format are ready. Short-form video begins **now, before** the podcast. Later excerpts from a podcast should come from **your own** recorded conversation, not unauthorized excerpts of third-party performances.
 
 ## Rights and respectful use
 
@@ -84,4 +90,4 @@ Do not publish individual private responses as metrics. A simple monthly editori
 
 **Proposed:** Reserve/check `@earthtoear` on Instagram, YouTube, Bluesky and optionally X; use the **actual platform setup flow** to verify availability. Bluesky can later display `@earthtoear.com` through domain verification. Credentials and authentication remain under founder control. The assistant must not claim to have created an account or added its social link to the site until that action is confirmed.
 
-**Current status:** Planning only; no social accounts created, no handles reserved, no posts scheduled or made, no website social navigation changes.
+**Current status:** Video-first plan and scripts/briefs only; no social accounts created, no handles reserved, no videos filmed, no music permissions verified, no posts scheduled or made, no website social navigation changes.
