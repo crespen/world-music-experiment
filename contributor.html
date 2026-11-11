@@ -202,7 +202,7 @@ async function loadHistory(force=false){
       const details=historyNode('details','history-entry');
       const heading=historyNode('summary','',(item.title||item.recording_id||'Recording')+' · '+(item.submitted_at?new Date(item.submitted_at).toLocaleDateString():'Saved entry'));
       details.append(heading);
-      const fields=[['impressions','What do you hear?'],['surprises','What surprises you?'],['associations','Memories, associations, or questions'],['note','Additional observations']];
+      const fields=[['impressions','Listening reflection'],['surprises','What surprises you?'],['associations','Memories, associations, or questions'],['note','Additional observations']];
       const response=item.response||{};
       for(const [field,label] of fields){
         if(typeof response[field]==='string'&&response[field].trim()){
