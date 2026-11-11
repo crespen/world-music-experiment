@@ -327,7 +327,7 @@ function listenLabel(r){
  if(u.includes('folkways.si.edu'))return '▶ Hear recording or preview';
  return '▶ Listen at source';
 }
-function recordingCard(r){return `<article class="card"><div class="cover" style="--c1:${safe(r.c1)};--c2:${safe(r.c2)}"><span class="id">${safe(r.id)} · ${safe((r.continent||'World').toUpperCase())}</span><div class="covertext">${safe(r.tradition)}</div></div><div class="cardmain"><div class="caps">${safe(String(r.region||"").toLowerCase().includes(String(r.country||"").toLowerCase())?r.region:[r.region,r.country].filter(Boolean).join(" · "))}</div><h3>${safe(r.title)}</h3><div class="meta">${safe(r.artist)} · ${safe(r.period)}</div><p>${safe(r.description)}</p>${r.source_credit?`<div class="source-credit">Source: ${safe(r.source_credit)}</div>`:""}<span class="tag">${safe(playbackLabel(r))}</span><div class="actions"><a href="${safe(r.listen)}" target="_blank" rel="noopener noreferrer" class="action">${safe(listenLabel(r))}</a><a href="/contributor.html?recording=${encodeURIComponent(r.id)}" class="action secondary" title="Sign in to your private listening journal; available to registered contributors by invitation only">✎ My Journal</a></div></div></article>`;}
+function recordingCard(r){return `<article class="card"><div class="cover" style="--c1:${safe(r.c1)};--c2:${safe(r.c2)}"><span class="id">${safe(r.id)} · ${safe((r.continent||'World').toUpperCase())}</span><div class="covertext">${safe(r.tradition)}</div></div><div class="cardmain"><div class="caps">${safe(String(r.region||"").toLowerCase().includes(String(r.country||"").toLowerCase())?r.region:[r.region,r.country].filter(Boolean).join(" · "))}</div><h3><a class="recording-title-link" href="${safe(recordingHref(r))}">${safe(r.title)}</a></h3><div class="meta">${safe(r.artist)} · ${safe(r.period)}</div><p>${safe(r.description)}</p>${r.source_credit?`<div class="source-credit">Source: ${safe(r.source_credit)}</div>`:""}<span class="tag">${safe(playbackLabel(r))}</span><div class="actions"><a href="${safe(r.listen)}" target="_blank" rel="noopener noreferrer" class="action">${safe(listenLabel(r))}</a><a href="/contributor.html?recording=${encodeURIComponent(r.id)}" class="action secondary" title="Sign in to your private listening journal; available to registered contributors by invitation only">✎ My Journal</a></div></div></article>`;}
 function filterPanel(list, idPrefix, heading){
  if(catalogLoadError)return `<section class="panel" role="status" aria-live="polite"><h2>The music catalog is temporarily unavailable</h2><p>Our listening sources could not be loaded. You can still read About the Experiment, How to Listen, and Musical Journeys. Please retry when ready.</p><button type="button" class="cta" data-catalog-retry="1">Retry loading recordings</button></section>`;
  return `<div class="playback-legend"><strong>How to listen:</strong> Select a recording to hear it at the original source. Some offer full performances; others offer excerpts. Listen for as long as your curiosity takes you.</div><div class="searchrow"><input class="searchbox" id="${idPrefix}query" type="search" placeholder="Search recordings, traditions, artists..." aria-label="Search music"><select class="select" id="${idPrefix}era" aria-label="Filter by era"><option value="all">All recording types</option><option>Historical recordings</option><option>Living traditions</option><option>20th-century transformations</option><option>Contemporary</option></select></div><div class="meta" id="${idPrefix}count"></div><div class="cardgrid" id="${idPrefix}grid" style="margin-top:18px"></div>`;}
@@ -342,7 +342,165 @@ if(idPrefix==='explore'){
 }else{grid.innerHTML=found.slice().sort((a,b)=>a.id.localeCompare(b.id)).map(recordingCard).join('');}}search.addEventListener('input',render);era.addEventListener('change',render);render()}
 function africa(){const africaList=R.filter(r=>r.continent==='Africa');return `<section class="countryhero"><div class="wrap">${breadcrumbs([{text:'Explore Music',href:'/explore/'},{text:'Africa'}])}<div class="eyebrow">Continent collection</div><h1>Africa: <span style="font-weight:350;color:#bbd7d3">a living musical landscape</span></h1><p class="lead">Explore historical recordings, living traditions, twentieth-century innovation and contemporary sounds. Every tradition has its own musical history, and every recording is a starting point.</p><div class="pills"><span class="pill">${catalogLoadError?'Recordings temporarily unavailable':africaList.length+' selections'}</span><span class="pill">Africa collection</span><span class="pill">Traditions · Transformations · Contemporary</span></div></div></section><section class="section"><div class="wrap"><div class="sectionhead"><div><div class="caps">Find a place</div><h2>Countries represented</h2></div></div><div class="tiles">${africaCountries.map(country=>`<a href="/#/country/${encodeURIComponent(country)}" class="region" style="min-height:130px"><div class="caps">AFRICA · ${recordingCount(africaList.filter(r=>countryMatches(r,country)).length)}</div><b style="font-size:21px">${safe(country)}</b><small>Explore the music →</small></a>`).join('')}</div></div></section><section class="section soft"><div class="wrap"><div class="sectionhead"><div><div class="caps">Listening library</div><h2>All Africa recordings</h2><p class="intro"><strong>Listen selectively:</strong> You are not expected to hear every recording. Some selections are full performances, while others are 30-second previews with paid access to the complete track. If a preview feels too brief to comment on, move to another selection.</p><p class="intro">Select a recording to hear it at its source. The prefilled My Journal form is reserved for invited contributors signed in with their registered email address. Playback availability varies by source and region.</p></div></div>${filterPanel(africaList,'africa')}</div></section>`;}
 function country(name){const selected=R.filter(r=>r.continent==='Africa'&&countryMatches(r,name));if(!selected.length)return explore();let regions=[...new Set(selected.map(r=>r.region))];let traditions=[...new Set(selected.map(r=>r.tradition))];return `<section class="countryhero"><div class="wrap">${breadcrumbs([{text:'Explore Music',href:'/explore/'},{text:'Africa',href:'/africa/'},{text:name}])}<div class="eyebrow">${safe(regions.join(' / '))} · Africa</div><h1>Explore ${safe(name)}</h1><p class="lead">A growing selection of recordings associated with ${safe(name)}. Explore multiple eras and musical forms without assuming that a small sample represents the whole country.</p><div class="pills"><span class="pill">${recordingCount(selected.length)} cataloged</span>${traditions.map(t=>`<span class="pill">${safe(t)}</span>`).join('')}</div></div></section><section class="section"><div class="wrap two"><div><div class="caps">Country collection</div><h2>Music across time</h2><p class="intro">The selections below include historical documentation and modern creative work. Traditional practices are living forms too; the date of a recording is not the origin date of its musical lineage.</p></div><div class="panel"><div class="caps">A research note</div><p>Country, recording location and cultural ancestry may differ. Some traditions cross national borders and diasporic communities. The archive preserves these distinctions for later study.</p></div></div></section><section class="section soft"><div class="wrap"><div class="sectionhead"><div><div class="caps">Listening selection</div><h2>Hear the recordings</h2><p class="intro">Open a recording at its original source. Then open the linked journal, which already identifies that selection.</p></div></div>${filterPanel(selected,'country')}</div></section><section class="minihero"><div class="wrap"><a href="/africa/" class="inline-link">← Back to all Africa recordings</a></div></section>`;}
-function explore(){return `<section class="countryhero"><div class="wrap">${breadcrumbs([{text:'Explore Music'}])}<div class="eyebrow">Global discovery</div><h1>Explore the world through music</h1><p class="lead">Browse by continent or search the growing listening library. All six continents are open. Each collection begins with individual performances and keeps growing through new musical discoveries.</p></div></section><section class="section"><div class="wrap"><h2>Continents</h2>${tiles()}</div></section><section class="section soft"><div class="wrap"><h2>All available recordings, by continent</h2>${filterPanel(R,'explore')}</div></section>`;}
+
+/* Stage 2 — listener-first discovery; all filtering uses public catalog metadata. */
+function recordingHref(r,from){
+ const returnPath=from||location.pathname+location.search+location.hash;
+ return '/recording/?id='+encodeURIComponent(r.id)+'&return='+encodeURIComponent(returnPath);
+}
+function explore(){
+ const spots=continentList.map(c=>R.find(r=>r.continent===c)).filter(Boolean).slice(0,3);
+ const spotHtml=spots.map((r,i)=>'<a class="edx-spotlight" href="'+safe(recordingHref(r,'/explore/'))+'"><span>'+safe(r.continent)+' · A starting point</span><strong>'+safe(r.title)+'</strong><small>'+safe(r.country)+' · '+safe(r.artist)+' · Explore recording →</small></a>').join('');
+ const regionHtml='<button type="button" class="edx-region" data-edx-region="all" aria-pressed="true"><span>Everywhere</span><small>'+R.length+'</small></button>'+
+ continentList.map(c=>'<button type="button" class="edx-region" data-edx-region="'+safe(c)+'" aria-pressed="false"><span>'+safe(c)+'</span><small>'+R.filter(r=>r.continent===c).length+'</small></button>').join('');
+ const periods=[...new Set(R.map(r=>r.period).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ const periodHtml='<option value="all">All periods and approaches</option>'+periods.map(p=>'<option value="'+safe(p)+'">'+safe(p)+'</option>').join('');
+ const browse=catalogLoadError?
+ '<section class="panel" role="status"><h2>Music catalog temporarily unavailable</h2><p>Browse, journeys and our background pages remain open, but we cannot list the recordings just now.</p><button type="button" class="cta" data-catalog-retry="1">Retry loading recordings</button></section>':
+ '<div class="edx-layout"><aside class="edx-place" aria-label="Browse by continent"><h3>Choose a place</h3><div class="edx-regions" id="edx-regions">'+regionHtml+'</div><p class="edx-side-note">No continent is a single musical story. These are entry points, not complete surveys.</p></aside>'+
+ '<div class="edx-results"><div class="edx-controls"><label class="edx-search-label" for="edx-query">Search a sound, artist, country or tradition</label><input id="edx-query" class="edx-search" type="search" autocomplete="off" placeholder="Try a singer, instrument, country or musical tradition…">'+
+ '<div class="edx-facets"><div class="edx-facet"><label for="edx-period">Period / approach</label><select id="edx-period">'+periodHtml+'</select></div><div class="edx-facet"><label for="edx-country">Country</label><select id="edx-country"><option value="all">All countries</option></select></div><button type="button" class="edx-clear" id="edx-clear">Clear filters</button></div></div>'+
+ '<div class="edx-result-top" id="edx-result-top" style="scroll-margin-top:110px"><div id="edx-count" class="edx-count" role="status" aria-live="polite" tabindex="-1"></div><span class="edx-link-note">Open a recording to read, then listen at its source.</span></div><div class="edx-list" id="edx-list"></div>'+
+ '<nav class="edx-pages" aria-label="Recording pages"><button id="edx-prev" type="button">← Previous</button><span id="edx-page-label"></span><button id="edx-next" type="button">Next →</button></nav>'+
+ '<div class="edx-after"><div><span class="caps">Want to follow a story?</span><h3>Hear music change over time.</h3><p>Follow jazz, reggae and Ghanaian highlife through linked recordings and short histories.</p></div><a href="/journeys/">Explore musical journeys →</a></div></div></div>';
+ return '<section class="edx-hero"><div class="wrap">'+breadcrumbs([{text:'Explore Music'}])+'<span class="caps">Global listening · Open to everyone</span><h1>A world of music.<br><em>Find your way in.</em></h1><p class="lead">You do not need to listen to everything. Choose a place, search for something that interests you, or begin with one recording and follow your curiosity.</p><div class="edx-hero-actions"><a href="#browse">Browse the recordings ↓</a><a href="/journeys/">Follow a musical journey</a></div></div></section>'+
+ (spots.length?'<section class="edx-overview"><div class="wrap"><div class="edx-heading"><div><span class="caps">No ranking, no required order</span><h2>Three ways to begin</h2></div><p>Three recordings from different places. Each is one possible starting point.</p></div><div class="edx-spotlights">'+spotHtml+'</div></div></section>':'')+
+ '<section class="edx-browser" id="browse"><div class="wrap"><div class="edx-browser-head"><span class="caps">The public listening library</span><h2>Discover the recordings</h2><p>Browse by continent, narrow by country or period, or search across the catalog. Nine selections appear at a time, so the library stays manageable as it grows.</p></div>'+browse+'</div></section>';
+}
+function exploreEntry(r){
+ const desc=String(r.description||'').trim();
+ const shortDesc=desc.length>235?desc.slice(0,232).replace(/\s+\S*$/,'')+'…':desc;
+ return '<article class="edx-record" data-continent="'+safe(r.continent)+'">'+
+ '<div class="edx-symbol" aria-hidden="true">'+safe((r.country||r.continent||'?').charAt(0).toUpperCase())+'</div>'+
+ '<div class="edx-record-copy"><span class="edx-eyebrow">'+safe(r.continent)+' · '+safe(r.country)+'</span>'+
+ '<h3><a href="'+safe(recordingHref(r))+'">'+safe(r.title)+'</a></h3>'+
+ '<div class="edx-byline">'+safe(r.artist)+' · '+safe(r.tradition)+' · '+safe(r.period)+'</div>'+
+ (shortDesc?'<p class="edx-description">'+safe(shortDesc)+'</p>':'')+'</div>'+
+ '<a class="edx-open" href="'+safe(recordingHref(r))+'" aria-label="Open details for '+safe(r.title)+'">Discover →</a></article>';
+}
+function bindExplore(){
+ const query=document.getElementById('edx-query'),period=document.getElementById('edx-period'),country=document.getElementById('edx-country'),region=document.getElementById('edx-regions'),results=document.getElementById('edx-list');
+ if(!query||!period||!country||!region||!results)return;
+ const params=new URLSearchParams(location.search);
+ const legacy=params.get('recording')||'';
+ const state={
+  q:(legacy||params.get('q')||'').trim(),
+  continent:continentList.includes(params.get('continent'))?params.get('continent'):'all',
+  period:params.get('period')||'all',
+  country:params.get('country')||'all',
+  page:Math.max(1,parseInt(params.get('page')||'1',10)||1)
+ };
+ if(legacy){state.continent='all';state.period='all';state.country='all';}
+ const count=document.getElementById('edx-count');
+ const prev=document.getElementById('edx-prev'),next=document.getElementById('edx-next'),pageLabel=document.getElementById('edx-page-label');
+ const pageSize=9;
+ if(![...period.options].some(o=>o.value===state.period))state.period='all';
+ query.value=state.q;period.value=state.period;
+ function updateCountries(){
+  const names=[...new Set(R.filter(r=>state.continent==='all'||r.continent===state.continent).map(r=>r.country).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  if(state.country!=='all'&&!names.includes(state.country))state.country='all';
+  country.innerHTML='<option value="all">All countries</option>'+names.map(n=>'<option value="'+safe(n)+'">'+safe(n)+'</option>').join('');
+  country.value=state.country;
+ }
+ function interleave(list){
+  if(state.continent!=='all')return list;
+  const buckets=continentList.map(c=>list.filter(r=>r.continent===c));
+  const remaining=list.filter(r=>!continentList.includes(r.continent));
+  const ordered=[];
+  while(buckets.some(b=>b.length)){for(const b of buckets){if(b.length)ordered.push(b.shift());}}
+  return ordered.concat(remaining);
+ }
+ function updateUrl(){
+  const u=new URLSearchParams();
+  if(state.q)u.set('q',state.q);
+  if(state.continent!=='all')u.set('continent',state.continent);
+  if(state.period!=='all')u.set('period',state.period);
+  if(state.country!=='all')u.set('country',state.country);
+  if(state.page>1)u.set('page',String(state.page));
+  history.replaceState(null,'','/explore/'+(u.toString()?'?'+u.toString():''));
+ }
+ function draw(jump){
+  const q=state.q.toLocaleLowerCase();
+  const matched=R.filter(r=>(state.continent==='all'||r.continent===state.continent)&&
+   (state.period==='all'||r.period===state.period)&&
+   (state.country==='all'||r.country===state.country)&&
+   (!q||[r.title,r.artist,r.tradition,r.country,r.continent,r.region,r.id,r.description].join(' ').toLocaleLowerCase().includes(q)));
+  const ordered=interleave(matched);
+  const pages=Math.max(1,Math.ceil(ordered.length/pageSize));
+  state.page=Math.min(Math.max(state.page,1),pages);
+  const start=(state.page-1)*pageSize;
+  const current=ordered.slice(start,start+pageSize);
+  updateUrl();
+  region.querySelectorAll('[data-edx-region]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.edxRegion===state.continent)));
+  count.innerHTML=matched.length?String(matched.length)+' recordings <small>Showing '+String(start+1)+'–'+String(start+current.length)+'</small>':'No recordings match those filters';
+  results.innerHTML=current.length?current.map(exploreEntry).join(''):'<div class="edx-empty">Nothing matches yet. Try another region, remove a filter, or search for a broader musical tradition.</div>';
+  pageLabel.textContent='Page '+state.page+' of '+pages;
+  prev.disabled=state.page<=1;next.disabled=state.page>=pages;
+  if(jump){document.getElementById('edx-result-top').scrollIntoView({block:'start',behavior:'instant'});count.focus({preventScroll:true});}
+ }
+ region.addEventListener('click',e=>{
+  const b=e.target.closest('[data-edx-region]');if(!b)return;
+  state.continent=b.dataset.edxRegion;state.country='all';state.page=1;updateCountries();draw(false);
+ });
+ query.addEventListener('input',()=>{state.q=query.value.trim();state.page=1;draw(false);});
+ period.addEventListener('change',()=>{state.period=period.value;state.page=1;draw(false);});
+ country.addEventListener('change',()=>{state.country=country.value;state.page=1;draw(false);});
+ document.getElementById('edx-clear').addEventListener('click',()=>{state.q='';state.continent='all';state.period='all';state.country='all';state.page=1;query.value='';period.value='all';updateCountries();draw(false);query.focus();});
+ prev.addEventListener('click',()=>{if(state.page>1){state.page--;draw(true);}});
+ next.addEventListener('click',()=>{state.page++;draw(true);});
+ updateCountries();draw(false);
+}
+function recordingReturnPath(){
+ const candidate=new URLSearchParams(location.search).get('return')||'/explore/';
+ try{
+  const u=new URL(candidate,location.origin);
+  if(u.origin===location.origin&&u.pathname!=='/recording/'&&!u.pathname.startsWith('/founder')&&!u.pathname.startsWith('/contributor')&&!u.pathname.startsWith('/bulletin'))
+   return u.pathname+u.search+u.hash;
+ }catch(error){}
+ return '/explore/';
+}
+function recordingDetail(){
+ const id=new URLSearchParams(location.search).get('id')||'';
+ const r=R.find(x=>x.id===id);
+ const back=recordingReturnPath();
+ if(!r){
+  return '<section class="rxd-hero"><div class="wrap"><h1>Recording details are not available</h1><p class="lead">'+(catalogLoadError?'The listening library is temporarily unavailable.':'The selected recording could not be found.')+'</p><p><a class="rxd-back" href="/explore/">← Return to Explore Music</a></p></div></section>';
+ }
+ const url=/^https?:\/\//i.test(r.listen||'')?r.listen:null;
+ const description=String(r.description||'').trim();
+ const meta=[r.country,r.tradition,r.period].filter(Boolean).map(x=>'<span>'+safe(x)+'</span>').join('');
+ return '<section class="rxd-hero"><div class="wrap">'+breadcrumbs([{text:'Explore Music',href:'/explore/'},{text:r.title}])+
+ '<a class="rxd-back" href="'+safe(back)+'">← Return to your listening results</a>'+
+ '<div class="rxd-kicker">'+safe(r.continent)+' · Recording '+safe(r.id)+'</div>'+
+ '<h1>'+safe(r.title)+'</h1><p class="rxd-subtitle">'+safe(r.artist)+'</p><div class="rxd-metadata">'+meta+'</div></div></section>'+
+ '<section class="wrap rxd-layout"><article class="rxd-panel"><span class="caps">Meet the recording</span><h2>Context before you listen</h2>'+
+ '<p>'+(description?safe(description):'This recording is part of the Earth to Ear open listening library. Explore its musical context and listen at the original source.')+'</p>'+
+ '<h3 class="rxd-subheading">What might you notice?</h3><p>Listen for a musical moment that catches your attention—a rhythm, a voice, the space between instruments, or something unexpected. You do not need technical terms or a correct answer.</p>'+
+ '<h3 class="rxd-subheading">Listen at its original source</h3><p>The audio or video remains with its original provider. Earth to Ear links to the source rather than hosting the recording. The source may offer a complete performance or an excerpt.</p>'+
+ '<div class="rxd-actions">'+(url?'<a href="'+safe(url)+'" target="_blank" rel="noopener noreferrer">'+safe(listenLabel(r))+' ↗</a>':'<span>Original source link unavailable.</span>')+
+ '<a class="rxd-outline" href="/contributor.html?recording='+encodeURIComponent(r.id)+'">My Journal (invited contributors)</a></div>'+
+ (r.source_credit?'<p class="source-credit">Source credit: '+safe(r.source_credit)+'</p>':'')+
+ '</article><aside class="rxd-side"><span class="caps">Stay oriented</span><h2>Your place is saved in the link.</h2><p>The original recording opens in a separate tab. Your Earth to Ear page stays here so you can return to the context and your previous filtered results.</p>'+
+ '<div class="rxd-actions"><a class="rxd-outline" href="'+safe(back)+'">← Back to browsing</a><button type="button" id="rxd-copy" class="rxd-outline">Copy recording link</button></div>'+
+ '<p id="rxd-copy-status" class="rxd-feedback" role="status" aria-live="polite"></p>'+
+ '<small>'+safe(playbackLabel(r))+' · Sharing a link does not require an account. Private journal reflections remain invitation-only.</small></aside></section>';
+}
+function bindRecordingDetail(){
+ const id=new URLSearchParams(location.search).get('id')||'';
+ const r=R.find(x=>x.id===id);
+ if(r){
+  document.title=r.title+' — '+r.artist+' | Earth to Ear';
+  const desc=document.querySelector('meta[name="description"]');
+  if(desc)desc.content='Explore '+r.title+' by '+r.artist+' and hear the recording at its original source.';
+ }
+ const button=document.getElementById('rxd-copy'),status=document.getElementById('rxd-copy-status');
+ if(button&&status)button.addEventListener('click',async()=>{
+  const link=location.origin+'/recording/?id='+encodeURIComponent(id);
+  try{await navigator.clipboard.writeText(link);status.textContent='Recording link copied.';}
+  catch(error){status.textContent='Copy this link: '+link;}
+ });
+}
+
 const continentIntros={
  Asia:'Hear shifting percussion, distinctive vocal techniques, gamelan ensembles and contemporary music across the many communities of Asia. These are openings, not a survey.',
  Europe:'Explore vocal polyphony, distinctive instruments and both inherited and contemporary European musical approaches. Each recording is one listening invitation.',
@@ -610,7 +768,7 @@ function bindFirstVisitGuide(){
  });
  try{dialog.showModal();}catch(error){dialog.remove();}
 }
-function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/how-to'?howTo():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page" id="main-content" tabindex="-1">${page}</main>`+footer();window.E2ESiteShell.bind();document.querySelectorAll('[data-catalog-retry]').forEach(button=>button.addEventListener('click',()=>location.reload()));void hydrateAccountPortal();if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();if(!catalogLoadError)bindFirstVisitGuide();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(!['/','/how-to','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(route==='/how-to'&&['#encounter','#connection','#journey'].includes(location.hash)){
+function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/how-to'?howTo():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/recording'?recordingDetail():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page" id="main-content" tabindex="-1">${page}</main>`+footer();window.E2ESiteShell.bind();document.querySelectorAll('[data-catalog-retry]').forEach(button=>button.addEventListener('click',()=>location.reload()));void hydrateAccountPortal();if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();if(!catalogLoadError)bindFirstVisitGuide();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(route==='/recording')bindRecordingDetail();if(route==='/explore')bindExplore();else if(!['/','/how-to','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest','/recording'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(route==='/how-to'&&['#encounter','#connection','#journey'].includes(location.hash)){
  const section=document.getElementById(location.hash.slice(1));
  if(section)requestAnimationFrame(()=>section.scrollIntoView({block:'start'}));
 }else if(location.hash==='#archival-listening'){
