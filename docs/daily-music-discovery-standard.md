@@ -16,7 +16,7 @@ Search across **all** of these recurring angles, never exclusively a single one:
 
 ## Geographic and source coverage
 
-Search in **currently open collections (Africa, North America)** and **not-yet-open collections (Asia, Europe, South America, Oceania)** every week. Do not use political borders as a musical quota; attend to communities, languages, diasporas, and internal diversity. "Locked" is a website status, not a reason to exclude discovery leads.
+Search **all six open continent collections** every week: Africa, Asia, Europe, North America, South America, Oceania. No locked-continent concept or minimum recording count. Political borders are not musical quotas; attend to communities, languages, diasporas and internal diversity. See `docs/open-continents-catalog-policy.md`.
 
 Actively rotate among **artist and label channels, local/regional broadcasters, independent radio, public archives and libraries, community and Indigenous-led organizations, cultural institutions, festival recordings, public broadcaster sessions, and major video/music platforms**. Seek creators' own uploads and regional sources. Prevent NPR Tiny Desk, KEXP, or Smithsonian from becoming the default: aim for **at most one Tiny Desk/KEXP item per daily brief**, unless unusually valuable, and routinely seek at least one previously unused provider.
 
@@ -36,7 +36,7 @@ Do not confuse the time the sound was captured with the age of a composition, ge
 4. Basic usability check only: reasonably correct title and performer, a direct publicly shareable source that appears to offer enough free audio to hear the performance (ideally 30 seconds or longer), and a distinctive one-sentence reason to listen. Avoid paywall-only leads. Note source restrictions if obvious; don't demand exhaustive provenance or permanent regional-playback guarantees.
 5. Respect publicly stated restrictions for culturally sensitive/community/ceremonial music. Prefer performances artists or communities intentionally make public. Do not embed, download or republish source audio as part of discovery.
 6. Identify standout finds and **which listening dimension is new** (e.g. voice technique, rhythm, ensemble, new popular sound, different context, historical contrast). If evidence is only descriptive, label it a *reason to sample*, not something you personally heard.
-7. Propose status **"Add candidate"**, **"Investigate further"**, or **"Not worth adding"**. Recommendations do not alter the live catalog or journal registry. Founder approves additions separately.
+7. Propose status **"Add candidate"**, **"Investigate further"**, or **"Not worth adding"**. Daily briefs do not automatically alter the live catalog or journal registry; the founder's instruction to publish is sufficient approval. Once approved, add the individual recording and its journal ID without waiting for a minimum number of recordings per continent.
 8. Maintain a dated list of unique promising candidates in `docs/music-discovery-ledger.md` when GitHub access is available. If not, include a compact ledger-ready table in the brief. Do not claim a ledger write that wasn't performed.
 9. Every week, re-examine source/format/style coverage and choose a new search direction; don't permanently prefer a particular provider or a western-harmony yardstick.
 
@@ -52,4 +52,4 @@ Offer a concise, scannable table with 4–6 candidates if available, each with:
 
 Close with **"Most surprising lead"** and **"Source we hadn't used before"** when applicable, plus one suggested cross-genre or cross-era pairing.
 
-Never present a candidate as already in the live catalog; never auto-publish. Avoid exoticizing language, universal claims about a culture, overconfident claims of having listened, and elaborate auditing rituals. The music is the priority.
+Never present a discovery candidate as already in the live catalog; never auto-publish without a founder instruction. All six collection pages are open permanently, including when a collection is very small. Avoid exoticizing language, universal claims about a culture, overconfident claims of having listened, and elaborate auditing rituals. The music is the priority.
