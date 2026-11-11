@@ -80,15 +80,12 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 @media(max-width:390px){.cc-metric{padding:10px}.cc-metric strong{font-size:23px}.cc-toolbar label{min-width:100%;}}
 
 
-button.metric-button{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;width:100%;min-height:112px;margin:0;border:1px solid #719c97;background:#1b414b;color:#f2efe8;padding:17px}
-button.metric-button small{font-weight:700;font-size:12px;color:#e8c58c;margin-top:5px}
-button.metric-button:hover{background:#29505a;border-color:#e8c58c}
-button.metric-button:focus-visible{outline:3px solid #f5dca3;outline-offset:3px}
-.directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.directory-entry{border:1px solid #668583;background:#173642;border-radius:10px;padding:16px;overflow-wrap:anywhere}
-.directory-entry strong{display:block;font-size:17px;color:#f4e0bd;margin-bottom:5px}
-.directory-entry a{display:block;word-break:break-word}
-.directory-entry p{margin:8px 0;font-size:13px}
+a.metric-link{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;min-height:112px;text-decoration:none;border:1px solid #87aaa0;background:#1b414b;color:#f2efe8;padding:17px;cursor:pointer}
+a.metric-link strong{color:#f2f3ec}
+a.metric-link span{color:#cfe0d9}
+a.metric-link small{color:#ffdaa4;font-weight:750;font-size:13px;text-decoration:underline;text-underline-offset:3px;margin-top:7px}
+a.metric-link:hover{background:#2b5860;border-color:#f2d09b;transform:translateY(-1px)}
+a.metric-link:focus-visible{outline:3px solid #ffdfa3;outline-offset:4px}
 .link-report-entry{background:#102d38;border:1px solid #577c7d;border-radius:12px;padding:17px;margin:12px 0}
 .link-report-entry h3{font-size:16px;margin:0 0 7px;color:#ffe3b9}
 .link-report-entry p{overflow-wrap:anywhere}
@@ -100,15 +97,9 @@ button.metric-button:focus-visible{outline:3px solid #f5dca3;outline-offset:3px}
 .e2e-context-nav a:focus-visible{outline:3px solid #9de3d5;outline-offset:3px}
 </style></head>
 <body><div id="e2e-site-header"></div>
-<main><nav class="e2e-context-nav" aria-label="Founder tools"><a href="/contributor.html">My Journal / Invitations</a><a href="/bulletin.html">Listening Bulletin</a><a href="/explore/">Music Library</a></nav><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
+<main><nav class="e2e-context-nav" aria-label="Founder tools"><a href="/contributor.html">My Journal / Invitations</a><a href="/bulletin.html">Listening Bulletin</a><a href="/explore/">Music Library</a><a href="/founder-contributors.html">Contributors</a></nav><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
-<div class="grid"><button type="button" class="metric metric-button" id="openContributors" aria-expanded="false" aria-controls="contributorDirectory"><strong id="countContributors">—</strong><span>Active contributors</span><small>Click to view names →</small></button><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
-<section class="panel" id="contributorDirectory" hidden>
- <div class="caps">Founder-only member directory</div><h2>Active contributors</h2>
- <p class="muted">Contributor names, email addresses and registration dates are visible only to the verified founder.</p>
- <p id="directoryStatus" role="status" class="muted">Select the Active contributors count to open this list.</p>
- <div class="directory-grid" id="directoryList"></div>
-</section>
+<div class="grid"><a class="metric metric-link" href="/founder-contributors.html" aria-label="Open active contributors directory"><strong id="countContributors">—</strong><span>Active contributors</span><small>View contributors →</small></a><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
 <section class="panel" id="catalogCompositionPanel" style="border-color:#b99a72">
  <div class="caps">Live catalog insights · Founder only</div>
  <h2>What's in our listening library?</h2>
@@ -346,31 +337,6 @@ by('feQueueBtn').addEventListener('click',()=>feAction('queue'));
 by('fePublishBtn').addEventListener('click',()=>feAction('publish'));
 by('feRefreshBtn').addEventListener('click',()=>loadFeatures().catch(e=>by('feStatus').textContent=e.message));
 
-let contributorDirectoryLoaded=false;
-async function loadContributorDirectory(){
- const status=by('directoryStatus'),root=by('directoryList');
- status.textContent='Loading active contributors…';
- try{
-  const {contributors}=await call('admin-contributors');
-  root.replaceChildren();
-  if(!contributors?.length)listEmpty(root,'No active registered contributors.');
-  else for(const x of contributors){
-   const item=el('article','directory-entry');
-   item.append(el('strong','',x.display_name||'Name not supplied'));
-   if(x.email){const link=el('a','',x.email);link.href='mailto:'+x.email;item.append(link);}
-   item.append(el('p','','Participant: '+(x.participant_id||'—')));
-   item.append(el('p','','Joined: '+(x.registered_at?new Date(x.registered_at).toLocaleDateString():'—')+' · Journal entries: '+(x.journal_entries??0)));
-   root.append(item);
-  }
-  status.textContent=contributors.length+' active contributor'+(contributors.length===1?'':'s')+' shown.';
-  contributorDirectoryLoaded=true;
- }catch(e){status.textContent='Unable to load contributors: '+e.message;}
-}
-by('openContributors').addEventListener('click',async()=>{
- const btn=by('openContributors'),panel=by('contributorDirectory'),opening=panel.hidden;
- panel.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));
- if(opening){panel.scrollIntoView({block:'start'});if(!contributorDirectoryLoaded)await loadContributorDirectory();}
-});
 async function loadLinkReports(){
  const status=by('linkIssueStatus'),root=by('linkIssueList');
  status.textContent='Loading listening link reports…';
