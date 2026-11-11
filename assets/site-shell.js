@@ -2,7 +2,7 @@
 (function(){
   'use strict';
   const items=[
-    {href:'/explore/',label:'Explore Music',match:p=>p==='/explore'||/^(\/africa|\/asia|\/europe|\/north-america|\/south-america|\/oceania|\/country)(\/|$)/.test(p)},
+    {href:'/explore/',label:'Explore Music',match:p=>p==='/explore'||p==='/recording'||/^(\/africa|\/asia|\/europe|\/north-america|\/south-america|\/oceania|\/country)(\/|$)/.test(p)},
     {href:'/journeys/',label:'Musical Journeys',match:p=>p==='/journeys'},
     {href:'/how-to/',label:'How to Listen',match:p=>p==='/how-to'},
     {href:'/about/',label:'About the Experiment',match:p=>p==='/about'||p==='/participate'},
