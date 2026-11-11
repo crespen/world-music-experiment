@@ -79,6 +79,21 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 @media(max-width:770px){.cc-charts{grid-template-columns:1fr}.cc-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.cc-subpanel{padding:14px}}
 @media(max-width:390px){.cc-metric{padding:10px}.cc-metric strong{font-size:23px}.cc-toolbar label{min-width:100%;}}
 
+
+button.metric-button{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;width:100%;min-height:112px;margin:0;border:1px solid #719c97;background:#1b414b;color:#f2efe8;padding:17px}
+button.metric-button small{font-weight:700;font-size:12px;color:#e8c58c;margin-top:5px}
+button.metric-button:hover{background:#29505a;border-color:#e8c58c}
+button.metric-button:focus-visible{outline:3px solid #f5dca3;outline-offset:3px}
+.directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.directory-entry{border:1px solid #668583;background:#173642;border-radius:10px;padding:16px;overflow-wrap:anywhere}
+.directory-entry strong{display:block;font-size:17px;color:#f4e0bd;margin-bottom:5px}
+.directory-entry a{display:block;word-break:break-word}
+.directory-entry p{margin:8px 0;font-size:13px}
+.link-report-entry{background:#102d38;border:1px solid #577c7d;border-radius:12px;padding:17px;margin:12px 0}
+.link-report-entry h3{font-size:16px;margin:0 0 7px;color:#ffe3b9}
+.link-report-entry p{overflow-wrap:anywhere}
+.link-report-entry .row{flex-wrap:wrap;gap:7px}
+.link-report-entry button{font-size:12px;min-height:40px}
 </style><link rel="stylesheet" href="/assets/site-shell.css?v=stage1-v4"><script src="/assets/site-shell.js?v=stage1-v3" defer></script><style>
 .e2e-context-nav{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;padding:13px 0 10px;margin-bottom:15px;border-bottom:1px solid #50757a}
 .e2e-context-nav a{font:600 12px/1.5 "DM Sans",system-ui,sans-serif;color:#f0d3a8;text-decoration:underline;text-underline-offset:4px}
@@ -87,8 +102,13 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 <body><div id="e2e-site-header"></div>
 <main><nav class="e2e-context-nav" aria-label="Founder tools"><a href="/contributor.html">My Journal / Invitations</a><a href="/bulletin.html">Listening Bulletin</a><a href="/explore/">Music Library</a></nav><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
-<div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
-
+<div class="grid"><button type="button" class="metric metric-button" id="openContributors" aria-expanded="false" aria-controls="contributorDirectory"><strong id="countContributors">—</strong><span>Active contributors</span><small>Click to view names →</small></button><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
+<section class="panel" id="contributorDirectory" hidden>
+ <div class="caps">Founder-only member directory</div><h2>Active contributors</h2>
+ <p class="muted">Contributor names, email addresses and registration dates are visible only to the verified founder.</p>
+ <p id="directoryStatus" role="status" class="muted">Select the Active contributors count to open this list.</p>
+ <div class="directory-grid" id="directoryList"></div>
+</section>
 <section class="panel" id="catalogCompositionPanel" style="border-color:#b99a72">
  <div class="caps">Live catalog insights · Founder only</div>
  <h2>What's in our listening library?</h2>
@@ -129,6 +149,14 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 <p class="muted" id="healthSummary">Loading catalog checks…</p><div class="row" style="margin:18px 0"><label for="healthQuery" class="muted">Find a recording <input id="healthQuery" type="search" placeholder="Artist, title, ID, country" style="display:block"></label><label for="healthFilter" class="muted">Show <select id="healthFilter" style="display:block;padding:11px;border:1px solid #7ba6a3;border-radius:8px;background:#0b2833;color:#fff"><option value="all">All recordings</option><option value="pending">Not checked yet</option><option value="attention">Needs attention</option><option value="reachable">Page reachable</option><option value="needs_manual">Playback or rights unreviewed</option></select></label></div>
 <div id="catalogItems"></div><div id="catalogCount" class="muted"></div><p style="margin-top:22px" class="muted">Scheduled automated checks run daily in batches. Newly discovered issues may be transient or restricted by the source provider. Human review is required before classifying playback and reuse rights.</p>
 <details style="margin-top:22px"><summary style="cursor:pointer;color:#f0cf9c;font-weight:650">Future welcome-audio candidates · rights review</summary><p class="muted">These are leads, not approved audio. No music clips are enabled or hosted until the composition, sound recording and any adaptation/commercial permissions have been confirmed.</p><div id="audioCandidates"></div></details>
+</section>
+<section class="panel" id="listenerLinkIssues">
+ <div class="caps">Listener feedback · Founder review</div>
+ <h2>Listening link reports <span id="linkIssueCount" class="muted"></span></h2>
+ <p class="muted">Visitors can flag links that do not play directly, lead to the wrong music, or require unnecessary navigation.</p>
+ <button type="button" class="secondary" id="refreshLinkIssues">Refresh reports</button>
+ <p id="linkIssueStatus" role="status" class="muted">Reports load after founder authorization.</p>
+ <div id="linkIssueList"></div>
 </section>
 <section class="panel"><div class="caps">Research intelligence · Level 1</div><h2>Listening activity by recording</h2><p class="muted">Submission counts show where contributors have documented observations, not how much a recording was played.</p><div id="recordings"></div></section>
 <section class="panel"><div class="caps">Qualitative research · Level 1</div><h2>Listening observations</h2><p class="muted">Recent anonymous excerpts from journal impressions. These are participant observations, not automated findings or ranked judgments.</p><div id="observations"></div></section>
@@ -317,6 +345,67 @@ async function feAction(operation,recordingId,warning){
 by('feQueueBtn').addEventListener('click',()=>feAction('queue'));
 by('fePublishBtn').addEventListener('click',()=>feAction('publish'));
 by('feRefreshBtn').addEventListener('click',()=>loadFeatures().catch(e=>by('feStatus').textContent=e.message));
+
+let contributorDirectoryLoaded=false;
+async function loadContributorDirectory(){
+ const status=by('directoryStatus'),root=by('directoryList');
+ status.textContent='Loading active contributors…';
+ try{
+  const {contributors}=await call('admin-contributors');
+  root.replaceChildren();
+  if(!contributors?.length)listEmpty(root,'No active registered contributors.');
+  else for(const x of contributors){
+   const item=el('article','directory-entry');
+   item.append(el('strong','',x.display_name||'Name not supplied'));
+   if(x.email){const link=el('a','',x.email);link.href='mailto:'+x.email;item.append(link);}
+   item.append(el('p','','Participant: '+(x.participant_id||'—')));
+   item.append(el('p','','Joined: '+(x.registered_at?new Date(x.registered_at).toLocaleDateString():'—')+' · Journal entries: '+(x.journal_entries??0)));
+   root.append(item);
+  }
+  status.textContent=contributors.length+' active contributor'+(contributors.length===1?'':'s')+' shown.';
+  contributorDirectoryLoaded=true;
+ }catch(e){status.textContent='Unable to load contributors: '+e.message;}
+}
+by('openContributors').addEventListener('click',async()=>{
+ const btn=by('openContributors'),panel=by('contributorDirectory'),opening=panel.hidden;
+ panel.hidden=!opening;btn.setAttribute('aria-expanded',String(opening));
+ if(opening){panel.scrollIntoView({block:'start'});if(!contributorDirectoryLoaded)await loadContributorDirectory();}
+});
+async function loadLinkReports(){
+ const status=by('linkIssueStatus'),root=by('linkIssueList');
+ status.textContent='Loading listening link reports…';
+ const {link_reports:data}=await call('admin-link-reports');
+ const items=data?.items||[];
+ by('linkIssueCount').textContent='· '+(data?.new_count||0)+' new';
+ root.replaceChildren();
+ if(!items.length)listEmpty(root,'No listener link reports yet.');
+ const reasons={broken:'Broken or unavailable',not_direct:'Not directly playable',wrong_recording:'Wrong recording',paywall:'Paywall / no usable preview',other:'Other issue'};
+ for(const x of items){
+  const item=el('article','link-report-entry');
+  item.append(el('h3','',x.title||x.recording_id));
+  item.append(el('p','muted',x.recording_id+' · '+(reasons[x.issue_kind]||x.issue_kind)+' · '+x.status+' · '+(x.created_at?new Date(x.created_at).toLocaleString():'—')));
+  if(x.note)item.append(el('p','',x.note));
+  if((x.source_url||'').startsWith('https://')||(x.source_url||'').startsWith('http://')){
+   const link=el('a','','Open reported music link');link.href=x.source_url;link.target='_blank';link.rel='noopener noreferrer';item.append(link);
+  }
+  const actions=el('div','row');
+  for(const [value,label] of [['reviewing','Mark reviewing'],['resolved','Mark resolved'],['dismissed','Dismiss']]){
+   const btn=el('button','secondary',label);btn.type='button';btn.disabled=x.status===value;
+   btn.addEventListener('click',async()=>{
+    btn.disabled=true;
+    try{const result=await call('admin-review-link-report',{id:x.id,status:value});
+     if(result.updated!==true)throw Error('No report updated');
+     await loadLinkReports();
+    }catch(e){status.textContent='Unable to update report: '+e.message;btn.disabled=false;}
+   });
+   actions.append(btn);
+  }
+  item.append(actions);root.append(item);
+ }
+ status.textContent=items.length+' recent reports available for review.';
+}
+by('refreshLinkIssues').addEventListener('click',()=>loadLinkReports().catch(e=>by('linkIssueStatus').textContent=e.message));
+
 async function load(){
  notice('Checking founder access and loading research summary…');
  try{
@@ -329,6 +418,7 @@ async function load(){
   try{await loadFeatures();}catch(e){by('feStatus').textContent='Editorial controls unavailable: '+e.message;}
   try{await loadCatalogHealth();}
   catch(e){by('healthSummary').textContent='Catalog Health could not load: '+e.message;}
+  try{await loadLinkReports();}catch(e){by('linkIssueStatus').textContent='Unable to load link reports: '+e.message;}
   try{const {insights}=await call('admin-insights');renderInsights(insights);}
   catch(e){console.warn('Qualitative insights unavailable',e);by('observations').textContent='Qualitative insights are temporarily unavailable.';}
  }catch(e){
