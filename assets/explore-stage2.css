@@ -108,3 +108,9 @@
 }
 @media(max-width:470px){.edx-facets{grid-template-columns:1fr}.edx-clear{grid-column:auto}.edx-record{grid-template-columns:40px minmax(0,1fr);gap:9px}.edx-symbol{width:38px;height:42px;font-size:23px}.edx-description{-webkit-line-clamp:2}.edx-pages button{padding:9px 11px}.edx-pages span{font-size:12px}}
 @media(prefers-reduced-motion:reduce){.edx-spotlight:hover{transform:none}}
+
+/* Direct reporting and discovery actions on each compact result */
+.edx-item-actions{display:flex;flex-direction:column;align-items:stretch;gap:7px;min-width:140px}
+.edx-item-actions .e2e-report-link{font-size:11px;padding:9px 7px}
+.edx-item-actions .edx-open{text-align:center}
+@media(max-width:1050px){.edx-item-actions{grid-column:2;flex-direction:row;flex-wrap:wrap;min-width:0;align-items:center}}
