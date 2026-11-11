@@ -1,5 +1,7 @@
 
 /* Shared public + private Earth to Ear shell. Scoped to avoid rewriting page layouts. */
+html{scroll-padding-top:110px}
+
 .e2e-skip{position:fixed;left:12px;top:-110px;z-index:5000;padding:13px 18px;border-radius:8px;background:#f2d6a5;color:#092a32!important;font:700 14px "DM Sans",sans-serif;text-decoration:none}
 .e2e-skip:focus{top:12px;outline:3px solid #86d9cd;outline-offset:2px}
 .e2e-global-header,.e2e-global-header *,.e2e-global-footer,.e2e-global-footer *{box-sizing:border-box}
@@ -27,7 +29,7 @@
  .e2e-menu-toggle{display:inline-flex;align-items:center;gap:7px;margin-left:auto}
  .e2e-primary-nav{display:none;flex:0 0 100%;width:100%;margin:0;flex-direction:column;align-items:stretch;gap:0;padding:8px 0 13px;border-top:1px solid #52747a}
  .e2e-primary-nav.is-open{display:flex}
- .e2e-primary-nav a{white-space:normal;padding:13px 10px;font-size:14px;min-height:44px}
+ .e2e-global-header .e2e-primary-nav a{white-space:normal;padding:13px 10px;font-size:14px;min-height:44px}
  .e2e-primary-nav a#accountPortalLink{margin-top:6px;text-align:center}
 }
 @media(max-width:390px){.e2e-global-inner,.e2e-global-footer-inner{width:calc(100% - 28px)}.e2e-global-brand{flex-basis:210px}}
