@@ -445,3 +445,7 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 @media(max-width:740px){.ht-dialog-options{grid-template-columns:1fr}.ht-dialog-options a{padding:13px 16px;gap:4px}.ht-dialog-options a strong{font-size:19px}.ht-recording-grid,.ht-three-way,.ht-closing-grid{grid-template-columns:1fr}.ht-three-way a{padding:15px}.ht-hero h1{font-size:clamp(33px,7vw,46px)}.ht-closing h2{font-size:29px}}
 @media(max-width:390px){.ht-dialog-inner{padding:17px}.ht-dialog-bottom{align-items:flex-start}.ht-dialog-bottom a{font-size:12px}.ht-dialog-bottom button{white-space:nowrap;padding:9px 13px}}
 @media(prefers-reduced-motion:reduce){.ht-dialog-options a,.ht-recording{transition:none}}
+
+/* Stage 2: make linked recording titles readable in legacy regional collections. */
+.cardmain h3 .recording-title-link{color:inherit;text-decoration:none}
+.cardmain h3 .recording-title-link:hover,.cardmain h3 .recording-title-link:focus-visible{text-decoration:underline;text-underline-offset:3px}
