@@ -313,13 +313,30 @@ function playbackLabel(r){
  if(u.includes('commons.wikimedia.org/wiki/file:'))return 'Audio · Wikimedia Commons';
  if(u.includes('loc.gov/item/jukebox'))return 'Historical audio · Library of Congress';
  if(u.includes('loc.gov/item/webcast-'))return 'Concert video · Library of Congress';
- if(u.includes('bandcamp.com'))return 'Track · Bandcamp';
+ if(u.includes('bandcamp.com'))return u.includes('/album/')?'Album · Bandcamp':'Track · Bandcamp';
+ if(u.includes('samap.ukzn.ac.za'))return 'Archive audio · South African Music Archive';
  if(u.includes('folkways.si.edu')){
   if(u.includes('/video/'))return 'Video · Smithsonian Folkways';
   if(u.includes('/album/'))return 'Album excerpts · Smithsonian Folkways';
   return 'Track / preview · Smithsonian Folkways';
  }
  return 'Recording · Original source';
+}
+function publicAccessSummary(r){
+ const note=String(r.access||'').trim();
+ if(!note)return '';
+ const n=note.toLowerCase(),u=String(r.listen||'').toLowerCase();
+ if(n.includes('30-second')||n.includes('30 second'))return '30-second preview · Full playback may require separate provider membership or purchase';
+ if(u.includes('bandcamp.com'))return 'Official Bandcamp release · Playback limits not independently tested';
+ if(u.includes('samap.ukzn.ac.za'))return 'Research archive audio · Full playback not independently tested';
+ if(n.includes('free official')&&n.includes('clip'))return 'Free short performance clip';
+ if(n.includes('free official')&&n.includes('performance video'))return 'Free performance video';
+ if(u.includes('folkways.si.edu'))return 'Smithsonian Folkways source · Playback not independently tested';
+ return '';
+}
+function publicAccessNotice(r,full){
+ const note=full?String(r.access||'').trim():publicAccessSummary(r);
+ return note?'<p class="access-notice" style="font-size:0.875rem;line-height:1.45;margin:0.45rem 0;"><strong>Listening access:</strong> '+safe(note)+'</p>':'';
 }
 function listenLabel(r){
  const u=(r.listen||'').toLowerCase();
@@ -328,13 +345,14 @@ function listenLabel(r){
  if(u.includes('loc.gov/item/jukebox'))return '▶ Listen at Library of Congress';
  if(u.includes('loc.gov/item/webcast-'))return '▶ Watch Library of Congress concert';
  if(u.includes('bandcamp.com'))return '▶ Listen on Bandcamp';
+ if(u.includes('samap.ukzn.ac.za'))return '▶ Hear recording at research archive';
  if(u.includes('folkways.si.edu'))return '▶ Hear recording or preview';
  return '▶ Listen at source';
 }
 function reportLinkButton(r){
  return '<button type="button" class="e2e-report-link" data-e2e-report="'+safe(r.id)+'" data-e2e-title="'+safe(r.title)+'" aria-label="Report a broken or indirect music link for '+safe(r.title)+'">⚑ Report link issue</button>';
 }
-function recordingCard(r){return `<article class="card"><div class="cover" style="--c1:${safe(r.c1)};--c2:${safe(r.c2)}"><span class="id">${safe(r.id)} · ${safe((r.continent||'World').toUpperCase())}</span><div class="covertext">${safe(r.tradition)}</div></div><div class="cardmain"><div class="caps">${safe(String(r.region||"").toLowerCase().includes(String(r.country||"").toLowerCase())?r.region:[r.region,r.country].filter(Boolean).join(" · "))}</div><h3><a class="recording-title-link" href="${safe(recordingHref(r))}">${safe(r.title)}</a></h3><div class="meta">${safe(r.artist)} · ${safe(r.period)}</div><p>${safe(r.description)}</p>${r.source_credit?`<div class="source-credit">Source: ${safe(r.source_credit)}</div>`:""}<span class="tag">${safe(playbackLabel(r))}</span><div class="actions"><a href="${safe(r.listen)}" target="_blank" rel="noopener noreferrer" class="action">${safe(listenLabel(r))}</a><a href="/contributor.html?recording=${encodeURIComponent(r.id)}" class="action secondary" title="Sign in to your private listening journal; available to registered contributors by invitation only">✎ My Journal</a>${reportLinkButton(r)}</div></div></article>`;}
+function recordingCard(r){return `<article class="card"><div class="cover" style="--c1:${safe(r.c1)};--c2:${safe(r.c2)}"><span class="id">${safe(r.id)} · ${safe((r.continent||'World').toUpperCase())}</span><div class="covertext">${safe(r.tradition)}</div></div><div class="cardmain"><div class="caps">${safe(String(r.region||"").toLowerCase().includes(String(r.country||"").toLowerCase())?r.region:[r.region,r.country].filter(Boolean).join(" · "))}</div><h3><a class="recording-title-link" href="${safe(recordingHref(r))}">${safe(r.title)}</a></h3><div class="meta">${safe(r.artist)} · ${safe(r.period)}</div><p>${safe(r.description)}</p>${r.source_credit?`<div class="source-credit">Source: ${safe(r.source_credit)}</div>`:""}${publicAccessNotice(r,false)}<span class="tag">${safe(playbackLabel(r))}</span><div class="actions"><a href="${safe(r.listen)}" target="_blank" rel="noopener noreferrer" class="action">${safe(listenLabel(r))}</a><a href="/contributor.html?recording=${encodeURIComponent(r.id)}" class="action secondary" title="Sign in to your private listening journal; available to registered contributors by invitation only">✎ My Journal</a>${reportLinkButton(r)}</div></div></article>`;}
 function filterPanel(list, idPrefix, heading){
  if(catalogLoadError)return `<section class="panel" role="status" aria-live="polite"><h2>The music catalog is temporarily unavailable</h2><p>Our listening sources could not be loaded. You can still read About the Experiment, How to Listen, and Musical Journeys. Please retry when ready.</p><button type="button" class="cta" data-catalog-retry="1">Retry loading recordings</button></section>`;
  return `<div class="playback-legend"><strong>How to listen:</strong> Select a recording to hear it at the original source. Some offer full performances; others offer excerpts. Listen for as long as your curiosity takes you.</div><div class="searchrow"><input class="searchbox" id="${idPrefix}query" type="search" placeholder="Search recordings, traditions, artists..." aria-label="Search music"><select class="select" id="${idPrefix}era" aria-label="Filter by era"><option value="all">All recording types</option><option>Historical recordings</option><option>Living traditions</option><option>20th-century transformations</option><option>Contemporary</option></select></div><div class="meta" id="${idPrefix}count"></div><div class="cardgrid" id="${idPrefix}grid" style="margin-top:18px"></div>`;}
@@ -382,7 +400,7 @@ function exploreEntry(r){
  '<div class="edx-record-copy"><span class="edx-eyebrow">'+safe(r.continent)+' · '+safe(r.country)+'</span>'+
  '<h3><a href="'+safe(recordingHref(r))+'">'+safe(r.title)+'</a></h3>'+
  '<div class="edx-byline">'+safe(r.artist)+' · '+safe(r.tradition)+' · '+safe(r.period)+'</div>'+
- (shortDesc?'<p class="edx-description">'+safe(shortDesc)+'</p>':'')+'</div>'+
+ (shortDesc?'<p class="edx-description">'+safe(shortDesc)+'</p>':'')+publicAccessNotice(r,false)+'</div>'+
  '<div class="edx-item-actions"><a class="edx-open" href="'+safe(recordingHref(r))+'" aria-label="Open details for '+safe(r.title)+'">Discover →</a>'+reportLinkButton(r)+'</div></article>';
 }
 function bindExplore(){
@@ -484,6 +502,7 @@ function recordingDetail(){
  '<p>'+(description?safe(description):'This recording is part of the Earth to Ear open listening library. Explore its musical context and listen at the original source.')+'</p>'+
  '<h3 class="rxd-subheading">What might you notice?</h3><p>Listen for a musical moment that catches your attention—a rhythm, a voice, the space between instruments, or something unexpected. You do not need technical terms or a correct answer.</p>'+
  '<h3 class="rxd-subheading">Listen at its original source</h3><p>The audio or video remains with its original provider. Earth to Ear links to the source rather than hosting the recording. The source may offer a complete performance or an excerpt.</p>'+
+ publicAccessNotice(r,true)+
  '<div class="rxd-actions">'+(url?'<a href="'+safe(url)+'" target="_blank" rel="noopener noreferrer">'+safe(listenLabel(r))+' ↗</a>':'<span>Original source link unavailable.</span>')+
  '<a class="rxd-outline" href="/contributor.html?recording='+encodeURIComponent(r.id)+'">My Journal (invited contributors)</a>'+reportLinkButton(r)+'</div>'+
  (r.source_credit?'<p class="source-credit">Source credit: '+safe(r.source_credit)+'</p>':'')+
