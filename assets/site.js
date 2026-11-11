@@ -6,9 +6,14 @@ let catalogLoadError=null;
 let homeFeatureIds=[];
 async function loadHomepageFeatures(){
  const url='https://jhgyjqafpnzwfpzwtpki.supabase.co/rest/v1/e2e_home_features?select=recording_id,featured_at&retired_at=is.null&order=featured_at.desc&limit=8';
- const response=await fetch(url,{headers:{apikey:PUBLISHABLE_KEY}});
- if(!response.ok)throw Error('Editorial selections unavailable ('+response.status+')');
- const rows=await response.json();
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),9000);
+ let rows;
+ try{
+  const response=await fetch(url,{headers:{apikey:PUBLISHABLE_KEY},signal:controller.signal});
+  if(!response.ok)throw Error('Editorial selections unavailable ('+response.status+')');
+  rows=await response.json();
+ }finally{clearTimeout(timer);}
  if(!Array.isArray(rows))throw Error('Unexpected featured-list response');
  homeFeatureIds=rows.map(r=>r.recording_id).filter(id=>typeof id==='string');
 }
@@ -16,9 +21,15 @@ async function loadCatalog(){
  const all=[];const batchSize=500;
  for(let offset=0;;offset+=batchSize){
   const url=CATALOG_ENDPOINT+'?select=id,title,artist,country,tradition,era,expedition,listen,description,c1,c2,continent,region,period,access,sort_order,source_credit&active=eq.true&order=sort_order.asc&limit='+batchSize+'&offset='+offset;
-  const response=await fetch(url,{headers:{'apikey':PUBLISHABLE_KEY}});
-  if(!response.ok)throw new Error('Catalog unavailable ('+response.status+')');
-  const batch=await response.json();if(!Array.isArray(batch))throw new Error('Unexpected catalog response');
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),12000);
+  let batch;
+  try{
+   const response=await fetch(url,{headers:{'apikey':PUBLISHABLE_KEY},signal:controller.signal});
+   if(!response.ok)throw new Error('Catalog unavailable ('+response.status+')');
+   batch=await response.json();
+  }finally{clearTimeout(timer);}
+  if(!Array.isArray(batch))throw new Error('Unexpected catalog response');
   all.push(...batch);if(batch.length<batchSize)break;
  }
  R=all;
@@ -566,6 +577,7 @@ function rememberGuideVisit(){
 function bindFirstVisitGuide(){
  // Home only: visitors who intentionally opened a specific recording are never interrupted.
  if(guideAlreadySeen()||document.getElementById('firstVisitGuide'))return;
+ const priorFocus=document.activeElement;
  const dialog=document.createElement('dialog');
  dialog.id='firstVisitGuide';dialog.className='ht-dialog';
  dialog.setAttribute('aria-labelledby','ht-welcome-title');
@@ -592,7 +604,10 @@ function bindFirstVisitGuide(){
   if(event.target===dialog)dismiss();
   if(event.target.closest('a'))rememberGuideVisit();
  });
- dialog.addEventListener('close',()=>{rememberGuideVisit();dialog.remove();});
+ dialog.addEventListener('close',()=>{
+  rememberGuideVisit();dialog.remove();
+  if(priorFocus&&typeof priorFocus.focus==='function'&&priorFocus.isConnected)priorFocus.focus({preventScroll:true});
+ });
  try{dialog.showModal();}catch(error){dialog.remove();}
 }
 function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/how-to'?howTo():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page" id="main-content" tabindex="-1">${page}</main>`+footer();window.E2ESiteShell.bind();document.querySelectorAll('[data-catalog-retry]').forEach(button=>button.addEventListener('click',()=>location.reload()));void hydrateAccountPortal();if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();if(!catalogLoadError)bindFirstVisitGuide();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(!['/','/how-to','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(route==='/how-to'&&['#encounter','#connection','#journey'].includes(location.hash)){
