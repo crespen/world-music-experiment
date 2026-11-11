@@ -385,3 +385,63 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 .cardmain .actions{margin-top:auto;padding-top:12px;flex-wrap:wrap}
 .cardmain .actions .action{min-width:115px;flex:1 1 calc(50% - 6px);overflow-wrap:anywhere;line-height:1.25}
 @media(max-width:700px){.catalog-group-label{font-size:22px;flex-wrap:wrap}.cardmain .actions .action{font-size:12px}}
+
+
+/* How to Listen: welcoming, optional first-visit experience. */
+.ht-dialog{width:min(860px,calc(100vw - 28px));max-height:min(90dvh,830px);max-height:90vh;padding:0;color:#f3f1e8;background:linear-gradient(143deg,#1c4850,#102d38 74%);border:1px solid #b39a74;border-radius:19px;box-shadow:0 25px 90px #05141de0;overflow:auto}
+.ht-dialog::backdrop{background:rgba(3,19,27,.76)}
+.ht-dialog-inner{padding:clamp(22px,4vw,39px)}
+.ht-dialog-top,.ht-dialog-bottom{display:flex;justify-content:space-between;align-items:center;gap:14px}
+.ht-dialog-eyebrow{color:#ebc991;text-transform:uppercase;letter-spacing:.14em;font-size:10px;font-weight:700}
+.ht-dialog-close{appearance:none;width:42px;height:42px;border:1px solid #6d8d89;border-radius:50%;background:transparent;color:#f4e1c4;font-size:27px;line-height:1;cursor:pointer;flex-shrink:0}
+.ht-dialog-close:hover,.ht-dialog-close:focus-visible{background:#37626b}
+.ht-dialog h2{font:500 clamp(29px,4.3vw,41px)/1.13 "Fraunces",Georgia,serif;color:#f6e2be;letter-spacing:-.02em;margin:11px 0 12px}
+.ht-dialog p{color:#d1e3df;max-width:680px;line-height:1.6;margin:0}
+.ht-dialog-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:23px 0}
+.ht-dialog-options a{display:flex;flex-direction:column;gap:9px;min-width:0;text-decoration:none;border:1px solid #789994;border-radius:13px;padding:17px;background:#133643;color:#f4eee3;transition:background .15s,border-color .15s}
+.ht-dialog-options a:hover,.ht-dialog-options a:focus-visible{background:#29525b;border-color:#e3bf83}
+.ht-dialog-options a span{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#eac48d}
+.ht-dialog-options a strong{font:600 19px/1.27 "Fraunces",Georgia,serif}
+.ht-dialog-options a small{font:13px/1.45 "DM Sans",sans-serif;color:#bad4ce}
+.ht-dialog-bottom{border-top:1px solid #54777b;padding-top:16px}
+.ht-dialog-bottom a{color:#f1d5a1;font-weight:700}
+.ht-dialog-bottom button{border:1px solid #80a39e;border-radius:50px;padding:11px 19px;background:transparent;color:#f1f3ee;cursor:pointer;font:600 13px "DM Sans",sans-serif}
+.ht-dialog-bottom button:hover,.ht-dialog-bottom button:focus-visible{background:#32565e}
+.ht-dialog p.ht-dialog-small{color:#bcd5d0;margin-top:15px;font-size:12px;max-width:none}
+.ht-hero{background:radial-gradient(ellipse at 72% 26%,#476166 0%,#122f3b 56%,#092632 100%)}
+.ht-primary{display:inline-block;padding:12px 20px;background:#ebc58f;border-radius:100px;color:#163039!important;text-decoration:none;font-weight:750}
+.ht-primary:hover,.ht-primary:focus-visible{background:#f5ddae}
+.ht-hero .ht-primary{margin-top:14px}
+.ht-intro{padding-top:27px;padding-bottom:18px}
+.ht-three-way{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.ht-three-way a{display:flex;flex-direction:column;gap:8px;border:1px solid #73938d;background:#173f47;border-radius:14px;padding:19px;text-decoration:none;color:#e9f2ed}
+.ht-three-way a:hover,.ht-three-way a:focus-visible{border-color:#e2bf8b;background:#24525a}
+.ht-ordinal{color:#efd09e;font-size:11px;letter-spacing:.12em}
+.ht-three-way strong{font:600 25px "Fraunces",Georgia,serif;color:#fae4c3}
+.ht-three-way span:last-child{font-size:13px;color:#c5ded9}
+.ht-path{scroll-margin-top:24px}
+.ht-path-head{max-width:860px;margin-bottom:20px}
+.ht-path-head h2{font:500 clamp(25px,3.5vw,37px)/1.2 "Fraunces",Georgia,serif;color:#f4debc;margin:12px 0}
+.ht-path-head p{line-height:1.75;max-width:760px;color:#cee3dd}
+.ht-recording-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ht-recording{background:#163c46;border:1px solid #618681;border-radius:13px;padding:18px;text-decoration:none;color:#f3f1e9;display:flex;flex-direction:column;gap:9px;min-width:0}
+.ht-recording:hover,.ht-recording:focus-visible{background:#275661;border-color:#e4ba82}
+.ht-recording-type{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#e6c28d}
+.ht-recording strong{font:600 19px/1.3 "Fraunces",Georgia,serif;color:#fce6c7}
+.ht-recording>span:not(.ht-recording-type):not(.ht-recording-action){font-size:13px;color:#b8d6d0}
+.ht-recording small{font-size:13px;line-height:1.5;color:#dce8df;flex:1}
+.ht-recording-action{font-size:13px;color:#f5ce95;font-weight:700}
+.ht-freeform{font-size:15px;padding:13px 18px;border-left:3px solid #e9be7f;background:#1b4247;margin:21px 0 0;color:#e3efe9}
+.ht-freeform em{color:#fbdfb7}
+.ht-caveat{font-size:13px;color:#c3d8d4;max-width:890px;margin:20px 0 0}
+.ht-closing h2{font:500 35px "Fraunces",Georgia,serif;color:#f4debc;margin:11px 0 24px}
+.ht-closing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.ht-closing-grid div{border-top:1px solid #688983;padding-top:15px}
+.ht-closing-grid strong{font:600 18px "Fraunces",Georgia,serif;color:#f9e0b9}
+.ht-closing-grid p{font-size:14px;color:#d1dedb;line-height:1.6}
+.ht-final-cta{display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-top:26px}
+.ht-secondary{color:#f2d09a;text-decoration:underline;text-underline-offset:4px}
+.footer-guidelink{color:#f4d19d;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:740px){.ht-dialog-options{grid-template-columns:1fr}.ht-dialog-options a{padding:13px 16px;gap:4px}.ht-dialog-options a strong{font-size:19px}.ht-recording-grid,.ht-three-way,.ht-closing-grid{grid-template-columns:1fr}.ht-three-way a{padding:15px}.ht-hero h1{font-size:clamp(33px,7vw,46px)}.ht-closing h2{font-size:29px}}
+@media(max-width:390px){.ht-dialog-inner{padding:17px}.ht-dialog-bottom{align-items:flex-start}.ht-dialog-bottom a{font-size:12px}.ht-dialog-bottom button{white-space:nowrap;padding:9px 13px}}
+@media(prefers-reduced-motion:reduce){.ht-dialog-options a,.ht-recording{transition:none}}
