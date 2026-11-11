@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Founder Research Dashboard | Earth to Ear</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Founder Dashboard | Earth to Ear</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&display=swap" rel="stylesheet"><style>
 :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#091c28;color:#edf6f3;font:15px/1.55 system-ui,Segoe UI,sans-serif}a{color:#a8e3d7}header{padding:22px max(20px,calc((100vw - 1150px)/2));border-bottom:1px solid #355962;display:flex;justify-content:space-between;gap:20px}main{width:min(1120px,calc(100% - 32px));margin:auto;padding:36px 0 95px}h1{font-size:clamp(29px,4vw,44px);margin:5px 0}h2{font-size:22px;margin:8px 0 15px}.muted{color:#b5ccc9}.caps{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#a9ddd2}.panel{border:1px solid #426973;background:#173744;border-radius:14px;padding:22px;margin:20px 0}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.metric{border:1px solid #426973;border-radius:12px;background:#1b414b;padding:17px}.metric strong{display:block;font-size:32px}.metric span{color:#bed3d0;font-size:13px}input{font:inherit;background:#0b2833;color:#f2f9f7;border:1px solid #7ba6a3;border-radius:8px;padding:11px;width:min(350px,100%)}button{font:inherit;background:#a8ded4;color:#102d33;border:0;border-radius:8px;padding:11px 14px;cursor:pointer;font-weight:700;margin:5px}button:disabled{opacity:.4}button.secondary{background:#315660;color:white}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.item{padding:15px 0;border-top:1px solid #41616b}.item h3{margin:2px 0 8px;font-size:17px}.item p{margin:5px 0;color:#bcd0ce}.item details{margin-top:10px}.item summary{cursor:pointer;color:#a8ded4}.entry{white-space:pre-wrap;overflow-wrap:anywhere;color:#dcece7}.hidden{display:none!important}.notice{background:#213e48;border-left:3px solid #a8ded4;padding:13px;margin:18px 0}.bar{height:9px;border-radius:5px;background:#132d36;margin-top:7px;overflow:hidden}.bar span{display:block;height:100%;background:#99d7cd}.stats-name{font-size:13px;display:flex;justify-content:space-between;gap:10px}@media(max-width:720px){.grid{grid-template-columns:repeat(2,1fr)}header{flex-direction:column}}
 
@@ -45,11 +45,58 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 .fe-entry small{display:block;color:#bdcfcc;margin:5px 0}
 .fe-entry button{font-size:12px;padding:7px 10px}
 @media(max-width:720px){.fe-columns{grid-template-columns:1fr}.fe-controls label.fe-priority{flex:1 1 90px}}
+
+/* Live catalog composition: responsive founder-only editorial charts */
+.cc-toolbar{display:flex;align-items:flex-end;gap:13px;flex-wrap:wrap;margin:16px 0 12px}
+.cc-toolbar label{color:#c6d8d4;font-size:13px;min-width:185px}
+.cc-toolbar select{display:block;width:min(260px,100%);margin-top:5px;padding:10px;background:#0b2833;border:1px solid #7ba6a3;border-radius:8px;color:#fff;font:inherit}
+.cc-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:16px 0 18px}
+.cc-metric{background:#102f3c;border:1px solid #557576;border-radius:11px;padding:13px}
+.cc-metric strong{display:block;font:600 26px "Fraunces",Georgia,serif;color:#f6dcaf}
+.cc-metric span{color:#b9d2cd;font-size:12px}
+.cc-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.cc-subpanel{border:1px solid #416972;background:#112f3c;border-radius:12px;padding:17px;min-width:0}
+.cc-subpanel h3{font:600 17px "DM Sans",sans-serif;color:#f2dbb8;margin:0 0 14px}
+.cc-barrow{margin:10px 0 13px}
+.cc-bartop{display:flex;justify-content:space-between;gap:14px;align-items:baseline;font-size:12px;line-height:1.4}
+.cc-bartop span{overflow-wrap:anywhere;color:#dce9e5}
+.cc-bartop strong{white-space:nowrap;font-variant-numeric:tabular-nums;color:#e8ce9f}
+.cc-track{background:#28444d;height:10px;overflow:hidden;border-radius:20px;margin-top:6px}
+.cc-fill{display:block;height:100%;border-radius:20px;transition:width .25s}
+.cc-wide{margin-top:14px}
+.cc-explain,.cc-caveat{font-size:12px;line-height:1.55}
+.cc-tablewrap{overflow-x:auto}
+.cc-matrix{width:100%;border-collapse:collapse;font-size:12px;min-width:615px;font-variant-numeric:tabular-nums}
+.cc-matrix th,.cc-matrix td{text-align:right;padding:10px 9px;border-bottom:1px solid #315462}
+.cc-matrix th:first-child{text-align:left}
+.cc-matrix thead th{color:#eccf9f;font-weight:700;font-size:11px;vertical-align:bottom}
+.cc-matrix tbody th{font-weight:500;color:#e5f4ee}
+.cc-matrix td.cc-positive{font-weight:700;color:#bbebdf}
+.cc-matrix td.cc-empty{color:#6f999d}
+.cc-matrix td.cc-total,.cc-matrix tr.cc-totalrow{color:#f5dfa9;font-weight:700;background:#23444b}
+.cc-footer{font-size:12px;margin:13px 0 1px}
+@media(max-width:770px){.cc-charts{grid-template-columns:1fr}.cc-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.cc-subpanel{padding:14px}}
+@media(max-width:390px){.cc-metric{padding:10px}.cc-metric strong{font-size:23px}.cc-toolbar label{min-width:100%;}}
+
 </style></head>
 <body><header><a href="/" class="e2e-masthead-link" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a><div><a href="/bulletin.html">Listening Bulletin</a><a href="/contributor.html">My Journal / Invitations</a><a href="/explore/">Music Library</a></div></header>
-<main><div class="caps">Private founder workspace</div><h1>Research Dashboard</h1><p class="muted">Aggregated listening patterns and individual contributions. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
+<main><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
 <div class="grid"><div class="metric"><strong id="countContributors">—</strong><span>Active contributors</span></div><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
+
+<section class="panel" id="catalogCompositionPanel" style="border-color:#b99a72">
+ <div class="caps">Live catalog insights · Founder only</div>
+ <h2>What's in our listening library?</h2>
+ <p class="muted">Explore how the collection is developing across musical approaches, recording eras, continents, and listening providers. Counts reflect the published catalog, not contributor preferences.</p>
+ <div class="cc-toolbar">
+  <label for="ccContinent">Collection to examine
+   <select id="ccContinent"><option value="All continents">All continents</option></select>
+  </label>
+  <button type="button" class="secondary" id="ccRefresh">Refresh catalog breakdown</button>
+ </div>
+ <p id="ccStatus" class="muted" role="status">Loading the current catalog…</p>
+ <div id="catalogComposition" aria-live="off"></div>
+</section>
 <section class="panel" style="border-color:#b99a72;background:linear-gradient(125deg,#204950,#1b3841)"><div class="caps">Founder communications</div><h2>Publish to the Listening Bulletin</h2><p class="muted">Share new recordings, research updates and discoveries with registered contributors. Publishing posts to their private bulletin; it does not send email.</p><form id="publishForm"><label style="display:block;margin:10px 0">Announcement title<br><input id="bulletinTitle" required maxlength="150" style="width:100%;max-width:650px"></label><label style="display:block;margin:10px 0">Topic<br><select id="bulletinTopic" style="padding:10px;background:#0b2833;color:#fff;border-radius:8px;border:1px solid #7ba6a3"><option value="update">Project update</option><option value="music">New music</option><option value="community">Community news</option></select></label><label style="display:block;margin:10px 0">Message<br><textarea id="bulletinBody" required maxlength="4000" rows="5" style="width:100%;padding:12px;border:1px solid #7ba6a3;border-radius:9px;background:#0b2833;color:#fff;font:inherit;resize:vertical"></textarea></label><button type="submit" id="publishButton">Publish announcement</button></form><p id="publishStatus" class="muted" role="status"></p></section>
 
 <section class="panel" id="featurePanel" style="border-color:#b49a74">
@@ -87,8 +134,13 @@ header>div a{white-space:normal;overflow-wrap:anywhere;font:600 12px "DM Sans",s
 </main>
 <script type="module">
 import {createClient} from 'https://esm.sh/@supabase/supabase-js@2.81.1';
+import {createCatalogComposition} from '/assets/catalog-composition.js?v=20261111-v1';
 const sb=createClient('https://jhgyjqafpnzwfpzwtpki.supabase.co','sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r',{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
 const api='https://jhgyjqafpnzwfpzwtpki.supabase.co/functions/v1/e2e-contributor';
+const catalogComposition=createCatalogComposition({
+ endpoint:'https://jhgyjqafpnzwfpzwtpki.supabase.co/rest/v1/music_catalog',
+ key:'sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r'
+});
 const by=id=>document.getElementById(id);let offset=0;const size=20;
 function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=String(text);return e;}
 function notice(message){by('notice').textContent=message;}
@@ -268,6 +320,7 @@ async function load(){
   // A slow optional catalog or insights call must never conceal the core dashboard.
   by('dashboard').classList.remove('hidden');
   by('notice').classList.add('hidden');
+  try{await catalogComposition.refresh();}catch(e){by('ccStatus').textContent='Unable to load catalog breakdown: '+e.message;}
   try{await loadFeatures();}catch(e){by('feStatus').textContent='Editorial controls unavailable: '+e.message;}
   try{await loadCatalogHealth();}
   catch(e){by('healthSummary').textContent='Catalog Health could not load: '+e.message;}
