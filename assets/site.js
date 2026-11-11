@@ -178,6 +178,7 @@ function bindIntroListeningStrip(){
  const title=document.getElementById('introListeningTitle');
  const metadata=document.getElementById('introListeningMetadata');
  const source=document.getElementById('introListeningSource');
+ const reportLink=document.getElementById('introListeningReport');
  const stage=document.getElementById('introListeningStage');
  const play=document.getElementById('introListenPlay');
  const previous=document.getElementById('introListenPrevious');
@@ -242,6 +243,7 @@ function bindIntroListeningStrip(){
   title.textContent=r.title;
   metadata.textContent=[r.artist,r.country,r.tradition].filter(Boolean).join(' · ');
   source.href=r.listen;
+  if(reportLink){reportLink.dataset.e2eReport=r.id;reportLink.dataset.e2eTitle=r.title;}
   counter.textContent=(index+1)+' of '+options.length;
   stage.replaceChildren();
   stage.hidden=true;
@@ -281,7 +283,7 @@ return `
  <div class="e2e-intro-topline"><span class="ed-kicker">♪ THE SOUND OF EARTH TO EAR</span><span class="e2e-intro-detail">Optional listening · 30-second selections</span></div>
  <div class="e2e-intro-row">
   <div class="e2e-intro-mark" aria-hidden="true">≋</div>
-  <div class="e2e-intro-information"><strong id="introListeningTitle">Choose a recording</strong><span id="introListeningMetadata" class="intro-listening-detail">A short selection drawn from the listening library</span><a id="introListeningSource" href="/africa/" target="_blank" rel="noopener noreferrer">Open the original recording ↗</a></div>
+  <div class="e2e-intro-information"><strong id="introListeningTitle">Choose a recording</strong><span id="introListeningMetadata" class="intro-listening-detail">A short selection drawn from the listening library</span><a id="introListeningSource" href="/africa/" target="_blank" rel="noopener noreferrer">Open the original recording ↗</a><button id="introListeningReport" type="button" class="e2e-report-link" data-e2e-report="AFR-0001">⚑ Report link issue</button></div>
   <div class="e2e-intro-controls"><button id="introListenPrevious" type="button" class="e2e-intro-skip" aria-label="Previous recording" title="Previous recording">‹</button><span id="introListenCounter" class="e2e-intro-counter" aria-live="polite">1 of 13</span><button id="introListenNext" type="button" class="e2e-intro-skip" aria-label="Next recording" title="Next recording">›</button><button id="introListenPlay" type="button">Hear 30 seconds</button></div>
  </div>
  <div id="introListeningStage" class="e2e-intro-stage" hidden></div>
