@@ -49,7 +49,7 @@ let africaCountries=[...new Set(R.filter(r=>r.continent==='Africa').map(r=>r.cou
 const recordingCount=n=>n+' recording'+(n===1?'':'s');
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/north-america')||route.startsWith('/asia')||route.startsWith('/europe')||route.startsWith('/south-america')||route.startsWith('/oceania')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account</a></nav></div></header>`;
+const nav=(route)=>`<header class="nav"><div class="wrap navinner"><a href="/" class="brand" title="Return to Earth to Ear home" aria-label="Earth to Ear — return to homepage"${route==='/'?' aria-current="page"':''}><span class="ed-reference-masthead" aria-hidden="true"></span><span class="brand-emblem" aria-hidden="true"><img src="/assets/earth-to-ear-mark.svg" width="54" height="54" alt=""></span><span class="brand-copy"><span class="brand-title">Earth <i>to</i> Ear</span><span class="brand-subtitle">A world music experiment</span></span></a><button class="mobilemenu" id="menu" aria-label="Open navigation">☰ Menu</button><nav class="links" id="links"><a class="${route.startsWith('/explore')||route.startsWith('/africa')||route.startsWith('/north-america')||route.startsWith('/asia')||route.startsWith('/europe')||route.startsWith('/south-america')||route.startsWith('/oceania')||route.startsWith('/country')?'active':''}" href="/explore/">Explore Music</a><a href="/how-to/" class="${route==='/how-to'?'active':''}">How to Listen</a><a href="/about/" class="${route==='/about'?'active':''}">About the Experiment</a><a href="/participate/" class="${route==='/participate'?'active':''}">For Contributors</a><a href="/bulletin.html">Contributor Updates</a><a id="accountPortalLink" class="invite" href="/contributor.html">My Account</a></nav></div></header>`;
 // Keep the listening library fully public. Account navigation is an enhancement,
 // and server-side permissions are always authoritative.
 let accountClientPromise;
@@ -120,7 +120,7 @@ async function hydrateAccountPortal(){
   // No authentication dependency is allowed to block the public library.
  }
 }
-const footer=()=>`<footer class="footer"><div class="wrap footerinner"><div><strong>EARTH TO EAR</strong><div>A World Music Experiment</div><div>Listen first. Discover without ranking.</div></div><div>Library → Journal → Archive → Laboratory<br><span class="status">Public listening library · Private reflections by invitation only</span></div></div></footer>`;
+const footer=()=>`<footer class="footer"><div class="wrap footerinner"><div><strong>EARTH TO EAR</strong><div>A World Music Experiment</div><div>Listen first. Discover without ranking.</div></div><div><a href="/how-to/" class="footer-guidelink">How to Listen</a> · Library → Journal → Archive → Laboratory<br><span class="status">Public listening library · Private reflections by invitation only</span></div></div></footer>`;
 function map(){return `<div class="map-frame"><img src="${mapSrc}" alt="Equal Earth equal-area world map with country boundaries, preserving comparative land areas"></div><div class="map-foot"><span>Equal Earth projection · Countries shown at proportional area</span><span>Browse by continent using the cards below ↓</span></div>`;}
 const continentHref=c=>'/'+slug(c)+'/';
 const tiles=()=>`<div class="tiles">${continentList.map(c=>
@@ -261,7 +261,7 @@ return `
    <div class="ed-kicker"><span class="ed-kicker-dot"></span> A WORLD MUSIC EXPERIMENT</div>
    <h1 id="welcome-title">A Global Listening<br><em>Experiment</em></h1>
    <p>Explore music from around the world, reflect on what you hear, and discover musical traditions that connect, surprise, and resonate across cultures. Invited contributors may also share private listening reflections.</p>
-   <div class="ed-hero-ctas"><a href="/explore/" class="ed-btn ed-btn-primary"><span aria-hidden="true">▶</span> Start Listening</a><a href="/participate/" class="ed-btn ed-btn-outline">Request an Invitation</a></div>
+   <div class="ed-hero-ctas"><a href="/explore/" class="ed-btn ed-btn-primary"><span aria-hidden="true">▶</span> Start Listening</a><a href="/how-to/" class="ed-btn ed-btn-outline">New here? How to Listen</a></div>
   </div>
   <div class="ed-hero-art"><img src="/assets/earth-to-ear-hero.svg" alt="Decorative golden sonic waves crossing a teal and gold globe"></div>
    </div>
@@ -481,9 +481,121 @@ function bindAboutExperiment(){
  circles.forEach(button=>button.addEventListener('click',()=>activate(Number(button.dataset.step))));
  dots.forEach(button=>button.addEventListener('click',()=>activate(Number(button.dataset.stepDot))));
 }
+
+function guideRecording(id,prompt){
+ const r=R.find(x=>x.id===id);
+ if(!r)return '';
+ return `<a class="ht-recording" href="/explore/?recording=${encodeURIComponent(r.id)}" aria-label="Open ${safe(r.title)} in the listening library">
+  <span class="ht-recording-type">${safe(r.country)} · ${safe(r.period)}</span>
+  <strong>${safe(r.title)}</strong>
+  <span>${safe(r.artist)}</span>
+  <small>${safe(prompt)}</small>
+  <span class="ht-recording-action">Find this recording →</span>
+ </a>`;
+}
+function howTo(){
+ return `
+ <section class="countryhero ht-hero"><div class="wrap">
+  ${breadcrumbs([{text:'How to Listen'}])}
+  <div class="eyebrow">Your invitation to explore</div>
+  <h1>How to Listen at Earth to Ear</h1>
+  <p class="lead">You don't need to know what you're looking for. Sometimes music surprises us, sometimes it feels familiar, and sometimes it makes us curious about how a sound came to be. Start anywhere.</p>
+  <a class="ht-primary" href="/explore/">Or just explore the music →</a>
+ </div></section>
+ <section class="section ht-intro"><div class="wrap">
+  <div class="ht-three-way" aria-label="Three ways to begin">
+   <a href="#encounter"><span class="ht-ordinal">01</span><strong>Encounter</strong><span>Meet a sound that catches your attention.</span></a>
+   <a href="#connection"><span class="ht-ordinal">02</span><strong>Connection</strong><span>Notice what a recording brings to mind.</span></a>
+   <a href="#journey"><span class="ht-ordinal">03</span><strong>Journey</strong><span>Follow a question through time.</span></a>
+  </div>
+ </div></section>
+ <section id="encounter" class="section ht-path"><div class="wrap">
+  <div class="ht-path-head"><span class="caps">01 · Encounter</span><h2>Hear something you didn't expect.</h2>
+   <p>Perhaps it's a vocal technique, the way instruments enter, or a rhythm you can't quite anticipate. You don't need to identify it. Just notice what caught your ear.</p></div>
+  <div class="ht-recording-grid">
+   ${guideRecording('ASI-0001','Listen for more than one pitch in a single voice.')}
+   ${guideRecording('AFR-0003','What happens when voices and instruments overlap?')}
+   ${guideRecording('ASI-0003','How do the instruments move together?')}
+  </div>
+  <p class="ht-freeform">A thought to carry with you: <em>What did I notice first?</em></p>
+ </div></section>
+ <section id="connection" class="section soft ht-path"><div class="wrap">
+  <div class="ht-path-head"><span class="caps">02 · Connection</span><h2>Notice what feels familiar.</h2>
+   <p>A recording might recall a person, a place, a family story or a feeling. It might also remind you of something seemingly unrelated. Your association belongs to you; it needn't be a claim about the musician's history or your own ancestry.</p></div>
+  <div class="ht-recording-grid">
+   ${guideRecording('NAM-0001','Does an old recorded voice evoke another time or place?')}
+   ${guideRecording('OCE-0001','What does this shared vocal performance bring to mind?')}
+   ${guideRecording('NAM-0007','Can an unfamiliar performance still feel familiar?')}
+  </div>
+  <p class="ht-freeform">A thought to carry with you: <em>Did this bring anything or anyone to mind?</em></p>
+ </div></section>
+ <section id="journey" class="section ht-path"><div class="wrap">
+  <div class="ht-path-head"><span class="caps">03 · Journey</span><h2>Follow music across time.</h2>
+   <p>A musical history has more than a beginning and an end. Along the way are overlooked musicians, new technologies, and unexpected turns. As our focused historical journeys develop, you can begin by comparing recordings from different moments.</p></div>
+  <div class="ht-recording-grid">
+   ${guideRecording('NAM-0001','1909 · An early recorded spiritual performance.')}
+   ${guideRecording('NAM-0003','1920 · Hear a different, instrumental American tradition.')}
+   ${guideRecording('NAM-0011','Contemporary · Hear a musician engaging American roots traditions today.')}
+  </div>
+  <p class="ht-caveat">These are three distinct American musical threads—not a claimed straight line of influence or a finished genre history. Focused style-by-style journeys, including jazz, highlife and reggae, are being researched.</p>
+  <p class="ht-freeform">A thought to carry with you: <em>What changed? What still sounds recognizable?</em></p>
+ </div></section>
+ <section class="section soft ht-closing"><div class="wrap">
+  <span class="caps">And what happens next?</span><h2>Listen at your own pace.</h2>
+  <div class="ht-closing-grid"><div><strong>Choose any recording</strong><p>All six continent collections are open, and the library keeps growing.</p></div>
+  <div><strong>Hear it at its source</strong><p>Some links offer whole performances; others offer shorter previews. Follow the music where it's hosted.</p></div>
+  <div><strong>Reflect, if you wish</strong><p>Everyone can listen. Invited contributors can also keep a private listening journal, but sharing is never required.</p></div></div>
+  <div class="ht-final-cta"><a class="ht-primary" href="/explore/">Explore the listening library →</a><a href="/about/" class="ht-secondary">About the Experiment</a></div>
+ </div></section>`;
+}
 function participate(){return `<section class="countryhero"><div class="wrap"><div class="eyebrow">Earth to Ear / Participate</div><h1>Listen. Discover. <span style="color:#b9d9d3;font-weight:350">Contribute.</span></h1><p class="lead">The world's music is open to everyone. Our collaborative listening research is conducted by a small community of invited contributors.</p></div></section><section class="section"><div class="wrap two"><div><div class="caps">Explore freely</div><h2>Everyone is welcome to listen.</h2><p class="intro">Browse music from different countries, learn about traditions and forms, and follow authorized recording links. You do not need an account or musical training to enjoy the library.</p><a href="/explore/" class="inline-link">Explore the listening library →</a></div><div class="panel"><div class="caps">Invitation-only research</div><h2>What do contributors do?</h2><p>Participants listen to curated recordings, describe their impressions in a structured journal, and may suggest traditions, artists, or performances for future consideration.</p><p class="note">Journal responses are accepted only from invited, verified contributors signed in to the private research portal.</p></div></div></section><section class="section soft"><div class="wrap two"><div><div class="caps">Future participation</div><h2>Interested in contributing?</h2><p class="intro"><strong>Research registration is currently by invitation.</strong> If you have received an invitation, sign in to your private journal using the invited email address. Other visitors may join an interest list for future consideration.</p><p>Joining an interest list does not guarantee an invitation or give access to the private journal.</p></div><div class="panel"><h2>Interest list</h2><p>The short interest form asks for your name, email address and an optional note about what interests you. Contact information will be used only for possible research invitations, not marketing.</p><p><a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSf01F_m4VDF4p5CzAMCp2sPrI6_FdEgDMnvk-dkl4h3s2MI9Q/viewform" target="_blank" rel="noopener noreferrer">Join the Interest List ↗</a></p><p class="note">The registration form opens in Google Forms. Submitting your interest does not create a research account or grant journal access.</p><p class="note" style="border-top:1px solid #54737c;margin-top:22px;padding-top:15px">Already on the interest list? <a class="inline-link" href="https://docs.google.com/forms/d/e/1FAIpQLSeOJf-YaqGxltFPWjmPW_mCGONi73-cihb3BIeyiZWY2g0Asg/viewform" target="_blank" rel="noopener noreferrer">Withdraw your interest ↗</a>. Use the same verified Google account you registered with. Submitting the form confirms receipt; removal takes effect when processed.</p></div></div></section><section class="section"><div class="wrap"><h2>From interest to invitation</h2><div class="features"><div class="feature"><span class="symbol">1</span><h3>Express interest</h3><p>Complete the public interest-list form to express interest in future invitations.</p></div><div class="feature"><span class="symbol">2</span><h3>Private review</h3><p>Submissions remain private, with no obligation or automatic admission.</p></div><div class="feature"><span class="symbol">3</span><h3>Invitation if space opens</h3><p>Only an approved invitation can lead to access to the private listening journal.</p></div></div></div></section>`;}
 function suggestion(){return `<section class="countryhero"><div class="wrap"><div class="eyebrow">Help discover the world’s music</div><h1>Suggest Music</h1><p class="lead">A music tradition, a contemporary artist, a remarkable performance, or a new way of listening—we want to hear what you think should be considered.</p></div></section><section class="section"><div class="wrap two"><div class="panel"><div class="caps">For approved participants</div><h2>Recommend a musical discovery</h2><p>Registered contributors can recommend a performance, musical tradition or artist using the private Earth to Ear participant portal. Suggestions are stored in Supabase for founder review, not automatically published.</p><p><a class="cta" href="/contributor.html#suggestionCard">Open participant suggestions →</a></p><p class="note">Use the email address associated with your contributor registration. The founder reviews submissions before any catalog changes.</p></div><div><h2>From suggestion to discovery</h2><p class="intro">Each recommendation is reviewed for musical context, recording accuracy and freely accessible listening before any approved entry becomes available.</p><div class="feature"><div class="symbol">1 → 2 → 3</div><h3>Submit · Review · Approve</h3><p>We confirm the source and sufficient free playback, assign a catalog identifier and publish only approved recordings.</p></div></div></div></section>`;}
-function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page">${page}</main>`+footer();document.getElementById('menu').addEventListener('click',()=>document.getElementById('links').classList.toggle('open'));void hydrateAccountPortal();if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(!['/','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(location.hash==='#archival-listening'){
+
+const FIRST_VISIT_GUIDE_KEY='e2e-first-visit-how-to-v1';
+function guideAlreadySeen(){
+ try{return localStorage.getItem(FIRST_VISIT_GUIDE_KEY)==='seen';}
+ catch(e){try{return sessionStorage.getItem(FIRST_VISIT_GUIDE_KEY)==='seen';}catch(error){return false;}}
+}
+function rememberGuideVisit(){
+ try{localStorage.setItem(FIRST_VISIT_GUIDE_KEY,'seen');}
+ catch(e){try{sessionStorage.setItem(FIRST_VISIT_GUIDE_KEY,'seen');}catch(error){}}
+}
+function bindFirstVisitGuide(){
+ // Home only: visitors who intentionally opened a specific recording are never interrupted.
+ if(guideAlreadySeen()||document.getElementById('firstVisitGuide'))return;
+ const dialog=document.createElement('dialog');
+ dialog.id='firstVisitGuide';dialog.className='ht-dialog';
+ dialog.setAttribute('aria-labelledby','ht-welcome-title');
+ dialog.setAttribute('aria-describedby','ht-welcome-copy');
+ dialog.innerHTML=`<div class="ht-dialog-inner">
+  <div class="ht-dialog-top"><span class="ht-dialog-eyebrow">A little orientation · Only on your first visit</span>
+   <button type="button" class="ht-dialog-close" id="htDismissTop" aria-label="Close welcome guide">×</button></div>
+  <h2 id="ht-welcome-title">Where would you like to begin?</h2>
+  <p id="ht-welcome-copy">Some music surprises us. Some brings a memory to mind. Some makes us wonder what came before. There isn't a right way to begin.</p>
+  <div class="ht-dialog-options">
+   <a href="/how-to/#encounter"><span>01 · Encounter</span><strong>Hear something unexpected</strong><small>Begin with a new sound.</small></a>
+   <a href="/how-to/#connection"><span>02 · Connection</span><strong>Notice what feels familiar</strong><small>See what the music brings to mind.</small></a>
+   <a href="/how-to/#journey"><span>03 · Journey</span><strong>Follow a musical question</strong><small>Explore a sound across time.</small></a>
+  </div>
+  <div class="ht-dialog-bottom"><a href="/explore/" class="ht-skip-listen">I'd rather start listening →</a>
+   <button type="button" id="htNotNow">Not now</button></div>
+  <p class="ht-dialog-small">The library is free to browse. No account or reflection is required. Reopen this guide anytime from <strong>How to Listen</strong>.</p>
+ </div>`;
+ document.body.append(dialog);
+ const dismiss=()=>dialog.close();
+ dialog.querySelector('#htDismissTop').addEventListener('click',dismiss);
+ dialog.querySelector('#htNotNow').addEventListener('click',dismiss);
+ dialog.addEventListener('click',event=>{
+  if(event.target===dialog)dismiss();
+  if(event.target.closest('a'))rememberGuideVisit();
+ });
+ dialog.addEventListener('close',()=>{rememberGuideVisit();dialog.remove();});
+ try{dialog.showModal();}catch(error){dialog.remove();}
+}
+function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/how-to'?howTo():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page">${page}</main>`+footer();document.getElementById('menu').addEventListener('click',()=>document.getElementById('links').classList.toggle('open'));void hydrateAccountPortal();if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();bindFirstVisitGuide();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(!['/','/how-to','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(route==='/how-to'&&['#encounter','#connection','#journey'].includes(location.hash)){
+ const section=document.getElementById(location.hash.slice(1));
+ if(section)requestAnimationFrame(()=>section.scrollIntoView({block:'start'}));
+}else if(location.hash==='#archival-listening'){
  const section=document.getElementById('archival-listening');
  if(section)section.scrollIntoView({block:'start'});
 }else window.scrollTo(0,0)}
