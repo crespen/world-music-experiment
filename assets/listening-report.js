@@ -7,6 +7,7 @@
  const css=`
 .e2e-report-link{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:38px;border:1px solid #94b9ae;border-radius:9px;padding:8px 12px;background:#1e4650;color:#f5e3c5;font:650 12px/1.4 "DM Sans",Arial,sans-serif;cursor:pointer}
 .e2e-report-link:hover{background:#315964;border-color:#f1d29e}
+#introListeningReport{align-self:flex-start;min-height:30px;padding:5px 9px;font-size:11px;margin-top:5px}
 .e2e-report-link:focus-visible{outline:3px solid #f3ce83;outline-offset:3px}
 .e2e-report-dialog{box-sizing:border-box;width:min(500px,calc(100vw - 24px));max-height:88dvh;overflow:auto;background:#12343e;color:#f7f0e6;border:1px solid #b9a17e;border-radius:16px;padding:26px;font:14px/1.55 "DM Sans",Arial,sans-serif;box-shadow:0 20px 80px #07141b99}
 .e2e-report-dialog::backdrop{background:#031319b9}
