@@ -114,3 +114,15 @@
 .edx-item-actions .e2e-report-link{font-size:11px;padding:9px 7px}
 .edx-item-actions .edx-open{text-align:center}
 @media(max-width:1050px){.edx-item-actions{grid-column:2;flex-direction:row;flex-wrap:wrap;min-width:0;align-items:center}}
+
+/* Stage 3: accessible Save for later alongside discovery and reporting. */
+.edx-item-actions .e2e-save-button{max-width:100%;white-space:normal;text-align:center;min-height:42px}
+.edx-item-actions .e2e-save-button[aria-pressed="true"]{background:#f0d0a2;color:#14323a}
+
+.rxd-related{border-top:1px solid #74918c;margin-top:23px;padding-top:15px}
+.rxd-related h3{font:500 23px "Fraunces",Georgia,serif;color:#f4d8ad;margin:0 0 7px}
+.rxd-related p{font-size:12px;line-height:1.5}
+.rxd-related a{display:flex;flex-direction:column;gap:3px;border:1px solid #7f9a91;background:#284b53;padding:11px;border-radius:9px;margin:9px 0;color:#f7e1bd;text-decoration:none}
+.rxd-related a small{margin:0;color:#bed4cd;font-size:11px}
+.rxd-related a strong{font-size:14px;line-height:1.35}
+.rxd-related a:hover,.rxd-related a:focus-visible{border-color:#e0c48a;background:#345c64}

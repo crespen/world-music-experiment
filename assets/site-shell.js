@@ -2,7 +2,7 @@
 (function(){
   'use strict';
   const items=[
-    {href:'/explore/',label:'Explore Music',match:p=>p==='/explore'||p==='/recording'||/^(\/africa|\/asia|\/europe|\/north-america|\/south-america|\/oceania|\/country)(\/|$)/.test(p)},
+    {href:'/explore/',label:'Explore Music',match:p=>p==='/explore'||p==='/recording'||p==='/saved'||/^(\/africa|\/asia|\/europe|\/north-america|\/south-america|\/oceania|\/country)(\/|$)/.test(p)},
     {href:'/journeys/',label:'Musical Journeys',match:p=>p==='/journeys'},
     {href:'/how-to/',label:'How to Listen',match:p=>p==='/how-to'},
     {href:'/about/',label:'About the Experiment',match:p=>p==='/about'||p==='/participate'},
@@ -31,7 +31,7 @@
   function footer(){
     return '<footer class="e2e-global-footer" data-e2e-shared-footer="1"><div class="e2e-global-footer-inner">'+
       '<div><strong>EARTH TO EAR</strong><p>A Global Listening Experiment</p><p>Listen first. Discover without ranking.</p></div>'+
-      '<div><a href="/explore/">Explore Music</a> · <a href="/journeys/">Musical Journeys</a> · <a href="/how-to/">How to Listen</a> · <a href="/participate/">For Contributors</a><p>Public listening · Private reflections by invitation only</p></div>'+
+      '<div><a href="/explore/">Explore Music</a> · <a href="/journeys/">Musical Journeys</a> · <a href="/saved/">Saved Listening</a> · <a href="/how-to/">How to Listen</a> · <a href="/participate/">For Contributors</a><p>Public listening · Private reflections by invitation only</p></div>'+
       '</div></footer>';
   }
   function bind(){
