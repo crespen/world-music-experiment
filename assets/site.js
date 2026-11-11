@@ -310,6 +310,7 @@ function playbackLabel(r){
  if(u.includes('youtube.com/watch'))return 'Video · YouTube';
  if(u.includes('commons.wikimedia.org/wiki/file:'))return 'Audio · Wikimedia Commons';
  if(u.includes('loc.gov/item/jukebox'))return 'Historical audio · Library of Congress';
+ if(u.includes('loc.gov/item/webcast-'))return 'Concert video · Library of Congress';
  if(u.includes('bandcamp.com'))return 'Track · Bandcamp';
  if(u.includes('folkways.si.edu')){
   if(u.includes('/video/'))return 'Video · Smithsonian Folkways';
@@ -323,6 +324,7 @@ function listenLabel(r){
  if(u.includes('youtube.com/watch')||u.includes('/video/'))return '▶ Watch performance';
  if(u.includes('commons.wikimedia.org'))return '▶ Listen to audio';
  if(u.includes('loc.gov/item/jukebox'))return '▶ Listen at Library of Congress';
+ if(u.includes('loc.gov/item/webcast-'))return '▶ Watch Library of Congress concert';
  if(u.includes('bandcamp.com'))return '▶ Listen on Bandcamp';
  if(u.includes('folkways.si.edu'))return '▶ Hear recording or preview';
  return '▶ Listen at source';
