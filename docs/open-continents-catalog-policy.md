@@ -32,4 +32,6 @@ The main Explore Music continent tiles must always lead to working canonical rou
 Each page loads the active catalog for its continent, filters and displays the individual recording cards, and preserves links to original sources and the private contributor journal. Pages should not imply a continent is closed, completed or culturally represented by its current contents. Accessible collection count may be zero. Make descriptions welcoming, plain and temporary by design.
 
 ## Implementation decision — November 2026
-The original 42 recordings cover Africa (31) and North America (11). Open the four remaining continents using available, source-linked opening performances; expand them continuously thereafter. This is not a launch ceremony or a finished survey.
+The original 42 recordings covered Africa (31) and North America (11). **Implemented November 11, 2026:** 10 individual source-linked opening performances were added across Asia (3), Europe (2), South America (3) and Oceania (2), bringing the active catalog and journal registry to **52 recordings across six open continents**. Every continent tile now has a working directory page. The public sitemap includes all six. Existing homepage features retain their 30-day protection, and candidate features from the new continents enter the founder queue without displacing those currently featured.
+
+These opening records are not a launch ceremony, a representative survey, or a quota. Continue discovering and adding music across all six collections.
