@@ -6,14 +6,14 @@ Adopted November 11, 2026. Applies to every newly curated recording, every histo
 
 Prefer **legitimate, full-length, freely accessible recordings** from the actual performers, rights holders, official labels, public broadcasters, museums, universities, archives, and other authorized sources. A 30-second preview does **not** satisfy the default standard. Provider subscription rights are separate from Earth to Ear contributor sign-in.
 
-## Source-selection hierarchy
+## Active catalog: complete listening, not previews
 
-1. Exact intended recording or performance; authorized original source; full recording accessible without payment.
-2. Exact intended recording at an authorized source, with clearly disclosed limits (repeat-play cap, provider membership, purchase, regional restrictions, or not-yet-verified browser playback).
-3. Rare or historically distinctive exact recording available only as a short preview; retain only with documented editorial rationale and conspicuous “30-second preview” label.
-4. A different performance of a similar piece or musical tradition must be created as a **separate catalog record**, not silently substituted for an archival recording.
-
-Do not link to unauthorized copies or bypass access restrictions. Do not host/copy third-party audio. Retain provenance, context, performers, and recording edition.
+- Choose complete songs, substantial live performances and full public archival recordings from credible, authorized providers. Do not publish a known 30-second preview as an active listening selection.
+- If the original is gated, find an equally distinctive full alternative and credit its actual performers and history accurately. A different performance must receive a **different recording ID**.
+- Preserve the original restricted source as an **inactive archival item**, and keep any previous participant journal reflections associated with the original ID.
+- Judge sources by meaningful musical distinctiveness, not familiar platform convenience or geography quotas.
+- Do not assert free full playback based solely on catalog metadata. Test source playback where possible; label all untested recordings.
+- Never copy, rehost or evade restrictions on audio from outside providers.
 
 ## Acceptance checks before marking a recording verified
 
@@ -51,3 +51,30 @@ Documentation:
 - https://samap.ukzn.ac.za/audio-relation/ac0223
 
 Continue to apply this hierarchy to every future addition. A curator's preference for a particular tradition never justifies silently substituting a different performance.
+
+## Follow-up full-performance replacement release — November 11, 2026
+
+Twelve preview-limited or short-excerpt public selections were archived and replaced with twelve distinct substantial musical recordings. **No recording IDs were recycled.** One journal reflection attached to archived `OCE-0001` remains attached to that original recording.
+
+| Old archived ID | New public ID | Full-source alternative |
+|---|---|---|
+| AFR-0002 | AFR-0038 | Sona Jobarteh, live Gambian kora festival performance |
+| AFR-0003 | AFR-0039 | Banda-Linda horn and vocal polyphony, full-access CREM-CNRS recording |
+| AFR-0004 | AFR-0040 | Krar Collective, *Abay*, official artist video |
+| AFR-0005 | AFR-0041 | Venancio Mbande Chopi timbila orchestra, 18:28 archived performance |
+| AFR-0006 | AFR-0042 | Aziz Sahmaoui / University of Gnawa, UNESCO concert |
+| AFR-0007 | AFR-0043 | Rajery, Malagasy valiha, live festival performance |
+| AFR-0008 | AFR-0044 | E. T. Mensah / Tempos Band, *All for You*, 2:40 archive audio |
+| AFR-0010 | AFR-0045 | Meklit / Brandee Younger, *Tizita*, official video |
+| AFR-0025 | AFR-0046 | Malawian valimba field recording *Chigawenga*, 4:52 |
+| ASI-0001 | ASI-0004 | Alash, *Let's Fatten the Livestock*, artist-hosted audio |
+| OCE-0001 | OCE-0003 | Te Maurea Whiritoi, complete Māori kapa haka performance |
+| SAM-0003 | SAM-0004 | Mestre Acordeon, festival berimbau solo |
+
+Database post-release: **70 active recordings, 12 archived originals, 0 active records labeled as 30-second previews.** Source evidence and provider links are stored individually in the music catalog.
+
+Examples of original academic/cultural sources: https://digitalarchives.ru.ac.za/s/ilam/item/23333 · https://archives.crem-cnrs.fr/archives/items/CNRSMH_E_1971_003_001_001_16/ · https://digitalarchives.ru.ac.za/s/ilam/item/22747
+
+Provider pages have been researched, but end-to-end full-duration browser playback and regional access have **not** been independently verified. Recheck sources when visitors report access problems.
+
+This full-recording requirement supersedes older preview exceptions in this document.

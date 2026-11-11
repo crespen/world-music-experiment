@@ -1,4 +1,4 @@
-# Earth to Ear: A World Music Experiment
+# Earth to Ear: A Global Listening Experiment
 
 A global exploration of musical traditions, cultural connections, and creative expression through listening, research, and discovery.
 

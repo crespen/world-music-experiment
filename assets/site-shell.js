@@ -23,14 +23,14 @@
     return '<a class="e2e-skip" href="#main-content">Skip to main content</a>'+
       '<header class="e2e-global-header" data-e2e-shared-nav="1">'+
       '<div class="e2e-global-inner">'+
-      '<a class="e2e-global-brand" href="/" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead.png" width="595" height="115" alt="Earth to Ear — A World Music Experiment"></a>'+
+      '<a class="e2e-global-brand" href="/" aria-label="Earth to Ear homepage"><img src="/assets/earth-to-ear-masthead-global.svg" width="595" height="115" alt="Earth to Ear — A Global Listening Experiment"></a>'+
       '<button type="button" class="e2e-menu-toggle" id="e2e-menu-toggle" aria-controls="e2e-primary-nav" aria-expanded="false" aria-label="Open navigation"><span aria-hidden="true">☰</span> Menu</button>'+
       '<nav class="e2e-primary-nav" id="e2e-primary-nav" aria-label="Primary navigation">'+links+founder+'</nav>'+
       '</div></header>';
   }
   function footer(){
     return '<footer class="e2e-global-footer" data-e2e-shared-footer="1"><div class="e2e-global-footer-inner">'+
-      '<div><strong>EARTH TO EAR</strong><p>A World Music Experiment</p><p>Listen first. Discover without ranking.</p></div>'+
+      '<div><strong>EARTH TO EAR</strong><p>A Global Listening Experiment</p><p>Listen first. Discover without ranking.</p></div>'+
       '<div><a href="/explore/">Explore Music</a> · <a href="/journeys/">Musical Journeys</a> · <a href="/how-to/">How to Listen</a> · <a href="/participate/">For Contributors</a><p>Public listening · Private reflections by invitation only</p></div>'+
       '</div></footer>';
   }
