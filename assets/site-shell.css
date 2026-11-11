@@ -16,7 +16,7 @@
 .e2e-menu-toggle{display:none;border:1px solid #7baca1;background:#163a43;color:#f6ece0;font:700 13px "DM Sans",sans-serif;border-radius:9px;padding:11px 14px;cursor:pointer;min-width:48px;min-height:44px}
 .e2e-menu-toggle:hover{background:#2e5059}
 .e2e-global-header a:focus-visible,.e2e-global-header button:focus-visible,.e2e-global-footer a:focus-visible{outline:3px solid #f0d098;outline-offset:4px}
-.e2e-global-footer{background:#091c25;border-top:1px solid #44666b;color:#c5d8d1;font:13px/1.65 "DM Sans",Segoe UI,sans-serif;padding:28px 0 37px}
+.e2e-global-footer{display:block;text-align:left;background:#091c25;border-top:1px solid #44666b;color:#c5d8d1;font:13px/1.65 "DM Sans",Segoe UI,sans-serif;padding:28px 0 37px}
 .e2e-global-footer-inner{width:min(1240px,calc(100% - 42px));margin:auto;display:flex;gap:30px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
 .e2e-global-footer strong{font-weight:750;color:#f3d2a5;letter-spacing:.1em}
 .e2e-global-footer p{font-size:12px;margin:5px 0;color:#bed4cd}
