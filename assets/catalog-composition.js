@@ -134,6 +134,20 @@ export function createCatalogComposition({endpoint,key}){
   charts.append(chart('Source platforms',view.platforms,view.total));
   charts.append(chart('Continent distribution',view.continents,view.total,CONTINENTS));
   root.append(charts,matrixTable(view));
+  if(view.total){
+   const signal=el('section','cc-subpanel cc-wide'),head=el('h3','','What stands out');
+   const points=el('ul','cc-signals');
+   const contemporary=view.eras.get('Contemporary performance')||0;
+   const inheritedNow=view.matrix['Contemporary performance']['Living traditions']||0;
+   const unclear=view.eras.get('Date not established')||0;
+   const biggest=[...view.platforms].sort((a,b)=>b[1]-a[1])[0];
+   const addPoint=value=>points.append(el('li','',value));
+   addPoint(contemporary+' of '+view.total+' selections ('+Math.round(100*contemporary/view.total)+'%) are tagged as contemporary recordings or performances. That does not mean every composition or tradition is new.');
+   if(inheritedNow)addPoint(inheritedNow+' contemporary recordings are categorized as living traditions—one way recent performance and older musical practice coexist.');
+   if(biggest)addPoint(biggest[0]+' provides '+biggest[1]+' of '+view.total+' source links ('+Math.round(100*biggest[1]/view.total)+'%). Seek musical and provider variety without imposing quotas.');
+   if(unclear)addPoint(unclear+' recordings do not establish the recording date clearly; they remain worthwhile music and need not be held back from the library.');
+   signal.append(head,points);root.append(signal);
+  }
   const caveat=el('p','muted cc-footer','All figures are counts of catalog selections, not listening plays or contributor preferences. Geographic labels and musical classifications are editorial starting points, not complete cultural representation.');
   root.append(caveat);
  }
