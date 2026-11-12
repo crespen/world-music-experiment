@@ -139,34 +139,46 @@ async function getToken(){
   return token;
  }finally{clearTimeout(timer);}
 }
+async function postAction(action,token,body={},timeoutMs=15000){
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+ try{
+  const response=await fetch(api,{method:'POST',signal:controller.signal,
+   headers:{Authorization:'Bearer '+token,apikey:KEY,'Content-Type':'application/json'},
+   body:JSON.stringify({action,...body})});
+  const payload=await response.json();
+  if(!response.ok)throw Error(payload.error||'Founder request unavailable');
+  return payload;
+ }finally{clearTimeout(timer);}
+}
+let founderAuthorized=false;
 async function load(){
  const refresh=$('refreshMembers');refresh.disabled=true;
- notice('Confirming founder access and loading active contributors…');
+ notice('Confirming founder access…');
  try{
   const token=await getToken();
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),15000);
-  let response;
-  try{
-   response=await fetch(api,{
-    method:'POST',signal:controller.signal,
-    headers:{Authorization:'Bearer '+token,apikey:KEY,'Content-Type':'application/json'},
-    body:JSON.stringify({action:'admin-contributors'})
-   });
-  }finally{clearTimeout(timer);}
-  const payload=await response.json();
-  if(!response.ok)throw Error(payload.error||'Founder authorization unavailable');
-  members=Array.isArray(payload.contributors)?payload.contributors:[];
+  if(!founderAuthorized){
+   const auth=await postAction('admin-status',token);
+   if(auth.administrator!==true)throw Error('Founder authorization required');
+   founderAuthorized=true;
+  }
   $('directorySection').hidden=false;
   $('directoryNotice').hidden=true;
-  draw();
   if(location.hash==='#inviteParticipant'||location.hash==='#activeContributors'){
-    requestAnimationFrame(()=>document.getElementById(location.hash.slice(1))?.scrollIntoView({block:'start'}));
+   requestAnimationFrame(()=>document.getElementById(location.hash.slice(1))?.scrollIntoView({block:'start'}));
+  }
+  try{
+   const payload=await postAction('admin-contributors',token);
+   members=Array.isArray(payload.contributors)?payload.contributors:[];
+   draw();
+  }catch(error){
+   $('memberCount').textContent='Directory temporarily unavailable';
+   $('memberRows').textContent='Contributor list could not be loaded: '+error.message+'. You can still send invitations above.';
   }
  }catch(error){
+  founderAuthorized=false;
   $('directorySection').hidden=true;
   $('directoryNotice').hidden=false;
-  notice('Contributor information could not be opened: '+(error.name==='AbortError'?'request timed out':error.message),true);
+  notice('People & Invitations could not be opened: '+(error.name==='AbortError'?'request timed out':error.message),true);
  }finally{refresh.disabled=false;}
 }
 function draw(){
