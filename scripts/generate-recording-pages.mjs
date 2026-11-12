@@ -116,7 +116,7 @@ function renderRecording(r,all){
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=visitor-value-v1">
 <link rel="stylesheet" href="/assets/site-shell.css?v=stage1-v4">
-<link rel="stylesheet" href="/assets/recording-seo.css?v=visitor-value-v1">
+<link rel="stylesheet" href="/assets/recording-seo.css?v=music-first-gate-v1">
 </head><body>
 <div id="e2e-site-header"></div>
 <main id="main-content" tabindex="-1" class="e2e-seo-main">
