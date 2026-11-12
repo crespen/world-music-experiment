@@ -86,14 +86,17 @@ function renderRecording(r,all){
  const url=BASE+pathFor(r);
  const title=tidy(r.title)+' — '+tidy(r.country)+' | Earth to Ear';
  const metaDescription=brief(tidy(r.description),158);
+ const isListening=r.listening_role==='primary';
+ const label=isListening?'Hear the music at its source':r.listening_role==='context'?'View the cultural documentary':'View the source under editorial review';
+ const roleNotice=isListening?'':r.listening_role==='context'?'Educational context source. This documentary is not a primary Listening Library assignment.':'This source is under music-first review and is not currently recommended as a listening assignment.';
  const external=sourceURL(r);
  const artist=tidy(r.artist),unknown=/^performers? not identified$/i.test(artist);
  const jsonld={
-  '@context':'https://schema.org','@type':'MusicRecording',
+  '@context':'https://schema.org','@type':isListening?'MusicRecording':'CreativeWork',
   name:tidy(r.title),description:tidy(r.description),url,
   mainEntityOfPage:url,
-  ...(unknown?{}:{byArtist:{'@type':'MusicGroup',name:artist}}),
-  ...(r.tradition?{genre:tidy(r.tradition)}:{})
+  ...(isListening&&!unknown?{byArtist:{'@type':'MusicGroup',name:artist}}:{}),
+  ...(isListening&&r.tradition?{genre:tidy(r.tradition)}:{})
  };
  const structured=JSON.stringify(jsonld).replace(/</g,'\\u003c').replace(/>/g,'\\u003e').replace(/&/g,'\\u0026');
  const details=tidy(r.access),credit=tidy(r.source_credit);
@@ -102,7 +105,7 @@ function renderRecording(r,all){
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(title)}</title><meta name="description" content="${esc(metaDescription)}">
-<meta name="robots" content="index,follow"><meta name="theme-color" content="#102e37">
+<meta name="robots" content="${isListening?'index,follow':'noindex,follow'}"><meta name="theme-color" content="#102e37">
 <link rel="canonical" href="${esc(url)}">
 <meta property="og:type" content="article"><meta property="og:site_name" content="Earth to Ear">
 <meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(metaDescription)}">
@@ -127,8 +130,9 @@ function renderRecording(r,all){
 </div></section>
 <div class="e2e-seo-container e2e-seo-columns">
 <article class="e2e-seo-article">
-<h2>Listen first. Follow your curiosity.</h2>
-<div class="e2e-seo-quicklisten"><a href="${esc(external)}" target="_blank" rel="noopener noreferrer">▶ Hear the music at its original source ↗</a><p>Public listening. No account, invitation, or musical expertise required.</p></div><p>${esc(r.description)}</p>
+<h2>${isListening?'Listen first. Follow your curiosity.':'Research source — not a primary listening assignment'}</h2>
+${roleNotice?'<p class="e2e-seo-role-notice">'+esc(roleNotice)+'</p>':''}
+<div class="e2e-seo-quicklisten"><a href="${esc(external)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a><p>${isListening?'Public listening. No account, invitation, or musical expertise required.':'This link is retained for cultural research and existing references.'}</p></div><p>${esc(r.description)}</p>
 <h2>What might you notice?</h2>
 <p>Listen for a sound or moment that catches your attention—a rhythm, a voice, an instrument, a change in texture, or something unexpected. You do not need technical terms or a correct answer.</p>
 ${contextPanel(r)}
@@ -162,7 +166,7 @@ ${credit?'<p class="e2e-seo-credit"><strong>Source credit:</strong> '+esc(credit
 </body></html>\n`;
 }
 function generateSitemap(records){
- const urls=[...STATIC_ROUTES,...records.map(pathFor)];
+ const urls=[...STATIC_ROUTES,...records.filter(r=>r.listening_role==='primary').map(pathFor)];
  return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+
   urls.map(p=>'<url><loc>'+BASE+p+'</loc></url>').join('\n')+'\n</urlset>\n';
 }
@@ -189,7 +193,7 @@ async function main(){
   records=[];
   for(let offset=0;;offset+=500){
    const u=new URL(project+'/rest/v1/music_catalog');
-   u.searchParams.set('select','id,title,artist,continent,country,tradition,period,era,description,listen,access,source_credit,updated_at,active');
+   u.searchParams.set('select','id,title,artist,continent,country,tradition,period,era,description,listen,access,source_credit,updated_at,active,listening_role');
    u.searchParams.set('active','eq.true');u.searchParams.set('order','id.asc');
    u.searchParams.set('limit','500');u.searchParams.set('offset',String(offset));
    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
