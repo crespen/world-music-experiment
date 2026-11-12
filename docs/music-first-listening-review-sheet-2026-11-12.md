@@ -48,7 +48,7 @@
 | ID | Location | Current entry | Source link | Review decision | Notes |
 |---|---|---|---|---|---|
 | EUR-0003 | Albania | Albanian folk iso-polyphony — UNESCO performance excerpts | [Listen](https://www.youtube.com/watch?v=G4V2cE-LmBU) | — | — |
-| EUR-0004 | Italy | Canto a tenore — Sardinian pastoral songs | [Listen](https://www.youtube.com/watch?v=cWVCMvbGcPA) | — | — |
+| EUR-0004 | Italy | Canto a tenore — Sardinian pastoral songs | [Listen](https://www.youtube.com/watch?v=cWVCMvbGcPA) | **Context only — documentary** | Founder review, Nov 12: narration adds insight; four male singers produce a notably guttural sound while maintaining a choral form. Source is not an uninterrupted listening assignment; find a distinct standalone performance. |
 | EUR-0005 | Bulgaria | Bistritsa Babi — archaic Bulgarian polyphony | [Listen](https://ich.unesco.org/en/video/41480) | — | — |
 | EUR-0006 | Ireland | Irish harping — UNESCO documentary excerpts | [Listen](https://www.youtube.com/watch?v=CiHdlpJ_980) | — | — |
 | EUR-0007 | Spain | Flamenco — UNESCO performance and context | [Listen](https://www.youtube.com/watch?v=qEJAQuEgGzQ) | — | — |
