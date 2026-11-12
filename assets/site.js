@@ -146,6 +146,7 @@ const commonsIntroAudio={
 };
 function introCandidates(){
  const youtube=R.filter(r=>{
+  if(likelyDocumentaryFirst(r))return false;
   try{const u=new URL(r.listen);return (u.hostname==='www.youtube.com'||u.hostname==='youtube.com')&&u.pathname==='/watch'&&/^[A-Za-z0-9_-]{11}$/.test(u.searchParams.get('v')||'');}catch{return false;}
  }).slice(0,10);
  const commons=R.filter(r=>Object.prototype.hasOwnProperty.call(commonsIntroAudio,r.id));
@@ -241,13 +242,22 @@ function bindIntroListeningStrip(){
  next.addEventListener('click',()=>skip(1));
  render();
 }
+// Pre-audit homepage guard: do not randomly recommend records already identified as
+// documentaries. These remain in the full catalog pending individual editorial decisions.
+const knownDocumentaryReviewIds=new Set(['AFR-0047','AFR-0048','AFR-0049','AFR-0050','AFR-0051','AFR-0052','AFR-0053','ASI-0006','ASI-0007','ASI-0008']);
+function likelyDocumentaryFirst(r){
+ if(r.id==='ASI-0005')return false; // Direct listener review: full qawwali performance.
+ return knownDocumentaryReviewIds.has(r.id)
+  || /documentary|overview|documentary excerpts|performance excerpts|film with musical|heritage film/i.test(r.title||'')
+  || /^https?:\/\/ich\.unesco\.org\/en\/video\//i.test(r.listen||'');
+}
 function home(){
 const featured=homeFeatureIds.map(id=>R.find(r=>r.id===id)).filter(Boolean);
 const newsCards=featured.length?featured.map((r,i)=>{
  const path=continentList.includes(r.continent)?continentHref(r.continent):'/explore/';
  return `<a class="ed-news-card" href="${path}?recording=${encodeURIComponent(r.id)}" aria-label="Explore ${safe(r.title)} in the ${safe(r.continent)} collection"><span class="ed-news-art ed-news-art-${i}" style="--a:${safe(r.c1)};--b:${safe(r.c2)}" aria-hidden="true"><span class="ed-sound-symbol">${['♫','◌','≋'][i%3]}</span></span><span class="ed-news-copy"><span class="ed-news-type">♪ Featured listening · ${safe(r.continent)}</span><strong>${safe(r.title)}</strong><span>${safe(r.country)} · ${safe(r.tradition)}</span><span class="ed-news-arrow" aria-hidden="true">↗</span></span></a>`;
 }).join(''):'<p class="intro">'+(catalogLoadError?'Featured music will return when the catalog is available.':'Featured listening selections are being prepared.')+'</p>';
-const options=R.filter(r=>/^https?:\/\//i.test(r.listen||''));
+const options=R.filter(r=>/^https?:\/\//i.test(r.listen||'')&&!likelyDocumentaryFirst(r));
 const surprise=options.length?options[Math.floor(Math.random()*options.length)]:null;
 const memory=window.E2EListening;
 const savedActive=memory?memory.saved().filter(id=>R.some(r=>r.id===id)).length:0;
