@@ -7,7 +7,7 @@ const sample={
  period:'Living traditions',description:'An Okonko drum recording from the Opobo Kingdom. Listen for a recurring rhythmic idea and how it changes.',
  access:'Wikimedia Commons: free 1:20 original audio, CC BY-SA 4.0; performer attribution not independently confirmed',
  source_credit:'Uploader credited separately · Wikimedia Commons',
- listen:'https://commons.wikimedia.org/wiki/File:Okonko_drum_beat.ogg',active:true
+ listen:'https://commons.wikimedia.org/wiki/File:Okonko_drum_beat.ogg',listening_role:'primary',active:true
 };
 test('one source yields one canonical indexable page and one sitemap entry',()=>{
  const pages=generatePages([sample]);
@@ -57,4 +57,22 @@ test('recording pages give public visitors an immediate listening path and optio
  const generic=renderRecording({...sample,id:'AFR-9999'},[]);
  assert.match(generic,/The detailed history of this specific musical performance and its influences has not yet been established/);
  assert.doesNotMatch(generic,/participant_id|journal_entry/);
+});
+
+test('held documentaries do not receive a primary listening page or a sitemap listing',()=>{
+ const context={...sample,id:'AFR-0047',title:'Aka vocal polyphony documentary',listening_role:'context'};
+ const pending={...sample,id:'ASI-0006',title:'Gagaku documentary',listening_role:'review'};
+ const pages=generatePages([sample,context,pending]);
+ assert.equal(pages.size,4);
+ const primary=pages.get('recording/afr-0028/index.html');
+ const doc=pages.get('recording/afr-0047/index.html');
+ const review=pages.get('recording/asi-0006/index.html');
+ assert.match(primary, /meta name="robots" content="index,follow"/);
+ assert.match(doc, /meta name="robots" content="noindex,follow"/);
+ assert.match(review, /meta name="robots" content="noindex,follow"/);
+ assert.match(doc, /This documentary is not a primary Listening Library assignment/);
+ assert.match(review, /under music-first review/);
+ assert.match(pages.get('sitemap.xml'), /recording\/afr-0028\//);
+ assert.doesNotMatch(pages.get('sitemap.xml'), /recording\/afr-0047\//);
+ assert.doesNotMatch(pages.get('sitemap.xml'), /recording\/asi-0006\//);
 });
