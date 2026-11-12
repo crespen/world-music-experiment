@@ -78,3 +78,9 @@ Examples of original academic/cultural sources: https://digitalarchives.ru.ac.za
 Provider pages have been researched, but end-to-end full-duration browser playback and regional access have **not** been independently verified. Recheck sources when visitors report access problems.
 
 This full-recording requirement supersedes older preview exceptions in this document.
+
+## November 12, 2026 — music-first listener experience
+
+The first-phase catalog relied on some documentary or UNESCO heritage-film pages as public listening entries. A reputable institutional source can be valuable as cultural evidence but may require excessive commentary before a musical performance. New listening selections now follow the stricter [music-first selection standard](music-first-selection-standard.md): exact artist/performance, prompt musical entry or tested deep-link start, substantial uninterrupted music, explicit playback verification and culturally appropriate sourcing. Documentary-first pages remain useful as context references but are **not automatically suitable primary listening selections**.
+
+A preliminary [67-record metadata-only review queue](music-first-catalog-triage-2026-11-12.md) was logged against the 162 active records on November 12. These are candidates for human review, **not** confirmed failures. Existing recording IDs and journal associations must be preserved. No automated deactivation is authorized on the basis of documentary labels alone.
