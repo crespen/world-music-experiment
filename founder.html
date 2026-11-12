@@ -86,6 +86,15 @@ a.metric-link span{color:#cfe0d9}
 a.metric-link small{color:#ffdaa4;font-weight:750;font-size:13px;text-decoration:underline;text-underline-offset:3px;margin-top:7px}
 a.metric-link:hover{background:#2b5860;border-color:#f2d09b;transform:translateY(-1px)}
 a.metric-link:focus-visible{outline:3px solid #ffdfa3;outline-offset:4px}
+.founder-people-shortcut{border:1px solid #d9b480;background:linear-gradient(125deg,#244c4d,#183940);padding:24px;border-radius:15px;margin:0 0 24px}
+.founder-people-shortcut h2{margin:8px 0 10px}
+.founder-people-shortcut p{color:#d4e4da;margin:0 0 17px;max-width:680px}
+.people-shortcut-actions{display:flex;gap:12px;flex-wrap:wrap}
+.people-shortcut-actions a{display:inline-flex;justify-content:center;align-items:center;min-height:48px;padding:10px 18px;border-radius:9px;font-weight:750;text-decoration:none}
+.people-shortcut-actions a:first-child{background:#f0cb92;color:#172e35}
+.people-shortcut-actions a:last-child{border:1px solid #acc8bb;color:#e7f1eb}
+.people-shortcut-actions a:focus-visible{outline:3px solid #ffe2ad;outline-offset:3px}
+@media(max-width:520px){.people-shortcut-actions a{width:100%}}
 .link-report-entry{background:#102d38;border:1px solid #577c7d;border-radius:12px;padding:17px;margin:12px 0}
 .link-report-entry h3{font-size:16px;margin:0 0 7px;color:#ffe3b9}
 .link-report-entry p{overflow-wrap:anywhere}
@@ -97,9 +106,15 @@ a.metric-link:focus-visible{outline:3px solid #ffdfa3;outline-offset:4px}
 .e2e-context-nav a:focus-visible{outline:3px solid #9de3d5;outline-offset:3px}
 </style></head>
 <body><div id="e2e-site-header"></div>
-<main><nav class="e2e-context-nav" aria-label="Founder tools"><a href="/contributor.html">My Journal / Invitations</a><a href="/bulletin.html">Listening Bulletin</a><a href="/explore/">Music Library</a><a href="/founder-contributors.html">Contributors</a></nav><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
+<main><nav class="e2e-context-nav" aria-label="Founder tools"><a href="/founder-contributors.html#inviteParticipant">Invite a participant</a><a href="/founder-contributors.html">People &amp; Invitations</a><a href="/contributor.html">My Journal</a><a href="/bulletin.html">Listening Bulletin</a><a href="/explore/">Music Library</a></nav><div class="caps">Private founder workspace</div><h1>Founder Dashboard</h1><p class="muted">Live music catalog composition, listening reflections, and contributor activity. Accessible only to authorized founder accounts.</p><div id="notice" class="notice" role="status">Checking your founder access… <a href="/contributor.html">Sign in on this device</a> if necessary.</div>
 <section id="dashboard" class="hidden">
-<div class="grid"><a class="metric metric-link" href="/founder-contributors.html" aria-label="Open active contributors directory"><strong id="countContributors">—</strong><span>Active contributors</span><small>View contributors →</small></a><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
+<section class="founder-people-shortcut" aria-labelledby="peopleShortcutTitle">
+  <div class="caps">Founder actions · People</div>
+  <h2 id="peopleShortcutTitle">People &amp; Invitations</h2>
+  <p>Invite participants and access your contributor directory from one dedicated workspace—separate from catalog statistics and research data.</p>
+  <div class="people-shortcut-actions"><a href="/founder-contributors.html#inviteParticipant">Invite a participant</a><a href="/founder-contributors.html#activeContributors">View registered contributors</a></div>
+</section>
+<div class="grid"><a class="metric metric-link" href="/founder-contributors.html#activeContributors" aria-label="Open registered contributors directory"><strong id="countContributors">—</strong><span>Active contributors</span><small>View contributors →</small></a><div class="metric"><strong id="countJournals">—</strong><span>Journal entries</span></div><div class="metric"><strong id="countSuggestions">—</strong><span>Music suggestions</span></div><div class="metric"><strong id="countRecordings">—</strong><span>Catalog recordings</span></div></div>
 <section class="panel" id="catalogCompositionPanel" style="border-color:#b99a72">
  <div class="caps">Live catalog insights · Founder only</div>
  <h2>What's in our listening library?</h2>
