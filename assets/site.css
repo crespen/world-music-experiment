@@ -493,3 +493,9 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 @media(max-width:760px){.ed-entry-grid{grid-template-columns:1fr}.ed-entry-card{min-height:0;padding:18px}.ed-entry-card h3{font-size:23px}.ed-entry-section{padding:38px 0 47px}.e2e-saved-grid{grid-template-columns:1fr}}
 @media(max-width:540px){.ed-entry-place .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.ed-entry-place .region b{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.ed-entry-card{transition:none}}
+
+/* November review: accurately signal the maturity of each continent collection. */
+.ed-entry-place .region{min-height:112px}
+.ed-entry-place .region .caps{display:block;font-size:9px;letter-spacing:.07em;color:#f2d1a5;margin:0 0 8px;position:relative}
+.ed-entry-place .region b{margin-bottom:2px}
+.access-notice{font-size:0.875rem;line-height:1.5;margin:0.45rem 0}

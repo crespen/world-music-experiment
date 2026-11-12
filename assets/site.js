@@ -116,7 +116,7 @@ const footer=()=>window.E2ESiteShell.footer();
 const continentHref=c=>'/'+slug(c)+'/';
 const tiles=()=>`<div class="tiles">${continentList.map(c=>
  `<a class="region active" href="${continentHref(c)}" aria-label="Explore the ${safe(c)} collection">
- <span class="caps">OPEN · GROWING COLLECTION</span><b>${safe(c)}</b>
+ <span class="caps">${R.filter(r=>r.continent===c).length<=3?"STARTER COLLECTION":"GROWING COLLECTION"}</span><b>${safe(c)}</b>
  <small>${catalogLoadError?'Recordings unavailable · retry':recordingCount(R.filter(r=>r.continent===c).length)+' to explore →'}</small></a>`
 ).join('')}</div>`;
 function bindNewsCarousel(){
@@ -257,7 +257,7 @@ const recent=savedActive?'<a class="ed-resume-link" href="/saved/">Your saved re
 const startHere=`<section class="ed-entry-section section" aria-labelledby="ed-entry-title"><div class="wrap">
  <div class="ed-section-head"><span class="ed-kicker">YOUR LISTENING STARTS HERE</span><h2 id="ed-entry-title">Where will you listen next?</h2><p>No expertise needed. Choose a surprise, follow a musical story, or explore by place.</p></div>
  <div class="ed-entry-grid">
-  <a class="ed-entry-card" href="${surprise?'/recording/?id='+encodeURIComponent(surprise.id):'/explore/'}"><span class="ed-entry-symbol" aria-hidden="true">✦</span><h3>Surprise Me</h3><p>Open an unexpected recording from the library.</p><small>${surprise?safe(surprise.country)+' · '+safe(surprise.title):'Explore recordings when the library is available'} →</small></a>
+  <a class="ed-entry-card" href="${surprise?'/recording/?id='+encodeURIComponent(surprise.id):'/explore/'}"><span class="ed-entry-symbol" aria-hidden="true">✦</span><h3>Surprise Me</h3><p>Open an unexpected recording from the library.</p><small>${surprise?'Find out what you will hear':'Explore recordings when the library is available'} →</small></a>
   <a class="ed-entry-card" href="/journeys/"><span class="ed-entry-symbol" aria-hidden="true">↝</span><h3>Follow a Journey</h3><p>Hear how jazz vocals, reggae and Ghanaian highlife changed over time.</p><small>Choose a historical listening arc →</small></a>
   <a class="ed-entry-card" href="/explore/"><span class="ed-entry-symbol" aria-hidden="true">◎</span><h3>Explore by Place</h3><p>Find music by continent, country, performer or tradition.</p><small>Browse the listening library →</small></a>
  </div>
@@ -317,21 +317,32 @@ function playbackLabel(r){
  return 'Recording · Original source';
 }
 function publicAccessSummary(r){
- const note=String(r.access||'').trim();
- if(!note)return '';
- const n=note.toLowerCase(),u=String(r.listen||'').toLowerCase();
- if(n.includes('30-second')||n.includes('30 second'))return '30-second preview · Full playback may require separate provider membership or purchase';
- if(u.includes('bandcamp.com'))return 'Official Bandcamp release · Playback limits not independently tested';
- if(u.includes('samap.ukzn.ac.za'))return 'Research archive audio · Full playback not independently tested';
- if(n.includes('full-length')||n.includes('full performance')||n.includes('full concert')||n.includes('full song')||n.includes('full-access')||n.startsWith('full')||n.includes('complete')||n.includes('publicly accessible'))return 'Full music source · Playback not independently tested';
- if(n.includes('free official')&&n.includes('clip'))return 'Free short performance clip';
- if(n.includes('free official')&&n.includes('performance video'))return 'Free performance video';
- if(u.includes('folkways.si.edu'))return 'Smithsonian Folkways source · Playback not independently tested';
- return '';
+ const notes=String(r.access||'').trim(),url=String(r.listen||'').toLowerCase();
+ if(!notes)return '';
+ const n=notes.toLowerCase();
+ const match=notes.match(/\b\d{1,2}:\d{2}\b/);
+ const duration=match?' · '+match[0]:'';
+ if(n.includes('30-second')||n.includes('30 second'))return 'Short preview · Separate provider access may be required';
+ if(url.includes('commons.wikimedia.org'))return 'Audio'+duration+' · Free on Wikimedia Commons';
+ if(url.includes('digitalarchives.ru.ac.za'))return 'Archive audio'+duration+' · International Library of African Music';
+ if(url.includes('archives.crem-cnrs.fr'))return 'Archival recording'+duration+' · CREM-CNRS';
+ if(url.includes('samap.ukzn.ac.za'))return 'Research archive audio'+duration+' · SAMAP';
+ if(url.includes('loc.gov/item/jukebox'))return 'Historical audio'+duration+' · Library of Congress';
+ if(url.includes('loc.gov'))return 'Library of Congress recording'+duration;
+ if(url.includes('youtube.com')||url.includes('youtu.be'))return 'Performance video'+duration+' · YouTube';
+ if(url.includes('bandcamp.com'))return 'Artist/label release'+duration+' · Bandcamp';
+ if(url.includes('folkways.si.edu'))return 'Smithsonian Folkways source'+duration;
+ if(url.includes('alashensemble.com'))return 'Official artist audio'+duration;
+ if(url.includes('audiomack.com'))return 'Audio'+duration+' · Audiomack';
+ return 'Original source'+duration+' · Access notes available';
 }
 function publicAccessNotice(r,full){
- const note=full?String(r.access||'').trim():publicAccessSummary(r);
- return note?'<p class="access-notice" style="font-size:0.875rem;line-height:1.45;margin:0.45rem 0;"><strong>Listening access:</strong> '+safe(note)+'</p>':'';
+ const label=publicAccessSummary(r);
+ if(!label)return '';
+ const summary='<p class="access-notice"><strong>Listening access:</strong> '+safe(label)+'</p>';
+ if(!full)return summary;
+ const notes=String(r.access||'').trim();
+ return summary+(notes?'<details class="access-detail"><summary>Provider, licensing and verification details</summary><p>'+safe(notes)+'</p></details>':'');
 }
 function listenLabel(r){
  const u=(r.listen||'').toLowerCase();
@@ -593,10 +604,10 @@ function continentPage(continent){
  const prefix='continent';
  return `<section class="countryhero"><div class="wrap">
  ${breadcrumbs([{text:'Explore Music',href:'/explore/'},{text:continent}])}
- <div class="eyebrow">${safe(continent)} · Open collection</div>
+ <div class="eyebrow">${safe(continent)} · ${list.length<=3?'Starter collection':'Growing collection'}</div>
  <h1>${safe(continent)}: <span style="font-weight:350;color:#bbd7d3">listen and discover</span></h1>
  <p class="lead">${safe(continentIntros[continent]||'Explore new musical experiences across this growing collection.')}</p>
- <div class="pills"><span class="pill">${catalogLoadError?'Recordings temporarily unavailable':recordingCount(list.length)}</span><span class="pill">Growing through discovery</span></div>
+ <div class="pills"><span class="pill">${catalogLoadError?'Recordings temporarily unavailable':recordingCount(list.length)}</span><span class="pill">${list.length<=3?'Starter collection · more music to come':'Growing through discovery'}</span></div>
  </div></section>
  <section class="section soft"><div class="wrap"><div class="sectionhead"><div>
  <div class="caps">${safe(continent)} · Listening library</div>
@@ -849,7 +860,7 @@ function bindFirstVisitGuide(){
  });
  try{dialog.showModal();}catch(error){dialog.remove();}
 }
-function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/how-to'?howTo():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/recording'?recordingDetail():route==='/saved'?savedListening():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page" id="main-content" tabindex="-1">${page}</main>`+footer();window.E2ESiteShell.bind();bindSaveButtons();document.querySelectorAll('[data-catalog-retry]').forEach(button=>button.addEventListener('click',()=>location.reload()));void hydrateAccountPortal();if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();if(!catalogLoadError)bindFirstVisitGuide();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(route==='/recording')bindRecordingDetail();if(route==='/explore')bindExplore();else if(!['/','/how-to','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest','/recording','/saved'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(route==='/how-to'&&['#encounter','#connection','#journey'].includes(location.hash)){
+function render(){const route=decodeURI((location.hash.startsWith('#/') ? location.hash.slice(1) : location.pathname.replace(/\/index\.html$/,'').replace(/\/$/,'') || '/').split('?')[0]);let page=route==='/'?home():route==='/how-to'?howTo():route==='/africa'?africa():route==='/north-america'?northAmerica():['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1))?continentPage(continentList.find(c=>route===continentHref(c).slice(0,-1))):route.startsWith('/country/')?country(route.slice('/country/'.length)):route==='/crossroads'?crossroads():route==='/discoveries'?discoveries():route==='/about'?about():route==='/participate'?participate():route==='/recording'?recordingDetail():route==='/saved'?savedListening():route==='/suggest'?suggestion():explore();document.getElementById('app').innerHTML=nav(route)+`<main class="page" id="main-content" tabindex="-1">${page}</main>`+footer();window.E2ESiteShell.bind();bindSaveButtons();document.querySelectorAll('[data-catalog-retry]').forEach(button=>button.addEventListener('click',()=>location.reload()));if(route==='/'){bindNewsCarousel();bindIntroListeningStrip();if(!catalogLoadError)bindFirstVisitGuide();}if(route==='/about')bindAboutExperiment();if(route==='/africa')bindFilters('africa',R.filter(r=>r.continent==='Africa'));if(route==='/north-america')bindFilters('northamerica',R.filter(r=>r.continent==='North America'));if(['Asia','Europe','South America','Oceania'].some(c=>route===continentHref(c).slice(0,-1)))bindFilters('continent',R.filter(r=>route===continentHref(r.continent).slice(0,-1)));if(route.startsWith('/country/'))bindFilters('country',R.filter(r=>r.continent==='Africa'&&countryMatches(r,route.slice('/country/'.length))));if(route==='/recording')bindRecordingDetail();if(route==='/explore')bindExplore();else if(!['/','/how-to','/africa','/north-america','/asia','/europe','/south-america','/oceania','/crossroads','/discoveries','/about','/participate','/suggest','/recording','/saved'].includes(route)&&!route.startsWith('/country/'))bindFilters('explore',R);let form=document.getElementById('suggestForm');if(form)form.addEventListener('submit',e=>{e.preventDefault();const s=`Earth to Ear suggestion\nType: ${document.getElementById('type').value}\nName: ${document.getElementById('name').value}\nRegion: ${document.getElementById('region').value}\nFree listening link: ${document.getElementById('musicUrl').value}\nWhy: ${document.getElementById('reason').value}`;const el=document.getElementById('suggestStatus');if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(s).then(()=>el.textContent='Copied to clipboard. No submission was made.').catch(()=>el.textContent='Copy unavailable here. No submission was made.');else el.textContent='Clipboard access is unavailable. No submission was made.'});if(route==='/how-to'&&['#encounter','#connection','#journey'].includes(location.hash)){
  const section=document.getElementById(location.hash.slice(1));
  if(section)requestAnimationFrame(()=>section.scrollIntoView({block:'start'}));
 }else if(location.hash==='#archival-listening'){

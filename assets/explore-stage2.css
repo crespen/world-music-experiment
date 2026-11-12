@@ -126,3 +126,10 @@
 .rxd-related a small{margin:0;color:#bed4cd;font-size:11px}
 .rxd-related a strong{font-size:14px;line-height:1.35}
 .rxd-related a:hover,.rxd-related a:focus-visible{border-color:#e0c48a;background:#345c64}
+
+/* Review refinements: short access line and optional provider details. */
+.access-notice{font-size:0.875rem;line-height:1.45;margin:0.45rem 0}
+.access-detail{margin:9px 0 16px;border:1px solid #668d86;border-radius:10px;background:#183a43;color:#d7e7df;padding:10px 13px;font-size:13px;line-height:1.6}
+.access-detail summary{color:#f1d6a8;font-weight:750;cursor:pointer}
+.access-detail summary:focus-visible{outline:3px solid #efcf98;outline-offset:4px}
+.access-detail p{margin:9px 0 0;font-size:13px;line-height:1.6;color:#cfe0d8}

@@ -34,10 +34,67 @@
       '<div><a href="/explore/">Explore Music</a> · <a href="/journeys/">Musical Journeys</a> · <a href="/saved/">Saved Listening</a> · <a href="/how-to/">How to Listen</a> · <a href="/participate/">For Contributors</a><p>Public listening · Private reflections by invitation only</p></div>'+
       '</div></footer>';
   }
+  // One shared account label for all pages, including static Journeys and founder tools.
+  // This changes only the navigation label. Protected data remains gated server-side.
+  const AUTH_KEY='sb-jhgyjqafpnzwfpzwtpki-auth-token';
+  const E2E_BASE='https://jhgyjqafpnzwfpzwtpki.supabase.co';
+  const E2E_PUBLIC_KEY='sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r';
+  async function currentAccessToken(){
+    let saved=null;
+    try{saved=JSON.parse(localStorage.getItem(AUTH_KEY)||'null');}catch(e){}
+    if(!saved||typeof saved!=='object')return null;
+    if(typeof saved.access_token==='string'&&Number(saved.expires_at)>Date.now()/1000+40)return saved.access_token;
+    if(typeof saved.refresh_token!=='string')return null;
+    // Only import the client for a previously signed-in session requiring refresh.
+    const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.81.1');
+    const sb=createClient(E2E_BASE,E2E_PUBLIC_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+    const result=await sb.auth.getSession();
+    return result.data?.session?.access_token||null;
+  }
+  async function hydrateAccountNav(){
+    const link=document.getElementById('accountPortalLink');
+    if(!link||link.dataset.authCheck==='1')return;
+    link.dataset.authCheck='1';
+    try{
+      const token=await currentAccessToken();
+      if(!token)return;
+      const check=async action=>{
+        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
+        try{
+          const response=await fetch(E2E_BASE+'/functions/v1/e2e-contributor',{
+            method:'POST',signal:controller.signal,
+            headers:{apikey:E2E_PUBLIC_KEY,Authorization:'Bearer '+token,'Content-Type':'application/json'},
+            body:JSON.stringify({action})
+          });
+          return response.ok?response.json():null;
+        }finally{clearTimeout(timer);}
+      };
+      const admin=await check('admin-status').catch(()=>null);
+      const current=document.getElementById('accountPortalLink');
+      if(!current||current!==link)return;
+      if(admin?.administrator===true){
+        current.href='/founder.html';current.textContent='Founder Dashboard';
+        current.setAttribute('aria-label','Open Founder Dashboard');
+        return;
+      }
+      const status=await check('status').catch(()=>null);
+      if(!current.isConnected)return;
+      if(status?.status==='active'){
+        current.href='/contributor.html';current.textContent='My Journal';
+        current.setAttribute('aria-label','Open My Listening Journal');
+      }else if(status?.status==='unregistered'){
+        current.href='/contributor.html';current.textContent='My Registration';
+      }
+    }catch(error){
+      // Public browsing must not depend on account, network, or session restoration.
+    }
+  }
   function bind(){
     const button=document.getElementById('e2e-menu-toggle');
     const nav=document.getElementById('e2e-primary-nav');
-    if(!button||!nav||button.dataset.bound==='1')return;
+    if(!button||!nav)return;
+    void hydrateAccountNav();
+    if(button.dataset.bound==='1')return;
     button.dataset.bound='1';
     function setOpen(open){
       button.setAttribute('aria-expanded',String(Boolean(open)));
