@@ -44,3 +44,17 @@ test('private contributor fields never appear in the public output',()=>{
  assert.doesNotMatch(page,/confidential@example\.invalid|SAMPLE-SECRET|Private listening impression/);
  assert.equal(pathFor(row),'/recording/afr-0028/');
 });
+
+
+test('recording pages give public visitors an immediate listening path and optional contextual depth',()=>{
+ const html=renderRecording({...sample,id:'ASI-0005',title:'Allah Hoo',artist:'Nusrat Fateh Ali Khan',continent:'Asia',country:'Pakistan',tradition:'Qawwali'},[]);
+ assert.match(html,/Hear the music at its original source/);
+ assert.match(html,/No account, invitation, or musical expertise required/);
+ assert.match(html,/Explore the artist, instruments and origins/);
+ assert.match(html,/Artist or ensemble/);
+ assert.match(html,/Origins and evolution/);
+ assert.match(html,/Qawwali is South Asian Sufi devotional ensemble singing/);
+ const generic=renderRecording({...sample,id:'AFR-9999'},[]);
+ assert.match(generic,/The detailed history of this specific musical performance and its influences has not yet been established/);
+ assert.doesNotMatch(generic,/participant_id|journal_entry/);
+});
