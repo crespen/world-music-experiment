@@ -20,7 +20,7 @@ async function loadHomepageFeatures(){
 async function loadCatalog(){
  const all=[];const batchSize=500;
  for(let offset=0;;offset+=batchSize){
-  const url=CATALOG_ENDPOINT+'?select=id,title,artist,country,tradition,era,expedition,listen,description,c1,c2,continent,region,period,access,sort_order,source_credit&active=eq.true&order=sort_order.asc&limit='+batchSize+'&offset='+offset;
+  const url=CATALOG_ENDPOINT+'?select=id,title,artist,country,tradition,era,expedition,listen,description,c1,c2,continent,region,period,access,sort_order,source_credit,listening_role&active=eq.true&order=sort_order.asc&limit='+batchSize+'&offset='+offset;
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),12000);
   let batch;
@@ -32,7 +32,7 @@ async function loadCatalog(){
   if(!Array.isArray(batch))throw new Error('Unexpected catalog response');
   all.push(...batch);if(batch.length<batchSize)break;
  }
- R=all;
+ R=all.filter(r=>r.listening_role==='primary');
  africaCountries=[...new Set(R.filter(r=>r.continent==='Africa').map(r=>r.country==='Ethiopia / United States'?'Ethiopia':r.country))].sort((a,b)=>a.localeCompare(b));
 }
 const continentList=['Africa','Asia','Europe','North America','South America','Oceania'];
