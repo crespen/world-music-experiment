@@ -152,7 +152,7 @@ a.metric-link:focus-visible{outline:3px solid #ffdfa3;outline-offset:4px}
 <div class="caps">Founder catalog operations</div><h2>Catalog Health</h2>
 <p class="muted">Automated checks confirm whether a provider page responds. They do <strong>not</strong> prove audio playback or permission to reuse a recording. A separate manual review records each of those findings.</p>
 <div class="grid" style="margin:18px 0"><div class="metric"><strong id="healthActive">—</strong><span>Catalog recordings</span></div><div class="metric"><strong id="healthChecked">—</strong><span>Source pages checked</span></div><div class="metric"><strong id="healthReachable">—</strong><span>Pages responding</span></div><div class="metric"><strong id="healthAttention">—</strong><span>Source issues / review</span></div></div>
-<p class="muted" id="healthSummary">Loading catalog checks…</p><div class="row" style="margin:18px 0"><label for="healthQuery" class="muted">Find a recording <input id="healthQuery" type="search" placeholder="Artist, title, ID, country" style="display:block"></label><label for="healthFilter" class="muted">Show <select id="healthFilter" style="display:block;padding:11px;border:1px solid #7ba6a3;border-radius:8px;background:#0b2833;color:#fff"><option value="all">All recordings</option><option value="pending">Not checked yet</option><option value="attention">Needs attention</option><option value="reachable">Page reachable</option><option value="needs_manual">Playback or rights unreviewed</option></select></label></div>
+<p class="muted" id="healthSummary">Loading catalog checks…</p><p class="muted" style="font-size:12px">Music-first screening flags possible documentary or narrated sources for individual review. It does not establish whether the recording actually plays. <a href="https://github.com/crespen/world-music-experiment/blob/main/docs/music-first-selection-standard.md" target="_blank" rel="noopener noreferrer">Selection standard</a> · <a href="https://github.com/crespen/world-music-experiment/blob/main/docs/music-first-catalog-triage-2026-11-12.md" target="_blank" rel="noopener noreferrer">Initial review list</a></p><div class="row" style="margin:18px 0"><label for="healthQuery" class="muted">Find a recording <input id="healthQuery" type="search" placeholder="Artist, title, ID, country" style="display:block"></label><label for="healthFilter" class="muted">Show <select id="healthFilter" style="display:block;padding:11px;border:1px solid #7ba6a3;border-radius:8px;background:#0b2833;color:#fff"><option value="all">All recordings</option><option value="pending">Not checked yet</option><option value="attention">Needs attention</option><option value="reachable">Page reachable</option><option value="needs_manual">Playback or rights unreviewed</option><option value="music_first">Music-first selection review</option></select></label></div>
 <div id="catalogItems"></div><div id="catalogCount" class="muted"></div><p style="margin-top:22px" class="muted">Scheduled automated checks run daily in batches. Newly discovered issues may be transient or restricted by the source provider. Human review is required before classifying playback and reuse rights.</p>
 <details style="margin-top:22px"><summary style="cursor:pointer;color:#f0cf9c;font-weight:650">Future welcome-audio candidates · rights review</summary><p class="muted">These are leads, not approved audio. No music clips are enabled or hosted until the composition, sound recording and any adaptation/commercial permissions have been confirmed.</p><div id="audioCandidates"></div></details>
 </section>
@@ -226,6 +226,8 @@ async function call(action,args={}){
 }
 function listEmpty(target,message){target.replaceChildren(el('p','muted',message));}
 let catalogHealth=null;
+const initialMusicFirstReview = new Set([...Array.from({length:7},(_,i)=>'AFR-'+String(i+47).padStart(4,'0')),...Array.from({length:22},(_,i)=>'ASI-'+String(i+5).padStart(4,'0')),...Array.from({length:23},(_,i)=>'EUR-'+String(i+3).padStart(4,'0')),'OCE-0004','OCE-0005',...Array.from({length:5},(_,i)=>'SAM-'+String(i+5).padStart(4,'0')),...Array.from({length:8},(_,i)=>'SAM-'+String(i+13).padStart(4,'0'))]);
+function needsMusicFirstReview(x){return initialMusicFirstReview.has(x.recording_id)||/(documentary|overview|explainer|heritage film|musical excerpts|performance excerpts)/i.test(x.title||'');}
 function selectField(label,values,value){const wrap=el('label','review-field',label);const select=el('select');for(const [v,t] of values){const opt=el('option','',t);opt.value=v;select.append(opt);}select.value=value;wrap.append(select);return {wrap,select};}
 function renderCatalogHealth(data){
  catalogHealth=data;
@@ -234,12 +236,13 @@ function renderCatalogHealth(data){
  const root=by('catalogItems');root.replaceChildren();
  const search=by('healthQuery').value.trim().toLowerCase();const filter=by('healthFilter').value;const rows=(data.items||[]).filter(x=>{
  const q=[x.recording_id,x.title,x.artist,x.country].join(' ').toLowerCase().includes(search);
- const match=filter==='all'||(filter==='pending'&&!x.last_checked_at)||(filter==='attention'&&!['unverified','reachable_page'].includes(x.url_status))||(filter==='reachable'&&x.url_status==='reachable_page')||(filter==='needs_manual'&&(x.playback_status==='unverified'||x.rights_status==='unreviewed'));
+ const match=filter==='all'||(filter==='pending'&&!x.last_checked_at)||(filter==='attention'&&!['unverified','reachable_page'].includes(x.url_status))||(filter==='reachable'&&x.url_status==='reachable_page')||(filter==='needs_manual'&&(x.playback_status==='unverified'||x.rights_status==='unreviewed'))||(filter==='music_first'&&needsMusicFirstReview(x));
  return q&&match;
  });
  for(const x of rows.slice(0,70)){
   const article=el('details','catalog-entry item');
   const summary=el('summary','',x.recording_id+' · '+x.title+' · '+x.url_status.replaceAll('_',' '));article.append(summary);
+  if(needsMusicFirstReview(x))article.append(el('p','muted','Music-first screening candidate: confirm exact musical start, continuous performance and commentary burden before treating this as a primary listening assignment. This flag is not a playback failure.'));
   const meta=el('p','muted','Source: '+x.source_host+' · Last automated check: '+(x.last_checked_at?new Date(x.last_checked_at).toLocaleString():'Not checked')+' · HTTP: '+(x.http_status??'—'));
   article.append(meta);
   if(x.last_detail)article.append(el('p','muted',x.last_detail));
@@ -249,7 +252,7 @@ function renderCatalogHealth(data){
   const rights=selectField('Reuse rights',[['unreviewed','Unreviewed'],['third_party_only','Link only / third party'],['public_domain','Public domain — evidence required'],['licensed','Licensed — evidence required'],['restricted','Restricted']],x.rights_status);
   box.append(playback.wrap,rights.wrap);
   const evidence=el('input');evidence.type='url';evidence.value=x.rights_evidence_url||'';evidence.placeholder='Rights evidence URL (required if cleared)';evidence.maxLength=1500;
-  const notes=el('textarea');notes.value=x.notes||'';notes.placeholder='Manual playback, region, provider or license review notes';notes.rows=2;notes.maxLength=2000;notes.style.width='100%';notes.style.background='#0b2833';notes.style.color='#fff';notes.style.padding='10px';
+  const notes=el('textarea');notes.value=x.notes||'';notes.placeholder='Actual music start, uninterrupted music, narration, device/region, rights and source notes';notes.rows=2;notes.maxLength=2000;notes.style.width='100%';notes.style.background='#0b2833';notes.style.color='#fff';notes.style.padding='10px';
   const rightsLabel=el('label','review-field','Rights evidence URL');rightsLabel.append(evidence);
   const notesLabel=el('label','review-field','Reviewer notes');notesLabel.append(notes);
   box.append(rightsLabel,notesLabel);
