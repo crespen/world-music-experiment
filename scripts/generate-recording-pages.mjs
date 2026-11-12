@@ -53,6 +53,35 @@ function relatedLinks(r,all){
  return [sameCountry,sameTradition,otherPlace].filter(Boolean).slice(0,3).map(x=>
  '<li><a href="'+esc(pathFor(x))+'"><span>'+esc(x.country)+' · '+esc(x.tradition)+'</span><strong>'+esc(x.title)+'</strong></a></li>').join('');
 }
+
+/* Public, optional notes: keep audio-first and distinguish catalog facts from research gaps. */
+const contextNotes={
+ 'NAM-0001':['A male vocal quartet sings without accompaniment. Hear the blend and distinct phrasing of the voices.','The Fisk Jubilee Singers helped carry African American spirituals to wider concert audiences. This source records a quartet in 1909.'],
+ 'AFR-0023':['Hear guitar interact with calabash and djembe in this contemporary filmed performance.','Bombino is a Tuareg guitarist from Niger; this recording belongs to the living Tamasheq rock scene.'],
+ 'AFR-0024':['Ghanaian drivers transform squeeze-bulb horns and everyday objects into musical instruments.','The La Drivers Union Por Por Group is associated with Ga drivers and their community musical life.'],
+ 'AFR-0027':['Singing and percussion share the musical texture; individual performers are not named in the catalog.','The source identifies northern Ghana but not the precise community or performance occasion.'],
+ 'AFR-0028':['Follow the repeated drumming patterns and the changes within them.','The source relates this drumming to Okonko practice in Nigeria’s Opobo Kingdom; more detailed provenance is being researched.'],
+ 'AFR-0029':['Listen for the pitch changes and articulation in a short talking-drum demonstration.','Some West African talking drums change pitch through drumhead tension. This performance’s particular cultural history remains under research.'],
+ 'ASI-0005':['Hear the recurring vocal phrases and intensifying rhythmic accompaniment. Harmonium, handclaps and percussion are common in qawwali but require confirmation in this exact recording.','Qawwali is South Asian Sufi devotional ensemble singing. Nusrat Fateh Ali Khan helped bring it to a wider global audience.'],
+ 'NAM-0026':['The four-note musical idea unfolds among saxophone, piano, bass and drums.','The audio is from 1964; its official 2026 video imagery is a modern production, not footage of the original studio session.'],
+ 'NAM-0027':['Notice angular melody, displaced accents and breathing space in Monk’s blues composition.','Monk brought a distinct rhythmic language to jazz piano, composition and ensemble performance.'],
+ 'NAM-0028':['Listen to the piano melody supported by bass and drums.','Oscar Peterson’s Hymn to Freedom is associated with civil-rights aspirations and draws on gospel-influenced musical language.']
+};
+function contextPanel(r){
+ const annotation=contextNotes[r.id];
+ const performer=tidy(r.artist)||'Not identified';
+ const category=tidy(r.tradition)||'Tradition not yet classified';
+ const place=tidy(r.country)||'Location not yet documented';
+ const era=tidy(r.period)||'Period not yet established';
+ const sound=annotation?annotation[0]:'Our catalog description above contains the current musical clues. Instrument-specific notes are still being researched.';
+ const history=annotation?annotation[1]:'This source is indexed under '+category+' and '+place+'. The detailed history of this specific musical performance and its influences has not yet been established.';
+ return '<details class="e2e-seo-context"><summary>Explore the artist, instruments and origins</summary><div class="e2e-seo-context-grid">'
+  +'<div><h3>Artist or ensemble</h3><p>'+esc(performer)+'</p></div>'
+  +'<div><h3>Tradition, location and period</h3><p>'+esc(category)+' · '+esc(place)+' · '+esc(era)+'</p></div>'
+  +'<div><h3>What you may hear</h3><p>'+esc(sound)+'</p></div>'
+  +'<div><h3>Origins and evolution</h3><p>'+esc(history)+'</p></div>'
+  +'</div><p class="e2e-seo-context-note">Our source research is ongoing. We distinguish documented information from interpretation and do not assign origins or instruments without evidence.</p></details>';
+}
 function renderRecording(r,all){
  const url=BASE+pathFor(r);
  const title=tidy(r.title)+' — '+tidy(r.country)+' | Earth to Ear';
@@ -84,7 +113,7 @@ function renderRecording(r,all){
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=review-v1">
 <link rel="stylesheet" href="/assets/site-shell.css?v=stage1-v4">
-<link rel="stylesheet" href="/assets/recording-seo.css?v=seo-v1">
+<link rel="stylesheet" href="/assets/recording-seo.css?v=visitor-value-v1">
 </head><body>
 <div id="e2e-site-header"></div>
 <main id="main-content" tabindex="-1" class="e2e-seo-main">
@@ -98,9 +127,11 @@ function renderRecording(r,all){
 </div></section>
 <div class="e2e-seo-container e2e-seo-columns">
 <article class="e2e-seo-article">
-<h2>Meet the recording</h2><p>${esc(r.description)}</p>
+<h2>Listen first. Follow your curiosity.</h2>
+<div class="e2e-seo-quicklisten"><a href="${esc(external)}" target="_blank" rel="noopener noreferrer">▶ Hear the music at its original source ↗</a><p>Public listening. No account, invitation, or musical expertise required.</p></div><p>${esc(r.description)}</p>
 <h2>What might you notice?</h2>
 <p>Listen for a sound or moment that catches your attention—a rhythm, a voice, an instrument, a change in texture, or something unexpected. You do not need technical terms or a correct answer.</p>
+${contextPanel(r)}
 <h2>Hear it at the original source</h2>
 <p>Earth to Ear provides independent listening context; the music remains with its source. Visiting a provider does not transfer any recording rights to Earth to Ear.</p>
 <p class="e2e-seo-access"><strong>Listening access:</strong> ${esc(accessLabel(r))}</p>
