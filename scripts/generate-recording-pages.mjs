@@ -87,7 +87,7 @@ function renderRecording(r,all){
  const title=tidy(r.title)+' — '+tidy(r.country)+' | Earth to Ear';
  const metaDescription=brief(tidy(r.description),158);
  const isListening=r.listening_role==='primary';
- const label=isListening?'Hear the music at its source':r.listening_role==='context'?'View the cultural documentary':'View the source under editorial review';
+ const label=isListening?'Hear the music at its original source':r.listening_role==='context'?'View the cultural documentary':'View the source under editorial review';
  const roleNotice=isListening?'':r.listening_role==='context'?'Educational context source. This documentary is not a primary Listening Library assignment.':'This source is under music-first review and is not currently recommended as a listening assignment.';
  const external=sourceURL(r);
  const artist=tidy(r.artist),unknown=/^performers? not identified$/i.test(artist);
