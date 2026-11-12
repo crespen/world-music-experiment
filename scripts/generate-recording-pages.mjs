@@ -111,7 +111,7 @@ function renderRecording(r,all){
 <script type="application/ld+json">${structured}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/site.css?v=review-v1">
+<link rel="stylesheet" href="/assets/site.css?v=visitor-value-v1">
 <link rel="stylesheet" href="/assets/site-shell.css?v=stage1-v4">
 <link rel="stylesheet" href="/assets/recording-seo.css?v=visitor-value-v1">
 </head><body>
