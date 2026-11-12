@@ -2,6 +2,10 @@
 
 **Adopted:** November 12, 2026. For new catalog recordings, existing source audits, Musical Journeys, and all continental Atlases.
 
+## Live publishing gate
+
+The operational database field `music_catalog.listening_role` now controls publication: `primary` is visible in routine music discovery, `review` is held, and `context` is documentary/reference material. **New catalog rows default to `review`.** The public `primary` lane includes some provisional candidates; it is *not* a claim that playback, rights, and attribution have all been verified. See [publishing gate and current inventory](music-first-publishing-gate.md).
+
 ## Listening first
 
 Participants come to hear **music**, not wait through an explanatory documentary for a performance to begin. An institutional film can be a trustworthy source of **context** without being a suitable **primary listening selection**.
