@@ -32,5 +32,23 @@ html{scroll-padding-top:110px}
  .e2e-global-header .e2e-primary-nav a{white-space:normal;padding:13px 10px;font-size:14px;min-height:44px}
  .e2e-primary-nav a#accountPortalLink{margin-top:6px;text-align:center}
 }
+/* Mobile masthead: one compact row, without the former wrapped-logo gap. */
+@media(max-width:700px){
+ .e2e-global-header{height:auto!important;min-height:0!important;padding:0!important}
+ .e2e-global-header>.e2e-global-inner{
+   display:flex!important;flex-direction:row!important;flex-wrap:wrap!important;
+   align-items:center!important;align-content:center!important;justify-content:space-between!important;
+   width:calc(100% - 28px)!important;min-height:0!important;height:auto!important;
+   padding:9px 0!important;gap:0 9px!important
+ }
+ .e2e-global-header .e2e-global-brand{
+   flex:1 1 0!important;min-width:0!important;max-width:235px!important;
+   margin:0!important;align-self:center!important
+ }
+ .e2e-global-header .e2e-global-brand img{display:block!important;width:100%!important;max-width:235px!important;height:auto!important;max-height:57px!important;object-fit:contain!important;object-position:left center!important}
+ .e2e-global-header .e2e-menu-toggle{display:inline-flex!important;flex:0 0 auto!important;align-self:center!important;margin:0!important;padding:9px 11px!important;min-height:42px!important;max-width:100%!important}
+ .e2e-global-header .e2e-primary-nav{display:none!important;flex:0 0 100%!important;width:100%!important;margin:8px 0 0!important;padding:7px 0 9px!important;gap:0!important}
+ .e2e-global-header .e2e-primary-nav.is-open{display:flex!important}
+}
 @media(max-width:390px){.e2e-global-inner,.e2e-global-footer-inner{width:calc(100% - 28px)}.e2e-global-brand{flex-basis:210px}}
 @media(prefers-reduced-motion:reduce){.e2e-global-header{backdrop-filter:none}}
