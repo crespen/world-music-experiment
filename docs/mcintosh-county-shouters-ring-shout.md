@@ -5,9 +5,11 @@
 - Earth to Ear recording ID: `NAM-0024`
 - Artist/ensemble: McIntosh County Shouters
 - Performance: Gullah-Geechee ring shout, Library of Congress Homegrown concert, December 2, 2010
-- Direct official video: https://www.youtube.com/watch?v=uxPU5517u8c
+- Direct official video (starts at 4:10): https://www.youtube.com/watch?v=uxPU5517u8c&t=250s
 - Archival record: https://www.loc.gov/item/2021688572/
 - Group's own endorsement of video: https://www.the-mcintosh-county-shouters.com/ring-shout-heritage
+
+**Listening entry point:** Start playback at 4:10 (250 seconds), just before the group begins singing, bypassing opening speakers. The source remains the official Library of Congress recording; only the timestamped link changes.
 
 The Library of Congress describes counterclockwise movement, call-and-response singing, clapping, and percussion using a stick on a wooden floor. The current group preserves a living tradition from coastal Georgia. This video is a **2010 performance**, not an audio-visual document of slavery-era performance, and does not alone establish a single direct lineage from a particular West African tradition to gospel, blues, or jazz.
 
