@@ -50,3 +50,6 @@
 .e2e-seo-context-grid p{font-size:13px;line-height:1.65;margin:0;color:#d6e6dd}
 .e2e-seo-article .e2e-seo-context-note{font-size:12px;line-height:1.6;margin:15px 0 0;color:#b8d3cb}
 @media(max-width:650px){.e2e-seo-context-grid{grid-template-columns:1fr}.e2e-seo-quicklisten a{width:100%;text-align:center;justify-content:center}}
+
+/* Clearly distinguish direct archive references from listening assignments. */
+.e2e-seo-role-notice{border-left:4px solid #e3b87e;background:#315048;color:#fff0d9!important;padding:13px 16px;border-radius:6px;font-weight:650;line-height:1.6}
