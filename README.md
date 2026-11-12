@@ -22,6 +22,8 @@ See [Automated recording SEO publication](docs/seo-recording-publishing-standard
 
 ## Project references
 
+- [Music-first selection standard](docs/music-first-selection-standard.md) — primary listening versus documentary context; 30-second entry guideline and playback QA
+- [Initial music-first catalog triage](docs/music-first-catalog-triage-2026-11-12.md) — metadata-only review list, not playback failures
 - [Listening access and curation](docs/listening-access-curation-standard.md)
 - [Musical journeys editorial standard](docs/musical-journeys-editorial-standard.md)
 - [Listener UX and verification](docs/listener-ux-stage-2-3-and-stage-4-verification.md)
