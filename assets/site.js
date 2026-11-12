@@ -255,6 +255,16 @@ const savedJourney=memory?Object.entries(memory.allJourneys()).filter(([id,entry
 const journeyNames={'jazz-voice':'The Jazz Voice',reggae:'Jamaican Reggae','ghana-highlife':'Ghanaian Highlife'};
 const resume=savedJourney?'<a class="ed-resume-link" href="/journeys/?arc='+encodeURIComponent(savedJourney[0])+'#e2e-'+savedJourney[0]+'-stop-'+savedJourney[1].stop+'">Continue '+safe(journeyNames[savedJourney[0]])+' · stop '+savedJourney[1].stop+' →</a>':'';
 const recent=savedActive?'<a class="ed-resume-link" href="/saved/">Your saved recordings · '+savedActive+' →</a>':'<a class="ed-resume-link" href="/saved/">Your Saved Listening shelf →</a>';
+const whyVisit=`<section class="ed-why-section" aria-labelledby="ed-why-heading"><div class="wrap">
+ <span class="ed-kicker">WHY VISIT EARTH TO EAR?</span>
+ <h2 id="ed-why-heading">Come for the music. Leave with a discovery.</h2>
+ <p class="ed-why-lead">Get to know remarkable recordings, the people who perform them, and the histories and connections that shaped their sound. Follow your curiosity as far as you wish.</p>
+ <div class="ed-why-grid">
+ <div class="ed-why-card"><span aria-hidden="true">♪</span><h3>Meet the music</h3><p>Find a performer, a tradition, a musical instrument, or a way of listening you did not know before.</p><a href="/explore/">Find a recording →</a></div>
+ <div class="ed-why-card"><span aria-hidden="true">↝</span><h3>Follow its story</h3><p>Listen through changing musical styles and explore cross-cultural exchange in our Musical Journeys.</p><a href="/journeys/">Explore a journey →</a></div>
+ <div class="ed-why-card"><span aria-hidden="true">✧</span><h3>Choose your involvement</h3><p>Anyone can listen and save recordings on this device. Invited contributors may also add private reflections.</p><a href="/about/">About the experiment →</a></div>
+ </div><p class="ed-why-access">Public music discovery does not require an invitation. The private research journal does.</p>
+ </div></section>`;
 const startHere=`<section class="ed-entry-section section" aria-labelledby="ed-entry-title"><div class="wrap">
  <div class="ed-section-head"><span class="ed-kicker">YOUR LISTENING STARTS HERE</span><h2 id="ed-entry-title">Where will you listen next?</h2><p>No expertise needed. Choose a surprise, follow a musical story, or explore by place.</p></div>
  <div class="ed-entry-grid">
@@ -272,8 +282,8 @@ return `
  <div class="wrap ed-hero-inner">
   <div class="ed-hero-copy">
    <div class="ed-kicker"><span class="ed-kicker-dot"></span> A GLOBAL LISTENING EXPERIMENT</div>
-   <h1 id="welcome-title">Hear something unexpected.</h1>
-   <p>Discover performances from across the world, follow their stories, and notice what the music brings to mind. Anyone can listen; invited contributors can also share private reflections.</p>
+   <h1 id="welcome-title">A world of music. A lifetime of discovery.</h1>
+   <p>For anyone curious about music: hear performances you might never encounter, meet the artists and traditions behind them, and explore how sounds travel and change across generations. No musical expertise, account, or invitation required.</p><p class="ed-hero-access"><strong>Here to listen?</strong> The music is open to everyone. <strong>Invited to contribute?</strong> You can also share private reflections with the experiment.</p>
    <div class="ed-hero-ctas"><a href="/explore/" class="ed-btn ed-btn-primary"><span aria-hidden="true">▶</span> Start Listening</a><a href="/how-to/" class="ed-btn ed-btn-outline">New here? How to Listen</a><a href="/journeys/" class="ed-btn ed-btn-outline">Follow a Musical Journey</a></div>
   </div>
   <div class="ed-hero-art"><img src="/assets/earth-to-ear-hero.svg" alt="Decorative golden sonic waves crossing a teal and gold globe"></div>
@@ -289,6 +299,7 @@ return `
  <p class="e2e-intro-footnote">Use the arrows to move through the playlist. YouTube videos and Wikimedia Commons audio use their original hosted players. Playback provides pause and volume controls; source availability may vary by region or provider.</p>
 </aside>
 ${startHere}
+${whyVisit}
 <section class="ed-news-section" aria-labelledby="news-title"><div class="wrap ed-news-layout">
 <div class="ed-news-intro"><span class="ed-news-eyebrow">CURATED LISTENING · NEW TO OUR LIBRARY</span><h2 id="news-title">What's New in the<br>Listening Community</h2><span class="ed-gold-rule"></span><p>Discover selected recordings from across our open collections. Features stay visible for at least 30 days; one or two new selections may join on the 1st and 15th when ready.</p><a href="/explore/" class="ed-quiet-link">Explore the full library</a></div>
 <div class="ed-news-wrap"><div class="ed-news-controls"><button type="button" id="newsPrevious" aria-label="Previous listening selections" aria-controls="newsRail">‹</button><button type="button" id="newsNext" aria-label="Next listening selections" aria-controls="newsRail">›</button></div><div class="ed-news-grid" id="newsRail" role="region" aria-label="Browse featured listening selections" tabindex="0">${newsCards}</div></div>
