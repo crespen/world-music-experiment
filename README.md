@@ -23,6 +23,7 @@ See [Automated recording SEO publication](docs/seo-recording-publishing-standard
 ## Project references
 
 - [Music-first publishing gate](docs/music-first-publishing-gate.md) — new recordings held for review; 55 held and 10 context-only in first screen
+- [South American Musical Atlas v0.1](docs/atlases/south-american-musical-atlas-v0-1.md) — 358 typed research candidates across 12 countries and French Guiana; 37 evidence anchors and a cross-border register.
 - [Music-first selection standard](docs/music-first-selection-standard.md) — primary listening versus documentary context; 30-second entry guideline and playback QA
 - [Initial music-first catalog triage](docs/music-first-catalog-triage-2026-11-12.md) — metadata-only review list, not playback failures
 - [Listening access and curation](docs/listening-access-curation-standard.md)
