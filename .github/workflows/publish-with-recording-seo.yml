@@ -1,0 +1,58 @@
+name: Publish Earth to Ear with recording SEO pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    # Refresh catalog additions, changes and retirements four times a day.
+    # GitHub schedules are best-effort and may run later than their nominal time.
+    - cron: '17 */6 * * *'
+
+concurrency:
+  group: earth-to-ear-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate public recording pages and sitemap
+        env:
+          SUPABASE_URL: https://jhgyjqafpnzwfpzwtpki.supabase.co
+          # This is the PUBLIC publishable key also used by the site. Never use service_role.
+          SUPABASE_PUBLISHABLE_KEY: sb_publishable_fO6g2GnCm-jCXOxdcwE4kA_Hzr6AR-r
+          E2E_OUTPUT_DIR: _site
+        run: node scripts/generate-recording-pages.mjs
+      - name: Verify generated pages
+        run: |
+          test -f _site/CNAME
+          test -f _site/recording/afr-0028/index.html
+          grep -q 'recording/afr-0028/' _site/sitemap.xml
+          count="$(find _site/recording -mindepth 2 -maxdepth 2 -name index.html | wc -l)"
+          test "$count" -gt 0
+          echo "Generated $count public recording pages."
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload complete static website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Earth to Ear
+        id: deployment
+        uses: actions/deploy-pages@v4

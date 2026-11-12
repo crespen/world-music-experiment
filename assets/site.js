@@ -114,6 +114,7 @@ async function hydrateAccountPortal(){
 }
 const footer=()=>window.E2ESiteShell.footer();
 const continentHref=c=>'/'+slug(c)+'/';
+const recordingPublicUrl=id=>'/recording/'+encodeURIComponent(String(id||'').toLowerCase())+'/';
 const tiles=()=>`<div class="tiles">${continentList.map(c=>
  `<a class="region active" href="${continentHref(c)}" aria-label="Explore the ${safe(c)} collection">
  <span class="caps">${R.filter(r=>r.continent===c).length<=3?"STARTER COLLECTION":"GROWING COLLECTION"}</span><b>${safe(c)}</b>
@@ -257,7 +258,7 @@ const recent=savedActive?'<a class="ed-resume-link" href="/saved/">Your saved re
 const startHere=`<section class="ed-entry-section section" aria-labelledby="ed-entry-title"><div class="wrap">
  <div class="ed-section-head"><span class="ed-kicker">YOUR LISTENING STARTS HERE</span><h2 id="ed-entry-title">Where will you listen next?</h2><p>No expertise needed. Choose a surprise, follow a musical story, or explore by place.</p></div>
  <div class="ed-entry-grid">
-  <a class="ed-entry-card" href="${surprise?'/recording/?id='+encodeURIComponent(surprise.id):'/explore/'}"><span class="ed-entry-symbol" aria-hidden="true">✦</span><h3>Surprise Me</h3><p>Open an unexpected recording from the library.</p><small>${surprise?'Find out what you will hear':'Explore recordings when the library is available'} →</small></a>
+  <a class="ed-entry-card" href="${surprise?recordingPublicUrl(surprise.id):'/explore/'}"><span class="ed-entry-symbol" aria-hidden="true">✦</span><h3>Surprise Me</h3><p>Open an unexpected recording from the library.</p><small>${surprise?'Find out what you will hear':'Explore recordings when the library is available'} →</small></a>
   <a class="ed-entry-card" href="/journeys/"><span class="ed-entry-symbol" aria-hidden="true">↝</span><h3>Follow a Journey</h3><p>Hear how jazz vocals, reggae and Ghanaian highlife changed over time.</p><small>Choose a historical listening arc →</small></a>
   <a class="ed-entry-card" href="/explore/"><span class="ed-entry-symbol" aria-hidden="true">◎</span><h3>Explore by Place</h3><p>Find music by continent, country, performer or tradition.</p><small>Browse the listening library →</small></a>
  </div>
@@ -404,7 +405,7 @@ function savedListening(){
  '<div class="rxd-kicker">Your listening shelf · Browser only</div><h1>Saved Listening</h1><p class="rxd-subtitle">Keep recordings close while you explore. No sign-in is needed; this shelf is stored on this device and browser, not your contributor journal.</p></div></section>'+
  '<section class="section"><div class="wrap"><p id="saved-count" role="status">'+recordings.length+' recordings currently saved on this browser.</p>'+
  (catalogLoadError?'<p>The live library is unavailable. Your saved IDs remain on this browser; reload when the catalog is available.</p>':'')+
- (recordings.length?'<div class="e2e-saved-grid">'+recordings.map(r=>'<article class="e2e-saved-card" data-saved-card="'+safe(r.id)+'"><div class="caps">'+safe(r.continent)+' · '+safe(r.country)+'</div><h2><a href="/recording/?id='+encodeURIComponent(r.id)+'&return=%2Fsaved%2F">'+safe(r.title)+'</a></h2><p>'+safe(r.artist)+' · '+safe(r.tradition)+'</p><div class="e2e-saved-actions"><a href="/recording/?id='+encodeURIComponent(r.id)+'&return=%2Fsaved%2F">Explore recording →</a>'+saveButton(r)+'</div></article>').join('')+'</div>':'<div class="e2e-saved-empty"><h2>No recordings saved yet</h2><p>Find a recording that interests you and choose Save for later.</p><a class="ed-btn ed-btn-primary" href="/explore/">Explore Music →</a></div>')+
+ (recordings.length?'<div class="e2e-saved-grid">'+recordings.map(r=>'<article class="e2e-saved-card" data-saved-card="'+safe(r.id)+'"><div class="caps">'+safe(r.continent)+' · '+safe(r.country)+'</div><h2><a href="'+recordingPublicUrl(r.id)+'?return=%2Fsaved%2F">'+safe(r.title)+'</a></h2><p>'+safe(r.artist)+' · '+safe(r.tradition)+'</p><div class="e2e-saved-actions"><a href="'+recordingPublicUrl(r.id)+'?return=%2Fsaved%2F">Explore recording →</a>'+saveButton(r)+'</div></article>').join('')+'</div>':'<div class="e2e-saved-empty"><h2>No recordings saved yet</h2><p>Find a recording that interests you and choose Save for later.</p><a class="ed-btn ed-btn-primary" href="/explore/">Explore Music →</a></div>')+
  (missing?'<p class="note">'+missing+' saved recording IDs are not currently in the active library. They have not been deleted from this browser.</p>':'')+
  '<p class="e2e-saved-note">If you clear browser data or use another device, this shelf will not follow you. We do not save names, email addresses, or reflection text here.</p></div></section>';
 }
@@ -430,7 +431,7 @@ function country(name){const selected=R.filter(r=>r.continent==='Africa'&&countr
 /* Stage 2 — listener-first discovery; all filtering uses public catalog metadata. */
 function recordingHref(r,from){
  const returnPath=from||location.pathname+location.search+location.hash;
- return '/recording/?id='+encodeURIComponent(r.id)+'&return='+encodeURIComponent(returnPath);
+ return recordingPublicUrl(r.id)+'?return='+encodeURIComponent(returnPath);
 }
 function explore(){
  const spots=continentList.map(c=>R.find(r=>r.continent===c)).filter(Boolean).slice(0,3);
@@ -557,7 +558,7 @@ function recordingDetail(){
  const elsewhere=R.find(x=>x.id!==r.id&&x.continent!==r.continent&&(!fromSamePlace||x.id!==fromSamePlace.id));
  const related=[fromSamePlace,elsewhere].filter(Boolean).map(x=>{
   const label=x.country===r.country?'Another from '+safe(x.country):'Across continents · '+safe(x.continent);
-  return '<a href="/recording/?id='+encodeURIComponent(x.id)+'&return='+encodeURIComponent(back)+'"><small>'+label+'</small><strong>'+safe(x.title)+'</strong></a>';
+  return '<a href="'+recordingPublicUrl(x.id)+'?return='+encodeURIComponent(back)+'"><small>'+label+'</small><strong>'+safe(x.title)+'</strong></a>';
  }).join('');
 
  return '<section class="rxd-hero"><div class="wrap">'+breadcrumbs([{text:'Explore Music',href:'/explore/'},{text:r.title}])+
@@ -587,7 +588,7 @@ function bindRecordingDetail(){
  }
  const button=document.getElementById('rxd-copy'),status=document.getElementById('rxd-copy-status');
  if(button&&status)button.addEventListener('click',async()=>{
-  const link=location.origin+'/recording/?id='+encodeURIComponent(id);
+  const link=location.origin+recordingPublicUrl(id);
   try{await navigator.clipboard.writeText(link);status.textContent='Recording link copied.';}
   catch(error){status.textContent='Copy this link: '+link;}
  });

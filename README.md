@@ -1,28 +1,28 @@
 # Earth to Ear: A Global Listening Experiment
 
-A global exploration of musical traditions, cultural connections, and creative expression through listening, research, and discovery.
+Public website: https://earthtoear.com
 
-## Public website
+Earth to Ear invites anyone to listen to musical performances from different places and eras, hear them at their original authorized sources, and discover historical and cultural context. Private journal participation is by invitation only.
 
-The site is served from [`index.html`](./index.html), designed for GitHub Pages static hosting.
+## Publication
 
-**Music-access notice:** The active collection has 26 catalog entries, but free playback has not been verified for every entry. Links should not be advertised as guaranteed free streams until reviewed.
+The website uses GitHub Pages and its public catalog lives in Supabase.
 
-### Publish via GitHub Pages
+**Search and discovery:** Every active recording is represented by a canonical, crawler-readable page at `/recording/<id>/`, with unique source-derived metadata. Legacy `/recording/?id=...` links remain available. The active catalog is rendered into an updated `sitemap.xml`.
 
-Go to **Settings → Pages**. Under **Build and deployment**, choose **Deploy from a branch**, select **main** and **/(root)**, then **Save**.
+See [Automated recording SEO publication](docs/seo-recording-publishing-standard.md) for the publishing workflow, verification tests, and **required one-time switch to GitHub Actions as Pages source**. Scheduled publishing is approximately every six hours, not instantaneous.
 
-Custom domain: https://earthtoear.com/ (DNS and HTTPS activation pending)
+## Participation and privacy
 
-Former GitHub Pages address: https://crespen.github.io/world-music-experiment/
+- Public visitors can explore the catalog without signing in.
+- Journal entries, founder reports, and contributor identities are protected by server-side authentication and authorization.
+- Only public active music metadata goes into the generated search pages. No private participant data is included.
+- Earth to Ear links to recordings at third-party sources; it does not distribute their audio or claim rights in it.
+- Never commit Supabase service keys, participant records, private journal content, or credentials.
 
-### Participation
+## Project references
 
-- Website browsing is public.
-- Listening journal submissions and musical suggestions are for individually approved research participants using restricted Google Forms.
-- A public participation interest list and a Google-verified withdrawal request form are linked from the Participate page. Registration does not grant journal access.
-- The private research archive and its participant identities are not stored in this repository.
-
-### Maintenance
-
-The site is currently a single static HTML entry point with an embedded catalog snapshot. Future updates should separate catalog data from the UI and institute an approval workflow. Do not commit private Google Sheets exports, participant emails, form responses, secrets, or credentials.
+- [Listening access and curation](docs/listening-access-curation-standard.md)
+- [Musical journeys editorial standard](docs/musical-journeys-editorial-standard.md)
+- [Listener UX and verification](docs/listener-ux-stage-2-3-and-stage-4-verification.md)
+- [SEO publication and automation](docs/seo-recording-publishing-standard.md)
