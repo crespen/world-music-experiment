@@ -555,6 +555,35 @@ function recordingReturnPath(){
  }catch(error){}
  return '/explore/';
 }
+// Expanded contextual notes: curated from catalog information and supplied review observations.
+// Never infer a community, instrument or historical origin absent evidence.
+const recordingEditorialNotes={
+ "NAM-0001":{sound:"An unaccompanied vocal quartet; listen for how individual voices combine rather than for instrumental accompaniment.",history:"This 1909 recording is credited to a male quartet associated with the Fisk Jubilee Singers. The ensemble helped carry African American spirituals to broader concert audiences."},
+ "AFR-0023":{sound:"A filmed set with guitar, calabash and djembe. Notice the interaction of repeated guitar figures with percussion.",history:"Bombino is a Tuareg guitarist from Niger. This is a contemporary Tamasheq rock performance, not a claim of an unchanged ancient musical form."},
+ "AFR-0024":{sound:"Squeeze-bulb horns and everyday objects become the instruments of the ensemble.",history:"The performers are identified as the La Drivers Union Por Por Group, from a Ghanaian drivers' musical tradition associated with Ga community life."},
+ "AFR-0027":{sound:"Follow the changing relationship between singing and percussion. Individual performers are not identified in the catalog source.",history:"Northern Ghana is identified in the source, but the specific community and performance occasion are not yet established."},
+ "AFR-0028":{sound:"Listen to the recurring rhythmic figures of this short drum example.",history:"The source describes Okonko drumming associated with Opobo Kingdom, Nigeria. Fuller provenance remains under research."},
+ "AFR-0029":{sound:"Attend to changes in pitch and articulation in this short talking-drum demonstration.",history:"Talking drums in parts of West Africa can vary pitch by adjusting drumhead tension. This recording's specific lineage should not be inferred from the instrument alone."},
+ "ASI-0005":{sound:"Repeated sung phrases, rhythmic support and vocal elaboration give the performance its developing momentum. Harmonium, handclaps and percussion are common in qawwali, although the instrumentation of this exact recording is not independently cataloged.",history:"Qawwali is a South Asian Sufi devotional singing tradition. Nusrat Fateh Ali Khan helped bring it to international concert and recording audiences."},
+ "NAM-0026":{sound:"Hear the recurring four-note idea and the exchange between saxophone, piano, bass and drums.",history:"The recording dates to 1964. The linked official 2026 visual production is not historical footage of the original quartet session."},
+ "NAM-0027":{sound:"Notice the displaced accents and angular melodic phrases in Monk's blues composition.",history:"Thelonious Monk brought a highly individual approach to blues form, piano touch and ensemble timing."},
+ "NAM-0028":{sound:"Follow the expressive piano melody, bass line and restrained drum accompaniment.",history:"Oscar Peterson's Hymn to Freedom became associated with civil-rights aspirations and draws on gospel-inflected melodic language."}
+};
+function recordingContextPanel(r){
+ const note=recordingEditorialNotes[r.id]||null;
+ const artist=r.artist||"Individual performers not yet identified";
+ const tradition=r.tradition||"Tradition being researched";
+ const place=r.country||"Place not yet identified";
+ const period=r.period||"Period under research";
+ const sound=note?note.sound:"The catalog description above contains our current musical observations. Instrument-specific details have not yet been independently researched for this recording.";
+ const history=note?note.history:"The catalog associates this recording with "+tradition+" and "+place+". A fully researched history of this particular performance and its influences is not yet available.";
+ return '<details class="rxd-deeper"><summary>Explore the artist, instruments and historical context</summary><div class="rxd-context-grid">'
+   +'<div><h4>Artist or ensemble</h4><p>'+safe(artist)+'</p></div>'
+   +'<div><h4>Tradition and place</h4><p>'+safe(tradition)+' · '+safe(place)+' · '+safe(period)+'</p></div>'
+   +'<div><h4>What you might hear</h4><p>'+safe(sound)+'</p></div>'
+   +'<div><h4>Origins and evolution</h4><p>'+safe(history)+'</p></div>'
+   +'</div><p class="rxd-context-note">These notes distinguish documented information from remaining research gaps. We add specific source citations as deeper editorial research is completed.</p></details>';
+}
 function recordingDetail(){
  const id=new URLSearchParams(location.search).get('id')||'';
  const r=R.find(x=>x.id===id);
@@ -576,10 +605,12 @@ function recordingDetail(){
  '<a class="rxd-back" href="'+safe(back)+'">← Return to your listening results</a>'+
  '<div class="rxd-kicker">'+safe(r.continent)+' · Recording '+safe(r.id)+'</div>'+
  '<h1>'+safe(r.title)+'</h1><p class="rxd-subtitle">'+safe(r.artist)+'</p><div class="rxd-metadata">'+meta+'</div></div></section>'+
- '<section class="wrap rxd-layout"><article class="rxd-panel"><span class="caps">Meet the recording</span><h2>Context before you listen</h2>'+
- '<p>'+(description?safe(description):'This recording is part of the Earth to Ear open listening library. Explore its musical context and listen at the original source.')+'</p>'+
+ '<section class="wrap rxd-layout"><article class="rxd-panel"><span class="caps">Meet the recording</span><h2>Listen first. Discover more when you wish.</h2>'+
+ '<div class="rxd-listen-first">'+(url?'<a href="'+safe(url)+'" target="_blank" rel="noopener noreferrer">▶ Hear the performance at its source ↗</a>':'<span>Source link unavailable</span>')+'<small>Public access · Original provider may have regional restrictions</small></div>'+
+ '<p>'+(description?safe(description):'This recording is part of the Earth to Ear open listening library. Research on this performance is ongoing.')+'</p>'+
  '<h3 class="rxd-subheading">What might you notice?</h3><p>Listen for a musical moment that catches your attention—a rhythm, a voice, the space between instruments, or something unexpected. You do not need technical terms or a correct answer.</p>'+
- '<h3 class="rxd-subheading">Listen at its original source</h3><p>The audio or video remains with its original provider. Earth to Ear links to original sources rather than hosting audio. We prioritize complete performances; check the source access details below.</p>'+
+ recordingContextPanel(r)+
+ '<h3 class="rxd-subheading">Your original source</h3><p>The audio or video remains with the original provider. You can return to this page to explore more about the people, sound and history.</p>'+
  publicAccessNotice(r,true)+
  '<div class="rxd-actions">'+(url?'<a href="'+safe(url)+'" target="_blank" rel="noopener noreferrer">'+safe(listenLabel(r))+' ↗</a>':'<span>Original source link unavailable.</span>')+
  '<a class="rxd-outline" href="/contributor.html?recording='+encodeURIComponent(r.id)+'">My Journal (invited contributors)</a>'+saveButton(r)+reportLinkButton(r)+'</div>'+
