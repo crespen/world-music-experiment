@@ -499,3 +499,20 @@ html.ed-exact-art-ready .ed-news-art-3,html.ed-exact-art-ready .ed-news-art-4,ht
 .ed-entry-place .region .caps{display:block;font-size:9px;letter-spacing:.07em;color:#f2d1a5;margin:0 0 8px;position:relative}
 .ed-entry-place .region b{margin-bottom:2px}
 .access-notice{font-size:0.875rem;line-height:1.5;margin:0.45rem 0}
+
+
+/* First participant feedback: name the audience and make discovery benefits visible. */
+.ed-hero-access{font-size:13px!important;line-height:1.6!important;max-width:610px!important;margin:12px 0 18px!important;color:#e1e9dd!important}
+.ed-hero-access strong{color:#f6d7a8}
+.ed-why-section{padding:43px 0 48px;background:linear-gradient(125deg,#102d39,#12383c);border-top:1px solid rgba(213,233,221,.22);border-bottom:1px solid rgba(213,233,221,.22)}
+.ed-why-section h2{font:500 clamp(27px,3.4vw,41px)/1.15 "Fraunces",Georgia,serif;color:#f7e2bf;margin:10px 0 12px}
+.ed-why-lead{font-size:15px;line-height:1.65;color:#d6e4dc;max-width:790px;margin:0 0 22px}
+.ed-why-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.ed-why-card{background:#1a4045;border:1px solid #668a80;border-radius:13px;padding:20px;display:flex;flex-direction:column;min-width:0}
+.ed-why-card>span{font-size:27px;line-height:1.1;color:#f2d49e}
+.ed-why-card h3{font:500 22px/1.2 "Fraunces",Georgia,serif;color:#f5dfb7;margin:10px 0}
+.ed-why-card p{font-size:14px;line-height:1.58;color:#d2e4dd;margin:0 0 15px;flex:1}
+.ed-why-card a{font-size:13px;font-weight:700;color:#f5d69f;text-decoration:underline;text-underline-offset:4px}
+.ed-why-access{font-size:12px;line-height:1.6;margin:18px 0 0;color:#bfd8cc}
+@media(max-width:950px){.ed-why-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ed-why-card:last-child{grid-column:1/-1}}
+@media(max-width:700px){.ed-hero-inner{min-height:0;padding-top:22px;padding-bottom:25px}.ed-hero-copy{width:100%;padding:12px 0}.ed-hero h1{font-size:clamp(35px,9.1vw,51px)}.ed-hero-access{font-size:12px!important}.ed-why-section{padding:30px 0 35px}.ed-why-grid{grid-template-columns:1fr}.ed-why-card:last-child{grid-column:auto}.ed-why-card{padding:16px}.ed-why-card h3{font-size:21px}}
