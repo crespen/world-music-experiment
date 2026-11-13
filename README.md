@@ -22,6 +22,7 @@ See [Automated recording SEO publication](docs/seo-recording-publishing-standard
 
 ## Project references
 
+- [Atlas inventory measurement v0.3](docs/atlas-inventory-measurement-v0-3.md) — 1,411 typed research candidate listings across three volumes, explicitly not verified genre totals
 - [Global Musical Atlas classification standard v1.0](docs/atlas-classification-standard-v1.md) — canonical six entity types, formation-period lenses, alias and cross-volume rules
 - [African Musical Atlas v0.3](docs/atlases/african-musical-atlas-v0-3.md) — 701 typed candidate entries across 55 country/territorial sections; provisional sources
 - [North American Musical Atlas v0.3](docs/atlases/north-american-musical-atlas-v0-3.md) — 323 typed entries; Caribbean chronology and alias corrections
