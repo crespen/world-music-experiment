@@ -22,8 +22,11 @@ See [Automated recording SEO publication](docs/seo-recording-publishing-standard
 
 ## Project references
 
-- [Music-first publishing gate](docs/music-first-publishing-gate.md) — new recordings held for review; 55 held and 10 context-only in first screen
-- [South American Musical Atlas v0.1](docs/atlases/south-american-musical-atlas-v0-1.md) — 358 typed research candidates across 12 countries and French Guiana; 37 evidence anchors and a cross-border register.
+- [Global Musical Atlas classification standard v1.0](docs/atlas-classification-standard-v1.md) — canonical six entity types, formation-period lenses, alias and cross-volume rules
+- [African Musical Atlas v0.3](docs/atlases/african-musical-atlas-v0-3.md) — 701 typed candidate entries across 55 country/territorial sections; provisional sources
+- [North American Musical Atlas v0.3](docs/atlases/north-american-musical-atlas-v0-3.md) — 323 typed entries; Caribbean chronology and alias corrections
+- [South American Musical Atlas v0.2](docs/atlases/south-american-musical-atlas-v0-2.md) — 387 typed entries, documented review additions and cross-volume pathways
+- [Music-first publishing gate](docs/music-first-publishing-gate.md) — recordings handled separately from Atlas research
 - [Music-first selection standard](docs/music-first-selection-standard.md) — primary listening versus documentary context; 30-second entry guideline and playback QA
 - [Initial music-first catalog triage](docs/music-first-catalog-triage-2026-11-12.md) — metadata-only review list, not playback failures
 - [Listening access and curation](docs/listening-access-curation-standard.md)
